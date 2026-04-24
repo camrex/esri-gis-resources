@@ -8,23 +8,13 @@ This repository is meant to be lightweight and utility-focused: small, reusable 
 
 ### Color Palettes
 
-The first resource set in this repo is a standard Esri color palette reference under [color-palettes](color-palettes).
+The first resource set in this repo is a standard Esri color palette reference under [color-palettes](https://github.com/camrex/esri-gis-resources/tree/main/color-palettes).
 
 Included assets:
 
-- HTML reference page for browsing and copying colors
+- [Esri (ArcMap/ArcGIS Pro) Standard Color Palette](https://camrex.github.io/esri-gis-resources/color-palettes/arcmap-standard-palette/arcmap_palette.html) — interactive HTML reference with click-to-copy, filter, and PNG export
 - CSV export for programmatic use
 - Supporting documentation
-
-## GitHub Pages
-
-The color palette HTML is intended to be published through GitHub Pages.
-
-After Pages is enabled for this repository, the palette page can be accessed at:
-
-`https://camrex.github.io/esri-gis-resources/color-palettes/arcmap-standard-palette/arcmap_palette.html`
-
-If your Pages source or branch changes, update the URL path accordingly.
 
 ## Repository Structure
 

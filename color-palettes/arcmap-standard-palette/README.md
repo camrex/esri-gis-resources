@@ -2,6 +2,8 @@
 
 All 120 named colors from Esri's ArcGIS Colors system style (the successor to the legacy ArcMap standard color set), organized in the published 12-column × 10-row grid with RGB values, hex codes, and brief narrative descriptions for each color.
 
+The palette HTML page is also available online: [arcmap_palette.html](https://camrex.github.io/esri-gis-resources/color-palettes/arcmap-standard-palette/arcmap_palette.html)
+
 ## Files
 
 | File | Description |
