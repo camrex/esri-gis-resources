@@ -11,14 +11,14 @@ The palette HTML page is also available online: [arcmap_palette.html](https://ca
 | [`arcmap_palette.html`](./arcmap_palette.html) | Interactive single-file web reference with click-to-copy, filter, PNG export, Print, and a toggle to show proposed corrections (see Analysis section below) |
 | [`ArcMap_Color_Palette.xlsx`](./ArcMap_Color_Palette.xlsx) | Excel workbook: visual 12×10 grid, sortable reference table with HSV columns, and notes |
 | [`ArcMap_Color_Palette.png`](./ArcMap_Color_Palette.png) | Single-image 300 DPI rendering of the 12×10 grid |
-| [`ArcMap_Color_Palette_Corrections.png`](./ArcMap_Color_Palette_Corrections.png) | 300 DPI grid with Sahara Sand, Topaz Sand, and Glacier Blue rendered as diagonal split swatches showing original (top-left) and proposed corrected (bottom-right) values |
+| [`ArcMap_Color_Palette_Corrections.png`](./ArcMap_Color_Palette_Corrections.png) | 300 DPI grid with Sahara Sand and Topaz Sand rendered as diagonal split swatches showing original (top-left) and proposed corrected (bottom-right) values |
 | [`palette.csv`](./palette.csv) | CSV for programmatic use (`index, name, r, g, b, hex, h_deg, s_pct, v_pct, grid_row, grid_col, description`) |
 
 ## Sources
 
 **Primary (current):** Esri ArcGIS Colors system style, as shipped with ArcGIS Pro 3.6 (2025). Names and RGB values in this folder match the Esri-published "ArcGIS Colors" reference PDF for that release.
 
-**Also see:** The original [Esri KB 000010027](https://support.esri.com/en-us/knowledge-base/what-are-the-rgb-color-values-for-the-standard-arcmap-c-000010027) — *"What Are the RGB Color Values for the Standard ArcMap Color Set?"* — which documents the same palette as it shipped with ArcMap. The RGB values are identical; several color names were corrected between ArcMap and ArcGIS Pro.
+**Also see:** The original [Esri KB 000010027](https://support.esri.com/en-us/knowledge-base/what-are-the-rgb-color-values-for-the-standard-arcmap-c-000010027) — *"What Are the RGB Color Values for the Standard ArcMap Color Set?"* — which documents the same palette as it shipped with ArcMap. Its Glacier Blue entry contains a typo (`RGB(38, 79, 137) #264F89`); the ArcGIS Pro style file and the values in this folder use the correct `RGB(68, 79, 137) #444F89`. Several color names were also corrected between ArcMap and ArcGIS Pro.
 
 The narrative descriptions, grid layout reproduction, and file formatting in this folder are my original work.
 
@@ -85,30 +85,29 @@ The warm side (cols 2–7) is rigidly spaced at 20° per column. The cool side i
 
 A small systematic drift in the cool columns (cols 9–12) between saturated and muted rows appears to be intentional Bezold-Brücke compensation — perceived hue drifts as colors desaturate, and Esri's values appear to correct for it.
 
-### Three anomalies that don't fit the rules
+### Two anomalies that don't fit the rules
 
-Three swatches deviate from these rules in ways that look more like errors than design choices:
+Two swatches deviate from these rules in ways that look more like errors than design choices:
 
 | Color | Original | Proposed Correction | Issue |
 | --- | --- | --- | --- |
 | **Sahara Sand** (Row 1, Col 3) | RGB(255, 235, 190) #FFEBBE — H 42° S 25% V 100% | RGB(255, 212, 190) **#FFD4BE** — H 20° S 25% V 100% | Hue 21.7° off from the column's expected 20° |
 | **Topaz Sand** (Row 1, Col 4) | RGB(255, 235, 175) #FFEBAF — H 45° S 31% V 100% | RGB(255, 233, 190) **#FFE9BE** — H 40° S 25% V 100% | Hue 5.4° off from column expected 40°, and only saturation outlier in row 1 |
-| **Glacier Blue** (Row 10, Col 10) | RGB(38, 79, 137) #264F89 — H 215° S 72% V 54% | RGB(68, 79, 137) **#444F89** — H 230° S 50% V 54% | Saturation 72% vs row 10 median ~50%; only outlier in row 10 |
 
-**On Sahara and Topaz Sand:** these two share identical R and G values (255, 235) and differ only by 15 points in the blue channel — they're effectively the same hue at slightly different saturations rather than two distinct hues, which is why they're hard to tell apart on screen. The corrected values shift Sahara to the 20° hue position (aligned with Fire Red's column) and Topaz to the 40° position (aligned with Electron Gold's column), giving each its own distinct hue identity in the column structure.
+**On Sahara and Topaz Sand:** these two share identical R and G values (255, 235) and differ only by 15 points in the blue channel — they're effectively the same hue at slightly different saturations rather than two distinct hues, which is why they're hard to tell apart on screen. The corrected values shift Sahara to the 20° hue position (aligned with Fire Red's column) and Topaz to the 40° position (aligned with Electron Gold's column), giving each its own distinct hue identity in the column structure. The corrected RGB values converge from three independent methods: HSV row-saturation matching, CMYK row-M-progression matching, and ArcGIS Pro's own CMYK→RGB conversion when given pattern-derived CMYK inputs. All three approaches produce identical RGBs.
 
-**On Glacier Blue:** every other color in row 10 has saturation around 50%; Glacier sits at 72%. The pattern is consistent with a single-digit data-entry error in the red channel — if R=38 had been R=68, Glacier would match Larkspur Blue's red channel exactly (its left neighbor in the row) and fall right into row 10's saturation/value family.
+**On Glacier Blue:** an earlier draft of this analysis treated Esri KB 000010027's `RGB(38, 79, 137) #264F89` entry as a palette anomaly — at S=72% it would have been the only color in row 10 above ~50% saturation. After checking the live ArcGIS Pro style file, Glacier Blue is actually `RGB(68, 79, 137) #444F89` (S=50%), which aligns cleanly with row 10's pattern. The inconsistency was in the Esri documentation, not in ArcGIS Pro.
 
 ### What this means
 
-These RGB values are preserved exactly between ArcMap and ArcGIS Pro 3.6, so Esri appears to be treating them as canonical for backward compatibility — changing them would risk breaking every map ever made with the original values. The corrections in this section are analytical observations, not advocacy for changing the published palette.
+Aside from the Glacier Blue typo in KB 000010027, these RGB values are preserved between ArcMap and ArcGIS Pro 3.6, so Esri appears to be treating them as canonical for backward compatibility. The corrections in this section are analytical observations about Sahara Sand and Topaz Sand, not advocacy for changing the published palette.
 
-The interactive HTML reference includes a **"Show proposed corrections"** toggle that displays the three swatches as diagonal splits with both original and corrected values visible. The static [`ArcMap_Color_Palette_Corrections.png`](./ArcMap_Color_Palette_Corrections.png) shows the same view as a single image. All other deliverables in this folder use the original Esri-published values throughout.
+The interactive HTML reference includes a **"Show proposed corrections"** toggle that displays the two row-1 swatches as diagonal splits with both original and corrected values visible. The static [`ArcMap_Color_Palette_Corrections.png`](./ArcMap_Color_Palette_Corrections.png) shows the same view as a single image. All other deliverables in this folder use the ArcGIS Pro style values throughout.
 
 ### Credits
 
 - **Michael Ray Wilson, MS, CFM** — original observation that Sahara Sand and Topaz Sand sit on essentially the same hue; HSV analysis demonstrating Sahara Sand's hue shift toward yellow; proposed corrections for Sahara and Topaz.
-- Glacier Blue anomaly identified during follow-up HSV analysis of all 120 colors.
+- Glacier Blue documentation discrepancy in KB 000010027 identified during follow-up HSV analysis of all 120 colors and verification against the live ArcGIS Pro style file.
 
 ## About the descriptions
 

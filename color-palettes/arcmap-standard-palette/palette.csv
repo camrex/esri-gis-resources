@@ -116,6 +116,6 @@ index,name,r,g,b,hex,h_deg,s_pct,v_pct,grid_row,grid_col,description
 115,Lotus Pond Green,92,137,68,#5C8944,99.1,50.4,53.7,10,7,"Very dark cool green; pond algae, bog"
 116,Deep Forest,68,137,112,#448970,158.3,50.4,53.7,10,8,Very dark cool teal-green; deep forest shade
 117,Larkspur Blue,68,101,137,#446589,211.3,50.4,53.7,10,9,Very dark cool muted blue; denim at dusk
-118,Glacier Blue,38,79,137,#264F89,215.2,72.3,53.7,10,10,"Very dark cool navy; glacier ice, deep sea"
+118,Glacier Blue,68,79,137,#444F89,230.4,50.4,53.7,10,10,"Very dark cool navy; glacier ice, deep sea"
 119,Blackberry,112,68,137,#704489,278.3,50.4,53.7,10,11,Very dark cool purple; the berry itself
 120,Cabernet,137,68,101,#894465,331.3,50.4,53.7,10,12,Very dark warm wine; wine in shadow
