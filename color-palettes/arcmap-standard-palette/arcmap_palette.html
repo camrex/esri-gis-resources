@@ -299,18 +299,18 @@
   <div class="family-bar" id="family-bar">
     <span class="fam-label">Family:</span>
     <button type="button" class="fam-all active" id="fam-all" title="Show all families">All</button>
-    <button type="button" class="fam" data-col="1"  style="background:#B2B2B2" title="Grays"></button>
-    <button type="button" class="fam" data-col="2"  style="background:#FF0000" title="Reds"></button>
-    <button type="button" class="fam" data-col="3"  style="background:#FF5500" title="Oranges"></button>
-    <button type="button" class="fam" data-col="4"  style="background:#FFAA00" title="Golds"></button>
-    <button type="button" class="fam" data-col="5"  style="background:#FFFF00" title="Yellows"></button>
-    <button type="button" class="fam" data-col="6"  style="background:#AAFF00" title="Yellow-Greens"></button>
-    <button type="button" class="fam" data-col="7"  style="background:#55FF00" title="Greens"></button>
-    <button type="button" class="fam" data-col="8"  style="background:#00FFC5" title="Teals"></button>
-    <button type="button" class="fam" data-col="9"  style="background:#00C5FF" title="Cyans"></button>
-    <button type="button" class="fam" data-col="10" style="background:#0082FF" title="Blues"></button>
-    <button type="button" class="fam" data-col="11" style="background:#C500FF" title="Purples"></button>
-    <button type="button" class="fam" data-col="12" style="background:#FF00C5" title="Pinks"></button>
+    <button type="button" class="fam" data-col="1"  style="background:#B2B2B2" title="Grays" aria-label="Grays"></button>
+    <button type="button" class="fam" data-col="2"  style="background:#FF0000" title="Reds" aria-label="Reds"></button>
+    <button type="button" class="fam" data-col="3"  style="background:#FF5500" title="Oranges" aria-label="Oranges"></button>
+    <button type="button" class="fam" data-col="4"  style="background:#FFAA00" title="Golds" aria-label="Golds"></button>
+    <button type="button" class="fam" data-col="5"  style="background:#FFFF00" title="Yellows" aria-label="Yellows"></button>
+    <button type="button" class="fam" data-col="6"  style="background:#AAFF00" title="Yellow-Greens" aria-label="Yellow-Greens"></button>
+    <button type="button" class="fam" data-col="7"  style="background:#55FF00" title="Greens" aria-label="Greens"></button>
+    <button type="button" class="fam" data-col="8"  style="background:#00FFC5" title="Teals" aria-label="Teals"></button>
+    <button type="button" class="fam" data-col="9"  style="background:#00C5FF" title="Cyans" aria-label="Cyans"></button>
+    <button type="button" class="fam" data-col="10" style="background:#0082FF" title="Blues" aria-label="Blues"></button>
+    <button type="button" class="fam" data-col="11" style="background:#C500FF" title="Purples" aria-label="Purples"></button>
+    <button type="button" class="fam" data-col="12" style="background:#FF00C5" title="Pinks" aria-label="Pinks"></button>
   </div>
 </header>
 
@@ -451,7 +451,7 @@ function buildGrid() {
       sw.style.setProperty('--cor-text', corDark ? '#ffffff' : '#000000');
       sw.dataset.corHex = cor.hex.toLowerCase();
       sw.dataset.corRgb = `${cR}, ${cG}, ${cB}`;
-      sw.dataset.corHsv = `${corH}°, ${corS}%, ${corV}%`;
+      sw.dataset.corHsv = `${corH},${corS},${corV}`;
       splitContent = `
         <div class="split-content">
           <div class="orig-label">
@@ -491,7 +491,7 @@ function buildGrid() {
       if (useCorrection) {
         const cor = corrections[c.i];
         const [cR, cG, cB] = cor.rgb;
-        const [corH, corS, corV] = rgbToHsv(cR, cG, cB);
+        const [corH, corS, corV] = sw.dataset.corHsv.split(',').map(Number);
         if (mode === 'hex') value = '#' + cor.hex;
         else if (mode === 'rgb') value = cR + ', ' + cG + ', ' + cB;
         else if (mode === 'hsv') value = corH + '°, ' + corS + '%, ' + corV + '%';
