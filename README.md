@@ -34,3 +34,4 @@ esri-gis-resources/
 
 - This project is intentionally informal and iterative.
 - Additional Esri-related resources will be added over time.
+- Repository change history is tracked in [CHANGELOG.md](./CHANGELOG.md).
