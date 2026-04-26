@@ -1,121 +1,121 @@
-index,name,r,g,b,hex,grid_row,grid_col,description
-1,Arctic White,255,255,255,#FFFFFF,1,1,"Pure white; blank paper, unmapped areas"
-2,Rose Quartz,255,190,190,#FFBEBE,1,2,Pale warm pink; soft residential fills
-3,Sahara Sand,255,235,190,#FFEBBE,1,3,"Pale warm tan; dry land, sand"
-4,Topaz Sand,255,235,175,#FFEBAF,1,4,"Pale golden beige; wheat fields, prairie"
-5,Yucca Yellow,255,255,190,#FFFFBE,1,5,Pale warm yellow; light agricultural zones
-6,Olivine Yellow,233,255,190,#E9FFBE,1,6,"Pale yellow-green; light vegetation, meadows"
-7,Tzavorite Green,211,255,190,#D3FFBE,1,7,"Pale mint green; soft parks, greenspace"
-8,Indicolite Green,190,255,232,#BEFFE8,1,8,"Pale cool seafoam; shallow water, wetlands"
-9,Sodalite Blue,190,232,255,#BEE8FF,1,9,Pale cool sky; soft water fills
-10,Sugilite Sky,190,210,255,#BED2FF,1,10,Pale cool periwinkle; atmospheric backgrounds
-11,Lepidolite Lilac,232,190,255,#E8BEFF,1,11,Pale cool lavender; soft zoning overlays
-12,Rhodolite Rose,255,190,232,#FFBEE8,1,12,Pale warm pink-magenta; light zoning fills
-13,Gray 10%,225,225,225,#E1E1E1,2,1,Very light neutral; subtle basemap fills
-14,Medium Coral Light,255,127,127,#FF7F7F,2,2,Medium-light warm coral; residential districts
-15,Cantaloupe,255,167,127,#FFA77F,2,3,Light warm peach; commercial zones
-16,Mango,255,211,127,#FFD37F,2,4,Light warm gold; agricultural highlights
-17,Autunite Yellow,255,255,115,#FFFF73,2,5,"Bright warm yellow; highways, caution zones"
-18,Lemongrass,209,255,115,#D1FF73,2,6,Bright yellow-green; active vegetation
-19,Light Apple,163,255,115,#A3FF73,2,7,"Bright spring green; healthy crops, parks"
-20,Beryl Green,115,255,223,#73FFDF,2,8,Bright cool aqua; shallow tropical water
-21,Apatite Blue,115,223,255,#73DFFF,2,9,"Bright cool cyan; pool blue, recreation"
-22,Yogo Blue,115,178,255,#73B2FF,2,10,"Bright cool cornflower; lakes, reservoirs"
-23,Heliotrope,223,115,255,#DF73FF,2,11,Bright cool orchid; special districts
-24,Fuchsia Pink,255,115,223,#FF73DF,2,12,Bright warm hot pink; attention-getting markers
-25,Gray 20%,204,204,204,#CCCCCC,3,1,"Light neutral; background fills, UI"
-26,Mars Red,255,0,0,#FF0000,3,2,"Pure saturated red; alerts, hazards"
-27,Fire Red,255,85,0,#FF5500,3,3,"Saturated red-orange; active fire, heat"
-28,Electron Gold,255,170,0,#FFAA00,3,4,"Saturated pure orange; traffic, warnings"
-29,Solar Yellow,255,255,0,#FFFF00,3,5,Pure saturated yellow; maximum visibility
-30,Peridot Green,170,255,0,#AAFF00,3,6,Saturated lime; vivid vegetation markers
-31,Medium Apple,85,255,0,#55FF00,3,7,Saturated grass green; bright greenspace
-32,Tourmaline Green,0,255,197,#00FFC5,3,8,Saturated cool seafoam; Caribbean water
-33,Big Sky Blue,0,197,255,#00C5FF,3,9,Saturated cool cyan; clear water bodies
-34,Cretan Blue,0,130,255,#0082FF,3,10,Saturated cool azure; deeper water
-35,Amethyst,197,0,255,#C500FF,3,11,Saturated cool violet; special features
-36,Ginger Pink,255,0,197,#FF00C5,3,12,Saturated warm hot pink; high-contrast markers
-37,Gray 30%,178,178,178,#B2B2B2,4,1,Medium-light neutral; secondary fills
-38,Poinsettia Red,230,0,0,#E60000,4,2,Deep warm red; strong boundary lines
-39,Flame Red,230,76,0,#E64C00,4,3,Deep warm red-orange; active hazards
-40,Seville Orange,230,152,0,#E69800,4,4,Rich warm orange; transit corridors
-41,Citron Yellow,230,230,0,#E6E600,4,5,Rich warm lemon; highway markings
-42,Macaw Green,152,230,0,#98E600,4,6,"Rich yellow-green; cropland, agriculture"
-43,Quetzel Green,76,230,0,#4CE600,4,7,"Rich grass green; parks, forests"
-44,Chrysoprase,0,230,169,#00E6A9,4,8,"Rich cool teal; estuaries, coastal zones"
-45,Moorea Blue,0,169,230,#00A9E6,4,9,"Rich cool lagoon blue; lakes, bays"
-46,Lapis Lazuli,0,92,230,#005CE6,4,10,Rich cool deep blue; major waterways
-47,Anemone Violet,169,0,230,#A900E6,4,11,"Rich cool violet; zoning, boundaries"
-48,Peony Pink,230,0,169,#E600A9,4,12,Rich warm magenta; distinctive features
-49,Gray 40%,156,156,156,#9C9C9C,5,1,Medium neutral; base infrastructure
-50,Tuscan Red,168,0,0,#A80000,5,2,"Deep warm brick; rail, transportation"
-51,Cherry Cola,168,56,0,#A83800,5,3,Deep warm brown-red; industrial zones
-52,Raw Umber,168,112,0,#A87000,5,4,"Earthy warm caramel; soil, geology"
-53,Olivenite Green,168,168,0,#A8A800,5,5,"Earthy muted olive; scrubland, rangeland"
-54,Tarragon Green,112,168,0,#70A800,5,6,Earthy cool olive; managed forest
-55,Leaf Green,56,168,0,#38A800,5,7,Deep cool forest-leaf; woodland areas
-56,Malachite Green,0,168,132,#00A884,5,8,"Deep cool teal-green; wetlands, marshes"
-57,Delft Blue,0,132,168,#0084A8,5,9,Deep cool teal-blue; deep lakes
-58,Ultra Blue,0,77,168,#004DA8,5,10,"Deep cool denim blue; ocean, deep water"
-59,Dark Amethyst,132,0,168,#8400A8,5,11,Deep cool purple; political boundaries
-60,Cattleya Orchid,168,0,132,#A80084,5,12,Deep warm magenta; special overlays
-61,Gray 50%,130,130,130,#828282,6,1,"True middle gray; pavement, roads"
-62,Dark Umber,115,0,0,#730000,6,2,Very dark warm maroon; strong borders
-63,Cherrywood Brown,115,38,0,#732600,6,3,Very dark warm red-brown; rail lines
-64,Burnt Umber,115,76,0,#734C00,6,4,"Very dark warm coffee; deep soil, bedrock"
-65,Dark Olivenite,115,115,0,#737300,6,5,Very dark muted olive; dry scrubland
-66,Spruce Green,76,115,0,#4C7300,6,6,Very dark cool pine; conifer forest
-67,Fir Green,38,115,0,#267300,6,7,Very dark cool forest; dense woodland
-68,Peacock Green,0,115,76,#00734C,6,8,Very dark cool teal; deep ocean water
-69,Steel Blue,0,76,115,#004C73,6,9,Very dark cool blue; stormy seas
-70,Dark Navy,0,38,115,#002673,6,10,"Very dark cool navy; deep ocean, night"
-71,Ultramarine,76,0,115,#4C0073,6,11,Very dark cool purple-blue; specialty boundaries
-72,Purple Heart,115,0,76,#73004C,6,12,Very dark balanced plum; distinctive districts
-73,Gray 60%,104,104,104,#686868,7,1,Medium-dark neutral; road networks
-74,Rose Dust,215,158,158,#D79E9E,7,2,Muted warm dusty pink; faded residential
-75,Soapstone Dust,215,176,158,#D7B09E,7,3,Muted warm peach; weathered terracotta
-76,Tecate Dust,215,194,158,#D7C29E,7,4,"Muted warm beige; adobe, desert towns"
-77,Lime Dust,215,215,158,#D7D79E,7,5,Muted earthy pale yellow; dry grassland
-78,Apple Dust,199,215,158,#C7D79E,7,6,Muted balanced pale green; sage scrubland
-79,Sage Dust,180,215,158,#B4D79E,7,7,"Muted cool dusty green; dried herbs, chaparral"
-80,Turquoise Dust,158,215,194,#9ED7C2,7,8,"Muted cool pale teal; sea glass, estuary"
-81,Blue Gray Dust,158,187,215,#9EBBD7,7,9,Muted cool dusty blue; distant mountains
-82,Violet Dust,158,170,215,#9EAAD7,7,10,"Muted cool periwinkle; faded denim, haze"
-83,Lilac Dust,194,158,215,#C29ED7,7,11,Muted cool dusty lavender; dried flowers
-84,Tudor Rose Dust,214,157,188,#D69DBC,7,12,Muted warm dusty mauve; antique roses
-85,Gray 70%,78,78,78,#4E4E4E,8,1,Dark neutral charcoal; major highways
-86,Medium Coral,245,122,122,#F57A7A,8,2,"Medium warm coral-pink; salmon, residential"
-87,Orange Dust,245,162,122,#F5A27A,8,3,"Medium warm peach; dusty sunset, suburbs"
-88,Medium Sand,245,202,122,#F5CA7A,8,4,"Medium warm tan; beach, sandy terrain"
-89,Medium Yellow,245,245,122,#F5F57A,8,5,Medium balanced yellow; soft cropland
-90,Medium Lime,205,245,122,#CDF57A,8,6,Medium balanced yellow-green; mixed vegetation
-91,Medium Key Lime,165,245,122,#A5F57A,8,7,Medium cool spring green; young crops
-92,Light Vert,122,245,202,#7AF5CA,8,8,"Medium cool mint; fresh water, streams"
-93,Oxide Blue,122,182,245,#7AB6F5,8,9,Medium cool sky blue; open water
-94,Medium Azul,122,142,245,#7A8EF5,8,10,"Medium cool blue-violet; blueberry, dusk"
-95,Medium Lilac,202,122,245,#CA7AF5,8,11,Medium balanced orchid; zoning overlays
-96,Medium Fuchsia,245,122,182,#F57AB6,8,12,Medium warm pink-magenta; notable boundaries
-97,Gray 80%,52,52,52,#343434,9,1,"Very dark neutral; major rail, arterials"
-98,Tulip Pink,205,102,102,#CD6666,9,2,Muted warm brick pink; old rooftops
-99,Nubuck Tan,205,137,102,#CD8966,9,3,"Muted warm tan; suede, leather earthtones"
-100,Light Sienna,205,170,102,#CDAA66,9,4,"Muted warm ochre; clay pottery, pueblo"
-101,Light Olivenite,205,205,102,#CDCD66,9,5,Muted balanced yellow-olive; dried herbs
-102,Medium Olivenite,171,205,102,#ABCD66,9,6,"Muted cool olive-green; pasture, rangeland"
-103,Fern Green,137,205,102,#89CD66,9,7,"Muted cool leaf green; shaded ferns, understory"
-104,Jadeite,102,205,171,#66CDAB,9,8,"Muted cool jade; stream beds, wetlands"
-105,Atlantic Blue,102,153,205,#6699CD,9,9,Muted cool ocean blue; coastal waters
-106,Pacific Blue,102,119,205,#6677CD,9,10,"Muted cool slate; twilight sky, deep lakes"
-107,Aster Purple,170,102,205,#AA66CD,9,11,"Muted cool violet; aster flower, overlays"
-108,Protea Pink,205,102,153,#CD6699,9,12,"Muted balanced rose; flower gardens, accents"
-109,Black,0,0,0,#000000,10,1,"Pure black; outlines, text, maximum contrast"
-110,Cordovan Brown,137,68,68,#894444,10,2,"Very dark warm burgundy; old leather, railroads"
-111,Cocoa Brown,137,90,68,#895A44,10,3,"Very dark warm chocolate; deep soil, tracks"
-112,Leather Brown,137,112,68,#897044,10,4,"Very dark warm earth; aged saddle, bedrock"
-113,Lichen Green,137,137,68,#898944,10,5,"Very dark earthy olive; lichen, weathered stone"
-114,Moss Green,114,137,68,#728944,10,6,Very dark earthy olive-green; forest moss
-115,Lotus Pond Green,92,137,68,#5C8944,10,7,"Very dark cool green; pond algae, bog"
-116,Deep Forest,68,137,112,#448970,10,8,Very dark cool teal-green; deep forest shade
-117,Larkspur Blue,68,101,137,#446589,10,9,Very dark cool muted blue; denim at dusk
-118,Glacier Blue,38,79,137,#264F89,10,10,"Very dark cool navy; glacier ice, deep sea"
-119,Blackberry,112,68,137,#704489,10,11,Very dark cool purple; the berry itself
-120,Cabernet,137,68,101,#894465,10,12,Very dark warm wine; wine in shadow
+index,name,r,g,b,hex,h_deg,s_pct,v_pct,grid_row,grid_col,description
+1,Arctic White,255,255,255,#FFFFFF,0.0,0.0,100.0,1,1,"Pure white; blank paper, unmapped areas"
+2,Rose Quartz,255,190,190,#FFBEBE,0.0,25.5,100.0,1,2,Pale warm pink; soft residential fills
+3,Sahara Sand,255,235,190,#FFEBBE,41.5,25.5,100.0,1,3,"Pale warm tan; dry land, sand"
+4,Topaz Sand,255,235,175,#FFEBAF,45.0,31.4,100.0,1,4,"Pale golden beige; wheat fields, prairie"
+5,Yucca Yellow,255,255,190,#FFFFBE,60.0,25.5,100.0,1,5,Pale warm yellow; light agricultural zones
+6,Olivine Yellow,233,255,190,#E9FFBE,80.3,25.5,100.0,1,6,"Pale yellow-green; light vegetation, meadows"
+7,Tzavorite Green,211,255,190,#D3FFBE,100.6,25.5,100.0,1,7,"Pale mint green; soft parks, greenspace"
+8,Indicolite Green,190,255,232,#BEFFE8,158.8,25.5,100.0,1,8,"Pale cool seafoam; shallow water, wetlands"
+9,Sodalite Blue,190,232,255,#BEE8FF,201.2,25.5,100.0,1,9,Pale cool sky; soft water fills
+10,Sugilite Sky,190,210,255,#BED2FF,221.5,25.5,100.0,1,10,Pale cool periwinkle; atmospheric backgrounds
+11,Lepidolite Lilac,232,190,255,#E8BEFF,278.8,25.5,100.0,1,11,Pale cool lavender; soft zoning overlays
+12,Rhodolite Rose,255,190,232,#FFBEE8,321.2,25.5,100.0,1,12,Pale warm pink-magenta; light zoning fills
+13,Gray 10%,225,225,225,#E1E1E1,0.0,0.0,88.2,2,1,Very light neutral; subtle basemap fills
+14,Medium Coral Light,255,127,127,#FF7F7F,0.0,50.2,100.0,2,2,Medium-light warm coral; residential districts
+15,Cantaloupe,255,167,127,#FFA77F,18.8,50.2,100.0,2,3,Light warm peach; commercial zones
+16,Mango,255,211,127,#FFD37F,39.4,50.2,100.0,2,4,Light warm gold; agricultural highlights
+17,Autunite Yellow,255,255,115,#FFFF73,60.0,54.9,100.0,2,5,"Bright warm yellow; highways, caution zones"
+18,Lemongrass,209,255,115,#D1FF73,79.7,54.9,100.0,2,6,Bright yellow-green; active vegetation
+19,Light Apple,163,255,115,#A3FF73,99.4,54.9,100.0,2,7,"Bright spring green; healthy crops, parks"
+20,Beryl Green,115,255,223,#73FFDF,166.3,54.9,100.0,2,8,Bright cool aqua; shallow tropical water
+21,Apatite Blue,115,223,255,#73DFFF,193.7,54.9,100.0,2,9,"Bright cool cyan; pool blue, recreation"
+22,Yogo Blue,115,178,255,#73B2FF,213.0,54.9,100.0,2,10,"Bright cool cornflower; lakes, reservoirs"
+23,Heliotrope,223,115,255,#DF73FF,286.3,54.9,100.0,2,11,Bright cool orchid; special districts
+24,Fuchsia Pink,255,115,223,#FF73DF,313.7,54.9,100.0,2,12,Bright warm hot pink; attention-getting markers
+25,Gray 20%,204,204,204,#CCCCCC,0.0,0.0,80.0,3,1,"Light neutral; background fills, UI"
+26,Mars Red,255,0,0,#FF0000,0.0,100.0,100.0,3,2,"Pure saturated red; alerts, hazards"
+27,Fire Red,255,85,0,#FF5500,20.0,100.0,100.0,3,3,"Saturated red-orange; active fire, heat"
+28,Electron Gold,255,170,0,#FFAA00,40.0,100.0,100.0,3,4,"Saturated pure orange; traffic, warnings"
+29,Solar Yellow,255,255,0,#FFFF00,60.0,100.0,100.0,3,5,Pure saturated yellow; maximum visibility
+30,Peridot Green,170,255,0,#AAFF00,80.0,100.0,100.0,3,6,Saturated lime; vivid vegetation markers
+31,Medium Apple,85,255,0,#55FF00,100.0,100.0,100.0,3,7,Saturated grass green; bright greenspace
+32,Tourmaline Green,0,255,197,#00FFC5,166.4,100.0,100.0,3,8,Saturated cool seafoam; Caribbean water
+33,Big Sky Blue,0,197,255,#00C5FF,193.6,100.0,100.0,3,9,Saturated cool cyan; clear water bodies
+34,Cretan Blue,0,130,255,#0082FF,209.4,100.0,100.0,3,10,Saturated cool azure; deeper water
+35,Amethyst,197,0,255,#C500FF,286.4,100.0,100.0,3,11,Saturated cool violet; special features
+36,Ginger Pink,255,0,197,#FF00C5,313.6,100.0,100.0,3,12,Saturated warm hot pink; high-contrast markers
+37,Gray 30%,178,178,178,#B2B2B2,0.0,0.0,69.8,4,1,Medium-light neutral; secondary fills
+38,Poinsettia Red,230,0,0,#E60000,0.0,100.0,90.2,4,2,Deep warm red; strong boundary lines
+39,Flame Red,230,76,0,#E64C00,19.8,100.0,90.2,4,3,Deep warm red-orange; active hazards
+40,Seville Orange,230,152,0,#E69800,39.7,100.0,90.2,4,4,Rich warm orange; transit corridors
+41,Citron Yellow,230,230,0,#E6E600,60.0,100.0,90.2,4,5,Rich warm lemon; highway markings
+42,Macaw Green,152,230,0,#98E600,80.3,100.0,90.2,4,6,"Rich yellow-green; cropland, agriculture"
+43,Quetzel Green,76,230,0,#4CE600,100.2,100.0,90.2,4,7,"Rich grass green; parks, forests"
+44,Chrysoprase,0,230,169,#00E6A9,164.1,100.0,90.2,4,8,"Rich cool teal; estuaries, coastal zones"
+45,Moorea Blue,0,169,230,#00A9E6,195.9,100.0,90.2,4,9,"Rich cool lagoon blue; lakes, bays"
+46,Lapis Lazuli,0,92,230,#005CE6,216.0,100.0,90.2,4,10,Rich cool deep blue; major waterways
+47,Anemone Violet,169,0,230,#A900E6,284.1,100.0,90.2,4,11,"Rich cool violet; zoning, boundaries"
+48,Peony Pink,230,0,169,#E600A9,315.9,100.0,90.2,4,12,Rich warm magenta; distinctive features
+49,Gray 40%,156,156,156,#9C9C9C,0.0,0.0,61.2,5,1,Medium neutral; base infrastructure
+50,Tuscan Red,168,0,0,#A80000,0.0,100.0,65.9,5,2,"Deep warm brick; rail, transportation"
+51,Cherry Cola,168,56,0,#A83800,20.0,100.0,65.9,5,3,Deep warm brown-red; industrial zones
+52,Raw Umber,168,112,0,#A87000,40.0,100.0,65.9,5,4,"Earthy warm caramel; soil, geology"
+53,Olivenite Green,168,168,0,#A8A800,60.0,100.0,65.9,5,5,"Earthy muted olive; scrubland, rangeland"
+54,Tarragon Green,112,168,0,#70A800,80.0,100.0,65.9,5,6,Earthy cool olive; managed forest
+55,Leaf Green,56,168,0,#38A800,100.0,100.0,65.9,5,7,Deep cool forest-leaf; woodland areas
+56,Malachite Green,0,168,132,#00A884,167.1,100.0,65.9,5,8,"Deep cool teal-green; wetlands, marshes"
+57,Delft Blue,0,132,168,#0084A8,192.9,100.0,65.9,5,9,Deep cool teal-blue; deep lakes
+58,Ultra Blue,0,77,168,#004DA8,212.5,100.0,65.9,5,10,"Deep cool denim blue; ocean, deep water"
+59,Dark Amethyst,132,0,168,#8400A8,287.1,100.0,65.9,5,11,Deep cool purple; political boundaries
+60,Cattleya Orchid,168,0,132,#A80084,312.9,100.0,65.9,5,12,Deep warm magenta; special overlays
+61,Gray 50%,130,130,130,#828282,0.0,0.0,51.0,6,1,"True middle gray; pavement, roads"
+62,Dark Umber,115,0,0,#730000,0.0,100.0,45.1,6,2,Very dark warm maroon; strong borders
+63,Cherrywood Brown,115,38,0,#732600,19.8,100.0,45.1,6,3,Very dark warm red-brown; rail lines
+64,Burnt Umber,115,76,0,#734C00,39.7,100.0,45.1,6,4,"Very dark warm coffee; deep soil, bedrock"
+65,Dark Olivenite,115,115,0,#737300,60.0,100.0,45.1,6,5,Very dark muted olive; dry scrubland
+66,Spruce Green,76,115,0,#4C7300,80.3,100.0,45.1,6,6,Very dark cool pine; conifer forest
+67,Fir Green,38,115,0,#267300,100.2,100.0,45.1,6,7,Very dark cool forest; dense woodland
+68,Peacock Green,0,115,76,#00734C,159.7,100.0,45.1,6,8,Very dark cool teal; deep ocean water
+69,Steel Blue,0,76,115,#004C73,200.3,100.0,45.1,6,9,Very dark cool blue; stormy seas
+70,Dark Navy,0,38,115,#002673,220.2,100.0,45.1,6,10,"Very dark cool navy; deep ocean, night"
+71,Ultramarine,76,0,115,#4C0073,279.7,100.0,45.1,6,11,Very dark cool purple-blue; specialty boundaries
+72,Purple Heart,115,0,76,#73004C,320.3,100.0,45.1,6,12,Very dark balanced plum; distinctive districts
+73,Gray 60%,104,104,104,#686868,0.0,0.0,40.8,7,1,Medium-dark neutral; road networks
+74,Rose Dust,215,158,158,#D79E9E,0.0,26.5,84.3,7,2,Muted warm dusty pink; faded residential
+75,Soapstone Dust,215,176,158,#D7B09E,18.9,26.5,84.3,7,3,Muted warm peach; weathered terracotta
+76,Tecate Dust,215,194,158,#D7C29E,37.9,26.5,84.3,7,4,"Muted warm beige; adobe, desert towns"
+77,Lime Dust,215,215,158,#D7D79E,60.0,26.5,84.3,7,5,Muted earthy pale yellow; dry grassland
+78,Apple Dust,199,215,158,#C7D79E,76.8,26.5,84.3,7,6,Muted balanced pale green; sage scrubland
+79,Sage Dust,180,215,158,#B4D79E,96.8,26.5,84.3,7,7,"Muted cool dusty green; dried herbs, chaparral"
+80,Turquoise Dust,158,215,194,#9ED7C2,157.9,26.5,84.3,7,8,"Muted cool pale teal; sea glass, estuary"
+81,Blue Gray Dust,158,187,215,#9EBBD7,209.5,26.5,84.3,7,9,Muted cool dusty blue; distant mountains
+82,Violet Dust,158,170,215,#9EAAD7,227.4,26.5,84.3,7,10,"Muted cool periwinkle; faded denim, haze"
+83,Lilac Dust,194,158,215,#C29ED7,277.9,26.5,84.3,7,11,Muted cool dusty lavender; dried flowers
+84,Tudor Rose Dust,214,157,188,#D69DBC,327.4,26.6,83.9,7,12,Muted warm dusty mauve; antique roses
+85,Gray 70%,78,78,78,#4E4E4E,0.0,0.0,30.6,8,1,Dark neutral charcoal; major highways
+86,Medium Coral,245,122,122,#F57A7A,0.0,50.2,96.1,8,2,"Medium warm coral-pink; salmon, residential"
+87,Orange Dust,245,162,122,#F5A27A,19.5,50.2,96.1,8,3,"Medium warm peach; dusty sunset, suburbs"
+88,Medium Sand,245,202,122,#F5CA7A,39.0,50.2,96.1,8,4,"Medium warm tan; beach, sandy terrain"
+89,Medium Yellow,245,245,122,#F5F57A,60.0,50.2,96.1,8,5,Medium balanced yellow; soft cropland
+90,Medium Lime,205,245,122,#CDF57A,79.5,50.2,96.1,8,6,Medium balanced yellow-green; mixed vegetation
+91,Medium Key Lime,165,245,122,#A5F57A,99.0,50.2,96.1,8,7,Medium cool spring green; young crops
+92,Light Vert,122,245,202,#7AF5CA,159.0,50.2,96.1,8,8,"Medium cool mint; fresh water, streams"
+93,Oxide Blue,122,182,245,#7AB6F5,210.7,50.2,96.1,8,9,Medium cool sky blue; open water
+94,Medium Azul,122,142,245,#7A8EF5,230.2,50.2,96.1,8,10,"Medium cool blue-violet; blueberry, dusk"
+95,Medium Lilac,202,122,245,#CA7AF5,279.0,50.2,96.1,8,11,Medium balanced orchid; zoning overlays
+96,Medium Fuchsia,245,122,182,#F57AB6,330.7,50.2,96.1,8,12,Medium warm pink-magenta; notable boundaries
+97,Gray 80%,52,52,52,#343434,0.0,0.0,20.4,9,1,"Very dark neutral; major rail, arterials"
+98,Tulip Pink,205,102,102,#CD6666,0.0,50.2,80.4,9,2,Muted warm brick pink; old rooftops
+99,Nubuck Tan,205,137,102,#CD8966,20.4,50.2,80.4,9,3,"Muted warm tan; suede, leather earthtones"
+100,Light Sienna,205,170,102,#CDAA66,39.6,50.2,80.4,9,4,"Muted warm ochre; clay pottery, pueblo"
+101,Light Olivenite,205,205,102,#CDCD66,60.0,50.2,80.4,9,5,Muted balanced yellow-olive; dried herbs
+102,Medium Olivenite,171,205,102,#ABCD66,79.8,50.2,80.4,9,6,"Muted cool olive-green; pasture, rangeland"
+103,Fern Green,137,205,102,#89CD66,99.6,50.2,80.4,9,7,"Muted cool leaf green; shaded ferns, understory"
+104,Jadeite,102,205,171,#66CDAB,160.2,50.2,80.4,9,8,"Muted cool jade; stream beds, wetlands"
+105,Atlantic Blue,102,153,205,#6699CD,210.3,50.2,80.4,9,9,Muted cool ocean blue; coastal waters
+106,Pacific Blue,102,119,205,#6677CD,230.1,50.2,80.4,9,10,"Muted cool slate; twilight sky, deep lakes"
+107,Aster Purple,170,102,205,#AA66CD,279.6,50.2,80.4,9,11,"Muted cool violet; aster flower, overlays"
+108,Protea Pink,205,102,153,#CD6699,330.3,50.2,80.4,9,12,"Muted balanced rose; flower gardens, accents"
+109,Black,0,0,0,#000000,0.0,0.0,0.0,10,1,"Pure black; outlines, text, maximum contrast"
+110,Cordovan Brown,137,68,68,#894444,0.0,50.4,53.7,10,2,"Very dark warm burgundy; old leather, railroads"
+111,Cocoa Brown,137,90,68,#895A44,19.1,50.4,53.7,10,3,"Very dark warm chocolate; deep soil, tracks"
+112,Leather Brown,137,112,68,#897044,38.3,50.4,53.7,10,4,"Very dark warm earth; aged saddle, bedrock"
+113,Lichen Green,137,137,68,#898944,60.0,50.4,53.7,10,5,"Very dark earthy olive; lichen, weathered stone"
+114,Moss Green,114,137,68,#728944,80.0,50.4,53.7,10,6,Very dark earthy olive-green; forest moss
+115,Lotus Pond Green,92,137,68,#5C8944,99.1,50.4,53.7,10,7,"Very dark cool green; pond algae, bog"
+116,Deep Forest,68,137,112,#448970,158.3,50.4,53.7,10,8,Very dark cool teal-green; deep forest shade
+117,Larkspur Blue,68,101,137,#446589,211.3,50.4,53.7,10,9,Very dark cool muted blue; denim at dusk
+118,Glacier Blue,38,79,137,#264F89,215.2,72.3,53.7,10,10,"Very dark cool navy; glacier ice, deep sea"
+119,Blackberry,112,68,137,#704489,278.3,50.4,53.7,10,11,Very dark cool purple; the berry itself
+120,Cabernet,137,68,101,#894465,331.3,50.4,53.7,10,12,Very dark warm wine; wine in shadow
