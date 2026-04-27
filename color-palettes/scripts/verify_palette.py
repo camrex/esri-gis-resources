@@ -32,7 +32,7 @@ from pathlib import Path
 DEFAULT_PATH = r"C:\Program Files\ArcGIS\Pro\Resources\Styles\Styles.stylx"
 
 SCRIPT_DIR = Path(__file__).resolve().parent
-DEFAULT_REFERENCE_CSV = SCRIPT_DIR.parent / "arcmap-standard-palette" / "palette.csv"
+DEFAULT_REFERENCE_CSV = SCRIPT_DIR.parent / "arcgis-pro-standard-palette" / "palette.csv"
 DEFAULT_OUTPUT_CSV = SCRIPT_DIR / "palette_verification.csv"
 DEFAULT_OUTPUT_JSON = SCRIPT_DIR / "palette_verification.json"
 

@@ -32,7 +32,7 @@ index,name,r,g,b,hex,h_deg,s_pct,v_pct,grid_row,grid_col,description
 31,Medium Apple,85,255,0,#55FF00,100.0,100.0,100.0,3,7,Saturated grass green; bright greenspace
 32,Tourmaline Green,0,255,197,#00FFC5,166.4,100.0,100.0,3,8,Saturated cool seafoam; Caribbean water
 33,Big Sky Blue,0,197,255,#00C5FF,193.6,100.0,100.0,3,9,Saturated cool cyan; clear water bodies
-34,Cretan Blue,0,130,255,#0082FF,209.4,100.0,100.0,3,10,Saturated cool azure; deeper water
+34,Cretan Blue,0,112,255,#0070FF,213.6,100.0,100.0,3,10,Saturated cool azure; deeper water
 35,Amethyst,197,0,255,#C500FF,286.4,100.0,100.0,3,11,Saturated cool violet; special features
 36,Ginger Pink,255,0,197,#FF00C5,313.6,100.0,100.0,3,12,Saturated warm hot pink; high-contrast markers
 37,Gray 30%,178,178,178,#B2B2B2,0.0,0.0,69.8,4,1,Medium-light neutral; secondary fills

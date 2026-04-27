@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Esri (ArcMap/ArcGIS Pro) Standard Color Palette — 120 colors</title>
+<style>
+  :root {
+    --bg: #fafafa;
+    --surface: #ffffff;
+    --text: #1a1a1a;
+    --text-muted: #666;
+    --border: #e0e0e0;
+    --accent: #0066cc;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+    padding: 24px;
+  }
+  header { max-width: 1600px; margin: 0 auto 20px; }
+  h1 { font-size: 22px; font-weight: 600; margin: 0 0 4px; }
+  .subtitle { font-size: 13px; color: var(--text-muted); margin: 0 0 16px; }
+  .subtitle a { color: var(--accent); text-decoration: none; }
+  .subtitle a:hover { text-decoration: underline; }
+  .controls {
+    display: flex; gap: 12px; align-items: center; flex-wrap: wrap;
+    padding: 12px 16px; background: var(--surface);
+    border: 1px solid var(--border); border-radius: 8px; margin-bottom: 16px;
+  }
+  .controls input[type="search"] {
+    flex: 1; min-width: 200px; padding: 8px 12px;
+    border: 1px solid var(--border); border-radius: 6px;
+    font-size: 14px; font-family: inherit;
+  }
+  .controls input[type="search"]:focus {
+    outline: none; border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.15);
+  }
+  .controls label {
+    font-size: 13px; color: var(--text-muted);
+    display: flex; align-items: center; gap: 6px;
+    cursor: pointer; -webkit-user-select: none; user-select: none; white-space: nowrap;
+  }
+  .controls label input { cursor: pointer; }
+  .controls .divider { width: 1px; height: 20px; background: var(--border); margin: 0 4px; }
+  .controls .display-label { font-size: 13px; color: var(--text-muted); }
+  .controls button.export {
+    padding: 6px 12px; border: 1px solid var(--border);
+    background: var(--surface); border-radius: 6px;
+    font-size: 13px; font-family: inherit; cursor: pointer;
+    color: var(--text); white-space: nowrap;
+  }
+  .controls button.export:hover { border-color: var(--accent); color: var(--accent); }
+  .controls button.export:disabled { opacity: 0.5; cursor: not-allowed; }
+  .hint { font-size: 12px; color: var(--text-muted); width: 100%; margin-top: 2px; }
+  .grid {
+    max-width: 1600px; margin: 0 auto;
+    display: grid; grid-template-columns: repeat(12, 1fr); gap: 4px;
+  }
+  .swatch {
+    position: relative; aspect-ratio: 1 / 1; min-height: 130px;
+    padding: 8px 6px; cursor: pointer;
+    border: 1px solid rgba(0,0,0,0.12); border-radius: 4px;
+    display: flex; flex-direction: column; justify-content: space-between;
+    transition: transform 0.08s ease, box-shadow 0.08s ease;
+    overflow: hidden; text-align: center;
+  }
+  .swatch:hover { transform: scale(1.04); box-shadow: 0 4px 16px rgba(0,0,0,0.25); z-index: 10; }
+  .swatch.hidden { display: none; }
+  .swatch .name { font-size: 11px; font-weight: 600; line-height: 1.2; word-break: break-word; }
+  .swatch .mid { font-size: 9.5px; line-height: 1.35; font-family: "SF Mono", Consolas, Monaco, monospace; }
+  .swatch .mid .hsv { opacity: 0.85; font-size: 9px; }
+  .swatch .desc { font-size: 9px; font-style: italic; line-height: 1.2; opacity: 0.92; }
+  .swatch .actions {
+    position: absolute; bottom: 4px; left: 4px; right: 4px;
+    display: flex; gap: 3px; opacity: 0;
+    transition: opacity 0.12s ease; justify-content: center;
+  }
+  .swatch:hover .actions { opacity: 1; }
+  .swatch .actions button {
+    flex: 1; font-size: 9px; font-weight: 600; padding: 3px 4px;
+    border: none; border-radius: 3px;
+    background: rgba(255,255,255,0.92); color: #000;
+    cursor: pointer; font-family: inherit;
+  }
+  .swatch.dark .actions button { background: rgba(0,0,0,0.75); color: #fff; }
+
+  /* Corrections mode */
+  .swatch.has-correction {
+    outline: 2px dashed #d63838;
+    outline-offset: -3px;
+  }
+  body.show-corrections .swatch.has-correction {
+    background-image: linear-gradient(
+      to bottom right,
+      var(--orig-color) 0%,
+      var(--orig-color) 49.5%,
+      rgba(255,255,255,0.85) 49.5%,
+      rgba(255,255,255,0.85) 50.5%,
+      var(--cor-color) 50.5%,
+      var(--cor-color) 100%
+    ) !important;
+  }
+  body.show-corrections .swatch.has-correction .name { display: none; }
+  body.show-corrections .swatch.has-correction .mid { display: none; }
+  body.show-corrections .swatch.has-correction .desc { display: none; }
+  body.show-corrections .swatch.has-correction .split-content { display: block; }
+  .swatch .split-content { display: none; }
+  .swatch.has-correction .split-content {
+    position: absolute; inset: 0;
+    pointer-events: none;
+  }
+  .swatch.has-correction .split-content .orig-label {
+    position: absolute; top: 4px; left: 4px;
+    text-align: left;
+    line-height: 1.2;
+    color: var(--orig-text);
+  }
+  .swatch.has-correction .split-content .cor-label {
+    position: absolute; bottom: 4px; right: 4px;
+    text-align: right;
+    line-height: 1.2;
+    color: var(--cor-text);
+  }
+  .swatch.has-correction .split-content .swatch-name {
+    position: absolute; top: 4px; left: 4px;
+    font-size: 10px; font-weight: 700;
+    color: var(--orig-text);
+  }
+  .swatch.has-correction .split-content .ltag {
+    font-size: 8px; font-weight: 700; opacity: 0.85;
+    font-family: "SF Mono", Consolas, Monaco, monospace;
+  }
+  .swatch.has-correction .split-content .lval {
+    font-size: 8.5px;
+    font-family: "SF Mono", Consolas, Monaco, monospace;
+  }
+  .swatch.has-correction .split-content .lhsv {
+    font-size: 7.5px; font-style: italic; opacity: 0.9;
+    font-family: "SF Mono", Consolas, Monaco, monospace;
+  }
+
+  /* Corrections callout panel */
+  .callout {
+    max-width: 1600px;
+    margin: 0 auto 16px;
+    padding: 16px 20px;
+    background: #fff8e6;
+    border: 1px solid #f0d894;
+    border-radius: 8px;
+    font-size: 13px;
+    line-height: 1.55;
+    display: none;
+  }
+  body.show-corrections .callout { display: block; }
+  .callout h3 {
+    margin: 0 0 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #5b4400;
+  }
+  .callout p { margin: 0 0 10px; }
+  .callout .corrections-list {
+    margin: 10px 0;
+    padding: 10px 12px;
+    background: rgba(255,255,255,0.65);
+    border-radius: 6px;
+    font-family: "SF Mono", Consolas, Monaco, monospace;
+    font-size: 12px;
+  }
+  .callout .corrections-list .row {
+    padding: 4px 0;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+  }
+  .callout .corrections-list .row:last-child { border-bottom: none; }
+  .callout .corrections-list .name {
+    font-weight: 700;
+    display: inline-block;
+    min-width: 110px;
+  }
+  .callout .corrections-list .arrow { color: #888; margin: 0 6px; }
+  .callout .credit {
+    margin-top: 10px;
+    font-size: 12px;
+    color: #6b5500;
+    font-style: italic;
+  }
+  .callout a { color: #0066cc; text-decoration: none; }
+  .callout a:hover { text-decoration: underline; }
+
+  /* Color family filter bar */
+  .family-bar {
+    max-width: 1600px; margin: 0 auto 8px;
+    display: flex; gap: 8px; align-items: center; flex-wrap: wrap;
+  }
+  .family-bar .fam-label {
+    font-size: 12px; color: var(--text-muted); white-space: nowrap;
+  }
+  .family-bar button.fam-all {
+    font-size: 12px; padding: 4px 10px;
+    border: 1px solid var(--border); border-radius: 12px;
+    background: var(--surface); color: var(--text);
+    cursor: pointer; font-family: inherit; white-space: nowrap;
+  }
+  .family-bar button.fam-all:hover { border-color: var(--accent); color: var(--accent); }
+  .family-bar button.fam-all.active { border-color: var(--accent); color: var(--accent); font-weight: 600; }
+  .family-bar button.fam {
+    width: 24px; height: 24px;
+    border-radius: 50%; border: 2px solid transparent;
+    cursor: pointer; font-size: 0;
+    transition: transform 0.1s ease, border-color 0.1s ease, outline 0.1s ease;
+    outline: 2px solid transparent; outline-offset: 1px;
+  }
+  .family-bar button.fam:hover { transform: scale(1.18); }
+  .family-bar button.fam.active { outline-color: var(--accent); transform: scale(1.18); }
+
+  #toast {
+    position: fixed; bottom: 24px; left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: #1a1a1a; color: #fff;
+    padding: 10px 18px; border-radius: 6px;
+    font-size: 13px; font-weight: 500;
+    opacity: 0; transition: opacity 0.18s ease, transform 0.18s ease;
+    pointer-events: none; z-index: 100;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+  }
+  #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  .empty { grid-column: 1 / -1; text-align: center; padding: 40px; color: var(--text-muted); font-size: 14px; }
+  footer {
+    max-width: 1600px; margin: 24px auto 0;
+    padding-top: 16px; border-top: 1px solid var(--border);
+    font-size: 12px; color: var(--text-muted); text-align: center;
+  }
+  .data-note {
+    margin: 0 auto 12px;
+    max-width: 1200px;
+    text-align: left;
+    background: #eef6ff;
+    border: 1px solid #b9d6f4;
+    border-left: 5px solid #1f6fb2;
+    border-radius: 8px;
+    padding: 10px 12px;
+    color: #24415f;
+    line-height: 1.45;
+  }
+  .data-note .title {
+    display: block;
+    font-weight: 700;
+    color: #12385a;
+    margin-bottom: 4px;
+    font-size: 12.5px;
+  }
+  footer a { color: var(--accent); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+  @media (max-width: 900px) {
+    .grid { grid-template-columns: repeat(6, 1fr); }
+    .swatch { min-height: 120px; }
+  }
+  @media (max-width: 500px) {
+    .grid { grid-template-columns: repeat(3, 1fr); }
+    body { padding: 12px; }
+  }
+  @media print {
+    @page { size: landscape; margin: 0.4in; }
+    body { background: white; padding: 0; margin: 0; }
+    header { max-width: none; margin: 0 0 8px; }
+    h1 { font-size: 14px; margin: 0; }
+    .subtitle { font-size: 9px; margin: 0 0 6px; }
+    .controls, .family-bar, footer, #toast { display: none !important; }
+    .grid { max-width: none; gap: 2px; grid-template-columns: repeat(12, 1fr) !important; }
+    .swatch {
+      min-height: 0 !important; aspect-ratio: auto; height: auto;
+      padding: 4px 3px; break-inside: avoid;
+      -webkit-print-color-adjust: exact; print-color-adjust: exact;
+      page-break-inside: avoid;
+    }
+    .swatch:hover { transform: none; box-shadow: none; }
+    .swatch .actions { display: none; }
+    .swatch .name { font-size: 7.5px; line-height: 1.1; }
+    .swatch .mid { font-size: 6.5px; line-height: 1.2; }
+    .swatch .desc { font-size: 6px; line-height: 1.15; }
+    .print-source { display: block !important; font-size: 8px; color: #666; text-align: center; margin-top: 6px; }
+  }
+  .print-source { display: none; }
+  #capture-area { background: white; padding: 16px; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Esri (ArcMap/ArcGIS Pro) Standard Color Palette</h1>
+  <p class="subtitle">
+    120 named colors from Esri's standard color palette, arranged in the published 12×10 grid.
+    RGB values sourced directly from the ArcGIS Pro 3.6.2 system style file (<code>Styles.stylx</code>). Esri KB 000010027 is included below as historical reference only.
+  </p>
+
+  <div class="controls">
+    <input type="search" id="filter" placeholder="Filter by name, hex, or description…" autocomplete="off">
+    <label><input type="radio" name="mode" value="hex" checked> Copy hex</label>
+    <label><input type="radio" name="mode" value="rgb"> Copy RGB</label>
+    <label><input type="radio" name="mode" value="hsv"> Copy Display</label>
+    <label><input type="radio" name="mode" value="name"> Copy name</label>
+    <span class="divider"></span>
+    <span class="display-label">Display:</span>
+    <label><input type="radio" name="display" value="hsv" checked> HSV</label>
+    <label><input type="radio" name="display" value="hsl"> HSL</label>
+    <label><input type="radio" name="display" value="cmyk"> CMYK</label>
+    <span class="divider"></span>
+    <label>
+      <input type="checkbox" id="toggle-corrections"> Show proposed corrections
+    </label>
+    <span class="divider"></span>
+    <button type="button" class="export" id="btn-png" title="Export grid as PNG">PNG</button>
+    <button type="button" class="export" id="btn-print" title="Print (use your browser's Save as PDF for a PDF)">Print</button>
+    <span class="hint">Click any swatch to copy · Press / to search · Use Print → Save as PDF for a PDF</span>
+  </div>
+
+  <div class="family-bar" id="family-bar">
+    <span class="fam-label">Family:</span>
+    <button type="button" class="fam-all active" id="fam-all" title="Show all families">All</button>
+    <button type="button" class="fam" data-col="1"  style="background:#B2B2B2" title="Grays" aria-label="Grays"></button>
+    <button type="button" class="fam" data-col="2"  style="background:#FF0000" title="Reds" aria-label="Reds"></button>
+    <button type="button" class="fam" data-col="3"  style="background:#FF5500" title="Oranges" aria-label="Oranges"></button>
+    <button type="button" class="fam" data-col="4"  style="background:#FFAA00" title="Golds" aria-label="Golds"></button>
+    <button type="button" class="fam" data-col="5"  style="background:#FFFF00" title="Yellows" aria-label="Yellows"></button>
+    <button type="button" class="fam" data-col="6"  style="background:#AAFF00" title="Yellow-Greens" aria-label="Yellow-Greens"></button>
+    <button type="button" class="fam" data-col="7"  style="background:#55FF00" title="Greens" aria-label="Greens"></button>
+    <button type="button" class="fam" data-col="8"  style="background:#00FFC5" title="Teals" aria-label="Teals"></button>
+    <button type="button" class="fam" data-col="9"  style="background:#00C5FF" title="Cyans" aria-label="Cyans"></button>
+    <button type="button" class="fam" data-col="10" style="background:#0070FF" title="Blues" aria-label="Blues"></button>
+    <button type="button" class="fam" data-col="11" style="background:#C500FF" title="Purples" aria-label="Purples"></button>
+    <button type="button" class="fam" data-col="12" style="background:#FF00C5" title="Pinks" aria-label="Pinks"></button>
+  </div>
+</header>
+
+<div class="callout" id="corrections-callout">
+  <h3>Proposed corrections — two swatches that don't fit the palette's design rules</h3>
+  <p>An HSV analysis of all 120 colors reveals an underlying structure: each column is locked to a specific hue (20° steps on the warm side), and each row is locked to a specific saturation/value combination. Two swatches in row 1 deviate from these rules in ways that look more like errors than design choices:</p>
+  <div class="corrections-list">
+    <div class="row">
+      <span class="name">Sahara Sand</span>
+      H 42° → <strong>20°</strong>
+      <span class="arrow">·</span>
+      RGB(255, 235, 190) #FFEBBE
+      <span class="arrow">→</span>
+      RGB(255, 212, 190) <strong>#FFD4BE</strong>
+    </div>
+    <div class="row">
+      <span class="name">Topaz Sand</span>
+      H 45° / S 31% → <strong>H 40° / S 25%</strong>
+      <span class="arrow">·</span>
+      RGB(255, 235, 175) #FFEBAF
+      <span class="arrow">→</span>
+      RGB(255, 233, 190) <strong>#FFE9BE</strong>
+    </div>
+  </div>
+  <p>Sahara Sand and Topaz Sand are nearly indistinguishable on screen because they sit on essentially the same hue. After correction, Sahara shifts toward Fire Red's column at 20° (where it belongs based on the palette's structure), and Topaz aligns to Electron Gold's column at 40°. The corrected RGB values converge from three independent paths: HSV row-saturation matching, CMYK row-M-progression matching, and ArcGIS Pro's own CMYK→RGB conversion when given pattern-derived CMYK inputs.</p>
+  <p class="credit">Original Sahara Sand / Topaz Sand observation: <strong>Michael Ray Wilson, MS, CFM</strong>. Follow-up HSV analysis of all 120 colors and verification against the live ArcGIS Pro style file.</p>
+</div>
+
+<div id="capture-area">
+  <div class="grid" id="grid"></div>
+  <div class="print-source">Names and RGB values per Esri ArcGIS Pro 3.6.2 system Styles.stylx · All 120 colors · Descriptions lead with lightness, warmth, and saturation</div>
+</div>
+
+<footer>
+  <div class="data-note" role="note" aria-label="Data conformance note">
+    <span class="title">Data Conformance Note (KB 000010027 vs current AGP)</span>
+    KB 000010027 differs from ArcGIS Pro 3.6.2 values for two entries used here: Glacier Blue is listed in the KB as RGB(38, 79, 137) #264F89, while ArcGIS Pro 3.6.2 ships RGB(68, 79, 137) #444F89; and Cretan Blue appears in the KB as legacy "Cretean Blue" with RGB(0, 130, 255) #0082FF, while ArcGIS Pro 3.6.2 ships RGB(0, 112, 255) #0070FF. This reference conforms to values extracted directly from the ArcGIS Pro 3.6.2 system <code>Styles.stylx</code> file.
+  </div>
+  Descriptions lead with lightness, warmth, and saturation — properties perceivable across most types of color vision.
+  <br>
+  Reference:
+  <a href="https://support.esri.com/en-us/knowledge-base/what-are-the-rgb-color-values-for-the-standard-arcmap-c-000010027" target="_blank" rel="noopener">ArcMap palette (KB 000010027)</a>
+</footer>
+
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+<script>
+const colors = [{"i":1,"name":"Arctic White","r":255,"g":255,"b":255,"hex":"FFFFFF","h":0.0,"s":0.0,"v":100.0,"row":1,"col":1,"desc":"Pure white; blank paper, unmapped areas"},{"i":2,"name":"Rose Quartz","r":255,"g":190,"b":190,"hex":"FFBEBE","h":0.0,"s":25.5,"v":100.0,"row":1,"col":2,"desc":"Pale warm pink; soft residential fills"},{"i":3,"name":"Sahara Sand","r":255,"g":235,"b":190,"hex":"FFEBBE","h":41.5,"s":25.5,"v":100.0,"row":1,"col":3,"desc":"Pale warm tan; dry land, sand"},{"i":4,"name":"Topaz Sand","r":255,"g":235,"b":175,"hex":"FFEBAF","h":45.0,"s":31.4,"v":100.0,"row":1,"col":4,"desc":"Pale golden beige; wheat fields, prairie"},{"i":5,"name":"Yucca Yellow","r":255,"g":255,"b":190,"hex":"FFFFBE","h":60.0,"s":25.5,"v":100.0,"row":1,"col":5,"desc":"Pale warm yellow; light agricultural zones"},{"i":6,"name":"Olivine Yellow","r":233,"g":255,"b":190,"hex":"E9FFBE","h":80.3,"s":25.5,"v":100.0,"row":1,"col":6,"desc":"Pale yellow-green; light vegetation, meadows"},{"i":7,"name":"Tzavorite Green","r":211,"g":255,"b":190,"hex":"D3FFBE","h":100.6,"s":25.5,"v":100.0,"row":1,"col":7,"desc":"Pale mint green; soft parks, greenspace"},{"i":8,"name":"Indicolite Green","r":190,"g":255,"b":232,"hex":"BEFFE8","h":158.8,"s":25.5,"v":100.0,"row":1,"col":8,"desc":"Pale cool seafoam; shallow water, wetlands"},{"i":9,"name":"Sodalite Blue","r":190,"g":232,"b":255,"hex":"BEE8FF","h":201.2,"s":25.5,"v":100.0,"row":1,"col":9,"desc":"Pale cool sky; soft water fills"},{"i":10,"name":"Sugilite Sky","r":190,"g":210,"b":255,"hex":"BED2FF","h":221.5,"s":25.5,"v":100.0,"row":1,"col":10,"desc":"Pale cool periwinkle; atmospheric backgrounds"},{"i":11,"name":"Lepidolite Lilac","r":232,"g":190,"b":255,"hex":"E8BEFF","h":278.8,"s":25.5,"v":100.0,"row":1,"col":11,"desc":"Pale cool lavender; soft zoning overlays"},{"i":12,"name":"Rhodolite Rose","r":255,"g":190,"b":232,"hex":"FFBEE8","h":321.2,"s":25.5,"v":100.0,"row":1,"col":12,"desc":"Pale warm pink-magenta; light zoning fills"},{"i":13,"name":"Gray 10%","r":225,"g":225,"b":225,"hex":"E1E1E1","h":0.0,"s":0.0,"v":88.2,"row":2,"col":1,"desc":"Very light neutral; subtle basemap fills"},{"i":14,"name":"Medium Coral Light","r":255,"g":127,"b":127,"hex":"FF7F7F","h":0.0,"s":50.2,"v":100.0,"row":2,"col":2,"desc":"Medium-light warm coral; residential districts"},{"i":15,"name":"Cantaloupe","r":255,"g":167,"b":127,"hex":"FFA77F","h":18.8,"s":50.2,"v":100.0,"row":2,"col":3,"desc":"Light warm peach; commercial zones"},{"i":16,"name":"Mango","r":255,"g":211,"b":127,"hex":"FFD37F","h":39.4,"s":50.2,"v":100.0,"row":2,"col":4,"desc":"Light warm gold; agricultural highlights"},{"i":17,"name":"Autunite Yellow","r":255,"g":255,"b":115,"hex":"FFFF73","h":60.0,"s":54.9,"v":100.0,"row":2,"col":5,"desc":"Bright warm yellow; highways, caution zones"},{"i":18,"name":"Lemongrass","r":209,"g":255,"b":115,"hex":"D1FF73","h":79.7,"s":54.9,"v":100.0,"row":2,"col":6,"desc":"Bright yellow-green; active vegetation"},{"i":19,"name":"Light Apple","r":163,"g":255,"b":115,"hex":"A3FF73","h":99.4,"s":54.9,"v":100.0,"row":2,"col":7,"desc":"Bright spring green; healthy crops, parks"},{"i":20,"name":"Beryl Green","r":115,"g":255,"b":223,"hex":"73FFDF","h":166.3,"s":54.9,"v":100.0,"row":2,"col":8,"desc":"Bright cool aqua; shallow tropical water"},{"i":21,"name":"Apatite Blue","r":115,"g":223,"b":255,"hex":"73DFFF","h":193.7,"s":54.9,"v":100.0,"row":2,"col":9,"desc":"Bright cool cyan; pool blue, recreation"},{"i":22,"name":"Yogo Blue","r":115,"g":178,"b":255,"hex":"73B2FF","h":213.0,"s":54.9,"v":100.0,"row":2,"col":10,"desc":"Bright cool cornflower; lakes, reservoirs"},{"i":23,"name":"Heliotrope","r":223,"g":115,"b":255,"hex":"DF73FF","h":286.3,"s":54.9,"v":100.0,"row":2,"col":11,"desc":"Bright cool orchid; special districts"},{"i":24,"name":"Fuchsia Pink","r":255,"g":115,"b":223,"hex":"FF73DF","h":313.7,"s":54.9,"v":100.0,"row":2,"col":12,"desc":"Bright warm hot pink; attention-getting markers"},{"i":25,"name":"Gray 20%","r":204,"g":204,"b":204,"hex":"CCCCCC","h":0.0,"s":0.0,"v":80.0,"row":3,"col":1,"desc":"Light neutral; background fills, UI"},{"i":26,"name":"Mars Red","r":255,"g":0,"b":0,"hex":"FF0000","h":0.0,"s":100.0,"v":100.0,"row":3,"col":2,"desc":"Pure saturated red; alerts, hazards"},{"i":27,"name":"Fire Red","r":255,"g":85,"b":0,"hex":"FF5500","h":20.0,"s":100.0,"v":100.0,"row":3,"col":3,"desc":"Saturated red-orange; active fire, heat"},{"i":28,"name":"Electron Gold","r":255,"g":170,"b":0,"hex":"FFAA00","h":40.0,"s":100.0,"v":100.0,"row":3,"col":4,"desc":"Saturated pure orange; traffic, warnings"},{"i":29,"name":"Solar Yellow","r":255,"g":255,"b":0,"hex":"FFFF00","h":60.0,"s":100.0,"v":100.0,"row":3,"col":5,"desc":"Pure saturated yellow; maximum visibility"},{"i":30,"name":"Peridot Green","r":170,"g":255,"b":0,"hex":"AAFF00","h":80.0,"s":100.0,"v":100.0,"row":3,"col":6,"desc":"Saturated lime; vivid vegetation markers"},{"i":31,"name":"Medium Apple","r":85,"g":255,"b":0,"hex":"55FF00","h":100.0,"s":100.0,"v":100.0,"row":3,"col":7,"desc":"Saturated grass green; bright greenspace"},{"i":32,"name":"Tourmaline Green","r":0,"g":255,"b":197,"hex":"00FFC5","h":166.4,"s":100.0,"v":100.0,"row":3,"col":8,"desc":"Saturated cool seafoam; Caribbean water"},{"i":33,"name":"Big Sky Blue","r":0,"g":197,"b":255,"hex":"00C5FF","h":193.6,"s":100.0,"v":100.0,"row":3,"col":9,"desc":"Saturated cool cyan; clear water bodies"},{"i":34,"name":"Cretan Blue","r":0,"g":112,"b":255,"hex":"0070FF","h":213.6,"s":100.0,"v":100.0,"row":3,"col":10,"desc":"Saturated cool azure; deeper water"},{"i":35,"name":"Amethyst","r":197,"g":0,"b":255,"hex":"C500FF","h":286.4,"s":100.0,"v":100.0,"row":3,"col":11,"desc":"Saturated cool violet; special features"},{"i":36,"name":"Ginger Pink","r":255,"g":0,"b":197,"hex":"FF00C5","h":313.6,"s":100.0,"v":100.0,"row":3,"col":12,"desc":"Saturated warm hot pink; high-contrast markers"},{"i":37,"name":"Gray 30%","r":178,"g":178,"b":178,"hex":"B2B2B2","h":0.0,"s":0.0,"v":69.8,"row":4,"col":1,"desc":"Medium-light neutral; secondary fills"},{"i":38,"name":"Poinsettia Red","r":230,"g":0,"b":0,"hex":"E60000","h":0.0,"s":100.0,"v":90.2,"row":4,"col":2,"desc":"Deep warm red; strong boundary lines"},{"i":39,"name":"Flame Red","r":230,"g":76,"b":0,"hex":"E64C00","h":19.8,"s":100.0,"v":90.2,"row":4,"col":3,"desc":"Deep warm red-orange; active hazards"},{"i":40,"name":"Seville Orange","r":230,"g":152,"b":0,"hex":"E69800","h":39.7,"s":100.0,"v":90.2,"row":4,"col":4,"desc":"Rich warm orange; transit corridors"},{"i":41,"name":"Citron Yellow","r":230,"g":230,"b":0,"hex":"E6E600","h":60.0,"s":100.0,"v":90.2,"row":4,"col":5,"desc":"Rich warm lemon; highway markings"},{"i":42,"name":"Macaw Green","r":152,"g":230,"b":0,"hex":"98E600","h":80.3,"s":100.0,"v":90.2,"row":4,"col":6,"desc":"Rich yellow-green; cropland, agriculture"},{"i":43,"name":"Quetzel Green","r":76,"g":230,"b":0,"hex":"4CE600","h":100.2,"s":100.0,"v":90.2,"row":4,"col":7,"desc":"Rich grass green; parks, forests"},{"i":44,"name":"Chrysoprase","r":0,"g":230,"b":169,"hex":"00E6A9","h":164.1,"s":100.0,"v":90.2,"row":4,"col":8,"desc":"Rich cool teal; estuaries, coastal zones"},{"i":45,"name":"Moorea Blue","r":0,"g":169,"b":230,"hex":"00A9E6","h":195.9,"s":100.0,"v":90.2,"row":4,"col":9,"desc":"Rich cool lagoon blue; lakes, bays"},{"i":46,"name":"Lapis Lazuli","r":0,"g":92,"b":230,"hex":"005CE6","h":216.0,"s":100.0,"v":90.2,"row":4,"col":10,"desc":"Rich cool deep blue; major waterways"},{"i":47,"name":"Anemone Violet","r":169,"g":0,"b":230,"hex":"A900E6","h":284.1,"s":100.0,"v":90.2,"row":4,"col":11,"desc":"Rich cool violet; zoning, boundaries"},{"i":48,"name":"Peony Pink","r":230,"g":0,"b":169,"hex":"E600A9","h":315.9,"s":100.0,"v":90.2,"row":4,"col":12,"desc":"Rich warm magenta; distinctive features"},{"i":49,"name":"Gray 40%","r":156,"g":156,"b":156,"hex":"9C9C9C","h":0.0,"s":0.0,"v":61.2,"row":5,"col":1,"desc":"Medium neutral; base infrastructure"},{"i":50,"name":"Tuscan Red","r":168,"g":0,"b":0,"hex":"A80000","h":0.0,"s":100.0,"v":65.9,"row":5,"col":2,"desc":"Deep warm brick; rail, transportation"},{"i":51,"name":"Cherry Cola","r":168,"g":56,"b":0,"hex":"A83800","h":20.0,"s":100.0,"v":65.9,"row":5,"col":3,"desc":"Deep warm brown-red; industrial zones"},{"i":52,"name":"Raw Umber","r":168,"g":112,"b":0,"hex":"A87000","h":40.0,"s":100.0,"v":65.9,"row":5,"col":4,"desc":"Earthy warm caramel; soil, geology"},{"i":53,"name":"Olivenite Green","r":168,"g":168,"b":0,"hex":"A8A800","h":60.0,"s":100.0,"v":65.9,"row":5,"col":5,"desc":"Earthy muted olive; scrubland, rangeland"},{"i":54,"name":"Tarragon Green","r":112,"g":168,"b":0,"hex":"70A800","h":80.0,"s":100.0,"v":65.9,"row":5,"col":6,"desc":"Earthy cool olive; managed forest"},{"i":55,"name":"Leaf Green","r":56,"g":168,"b":0,"hex":"38A800","h":100.0,"s":100.0,"v":65.9,"row":5,"col":7,"desc":"Deep cool forest-leaf; woodland areas"},{"i":56,"name":"Malachite Green","r":0,"g":168,"b":132,"hex":"00A884","h":167.1,"s":100.0,"v":65.9,"row":5,"col":8,"desc":"Deep cool teal-green; wetlands, marshes"},{"i":57,"name":"Delft Blue","r":0,"g":132,"b":168,"hex":"0084A8","h":192.9,"s":100.0,"v":65.9,"row":5,"col":9,"desc":"Deep cool teal-blue; deep lakes"},{"i":58,"name":"Ultra Blue","r":0,"g":77,"b":168,"hex":"004DA8","h":212.5,"s":100.0,"v":65.9,"row":5,"col":10,"desc":"Deep cool denim blue; ocean, deep water"},{"i":59,"name":"Dark Amethyst","r":132,"g":0,"b":168,"hex":"8400A8","h":287.1,"s":100.0,"v":65.9,"row":5,"col":11,"desc":"Deep cool purple; political boundaries"},{"i":60,"name":"Cattleya Orchid","r":168,"g":0,"b":132,"hex":"A80084","h":312.9,"s":100.0,"v":65.9,"row":5,"col":12,"desc":"Deep warm magenta; special overlays"},{"i":61,"name":"Gray 50%","r":130,"g":130,"b":130,"hex":"828282","h":0.0,"s":0.0,"v":51.0,"row":6,"col":1,"desc":"True middle gray; pavement, roads"},{"i":62,"name":"Dark Umber","r":115,"g":0,"b":0,"hex":"730000","h":0.0,"s":100.0,"v":45.1,"row":6,"col":2,"desc":"Very dark warm maroon; strong borders"},{"i":63,"name":"Cherrywood Brown","r":115,"g":38,"b":0,"hex":"732600","h":19.8,"s":100.0,"v":45.1,"row":6,"col":3,"desc":"Very dark warm red-brown; rail lines"},{"i":64,"name":"Burnt Umber","r":115,"g":76,"b":0,"hex":"734C00","h":39.7,"s":100.0,"v":45.1,"row":6,"col":4,"desc":"Very dark warm coffee; deep soil, bedrock"},{"i":65,"name":"Dark Olivenite","r":115,"g":115,"b":0,"hex":"737300","h":60.0,"s":100.0,"v":45.1,"row":6,"col":5,"desc":"Very dark muted olive; dry scrubland"},{"i":66,"name":"Spruce Green","r":76,"g":115,"b":0,"hex":"4C7300","h":80.3,"s":100.0,"v":45.1,"row":6,"col":6,"desc":"Very dark cool pine; conifer forest"},{"i":67,"name":"Fir Green","r":38,"g":115,"b":0,"hex":"267300","h":100.2,"s":100.0,"v":45.1,"row":6,"col":7,"desc":"Very dark cool forest; dense woodland"},{"i":68,"name":"Peacock Green","r":0,"g":115,"b":76,"hex":"00734C","h":159.7,"s":100.0,"v":45.1,"row":6,"col":8,"desc":"Very dark cool teal; deep ocean water"},{"i":69,"name":"Steel Blue","r":0,"g":76,"b":115,"hex":"004C73","h":200.3,"s":100.0,"v":45.1,"row":6,"col":9,"desc":"Very dark cool blue; stormy seas"},{"i":70,"name":"Dark Navy","r":0,"g":38,"b":115,"hex":"002673","h":220.2,"s":100.0,"v":45.1,"row":6,"col":10,"desc":"Very dark cool navy; deep ocean, night"},{"i":71,"name":"Ultramarine","r":76,"g":0,"b":115,"hex":"4C0073","h":279.7,"s":100.0,"v":45.1,"row":6,"col":11,"desc":"Very dark cool purple-blue; specialty boundaries"},{"i":72,"name":"Purple Heart","r":115,"g":0,"b":76,"hex":"73004C","h":320.3,"s":100.0,"v":45.1,"row":6,"col":12,"desc":"Very dark balanced plum; distinctive districts"},{"i":73,"name":"Gray 60%","r":104,"g":104,"b":104,"hex":"686868","h":0.0,"s":0.0,"v":40.8,"row":7,"col":1,"desc":"Medium-dark neutral; road networks"},{"i":74,"name":"Rose Dust","r":215,"g":158,"b":158,"hex":"D79E9E","h":0.0,"s":26.5,"v":84.3,"row":7,"col":2,"desc":"Muted warm dusty pink; faded residential"},{"i":75,"name":"Soapstone Dust","r":215,"g":176,"b":158,"hex":"D7B09E","h":18.9,"s":26.5,"v":84.3,"row":7,"col":3,"desc":"Muted warm peach; weathered terracotta"},{"i":76,"name":"Tecate Dust","r":215,"g":194,"b":158,"hex":"D7C29E","h":37.9,"s":26.5,"v":84.3,"row":7,"col":4,"desc":"Muted warm beige; adobe, desert towns"},{"i":77,"name":"Lime Dust","r":215,"g":215,"b":158,"hex":"D7D79E","h":60.0,"s":26.5,"v":84.3,"row":7,"col":5,"desc":"Muted earthy pale yellow; dry grassland"},{"i":78,"name":"Apple Dust","r":199,"g":215,"b":158,"hex":"C7D79E","h":76.8,"s":26.5,"v":84.3,"row":7,"col":6,"desc":"Muted balanced pale green; sage scrubland"},{"i":79,"name":"Sage Dust","r":180,"g":215,"b":158,"hex":"B4D79E","h":96.8,"s":26.5,"v":84.3,"row":7,"col":7,"desc":"Muted cool dusty green; dried herbs, chaparral"},{"i":80,"name":"Turquoise Dust","r":158,"g":215,"b":194,"hex":"9ED7C2","h":157.9,"s":26.5,"v":84.3,"row":7,"col":8,"desc":"Muted cool pale teal; sea glass, estuary"},{"i":81,"name":"Blue Gray Dust","r":158,"g":187,"b":215,"hex":"9EBBD7","h":209.5,"s":26.5,"v":84.3,"row":7,"col":9,"desc":"Muted cool dusty blue; distant mountains"},{"i":82,"name":"Violet Dust","r":158,"g":170,"b":215,"hex":"9EAAD7","h":227.4,"s":26.5,"v":84.3,"row":7,"col":10,"desc":"Muted cool periwinkle; faded denim, haze"},{"i":83,"name":"Lilac Dust","r":194,"g":158,"b":215,"hex":"C29ED7","h":277.9,"s":26.5,"v":84.3,"row":7,"col":11,"desc":"Muted cool dusty lavender; dried flowers"},{"i":84,"name":"Tudor Rose Dust","r":214,"g":157,"b":188,"hex":"D69DBC","h":327.4,"s":26.6,"v":83.9,"row":7,"col":12,"desc":"Muted warm dusty mauve; antique roses"},{"i":85,"name":"Gray 70%","r":78,"g":78,"b":78,"hex":"4E4E4E","h":0.0,"s":0.0,"v":30.6,"row":8,"col":1,"desc":"Dark neutral charcoal; major highways"},{"i":86,"name":"Medium Coral","r":245,"g":122,"b":122,"hex":"F57A7A","h":0.0,"s":50.2,"v":96.1,"row":8,"col":2,"desc":"Medium warm coral-pink; salmon, residential"},{"i":87,"name":"Orange Dust","r":245,"g":162,"b":122,"hex":"F5A27A","h":19.5,"s":50.2,"v":96.1,"row":8,"col":3,"desc":"Medium warm peach; dusty sunset, suburbs"},{"i":88,"name":"Medium Sand","r":245,"g":202,"b":122,"hex":"F5CA7A","h":39.0,"s":50.2,"v":96.1,"row":8,"col":4,"desc":"Medium warm tan; beach, sandy terrain"},{"i":89,"name":"Medium Yellow","r":245,"g":245,"b":122,"hex":"F5F57A","h":60.0,"s":50.2,"v":96.1,"row":8,"col":5,"desc":"Medium balanced yellow; soft cropland"},{"i":90,"name":"Medium Lime","r":205,"g":245,"b":122,"hex":"CDF57A","h":79.5,"s":50.2,"v":96.1,"row":8,"col":6,"desc":"Medium balanced yellow-green; mixed vegetation"},{"i":91,"name":"Medium Key Lime","r":165,"g":245,"b":122,"hex":"A5F57A","h":99.0,"s":50.2,"v":96.1,"row":8,"col":7,"desc":"Medium cool spring green; young crops"},{"i":92,"name":"Light Vert","r":122,"g":245,"b":202,"hex":"7AF5CA","h":159.0,"s":50.2,"v":96.1,"row":8,"col":8,"desc":"Medium cool mint; fresh water, streams"},{"i":93,"name":"Oxide Blue","r":122,"g":182,"b":245,"hex":"7AB6F5","h":210.7,"s":50.2,"v":96.1,"row":8,"col":9,"desc":"Medium cool sky blue; open water"},{"i":94,"name":"Medium Azul","r":122,"g":142,"b":245,"hex":"7A8EF5","h":230.2,"s":50.2,"v":96.1,"row":8,"col":10,"desc":"Medium cool blue-violet; blueberry, dusk"},{"i":95,"name":"Medium Lilac","r":202,"g":122,"b":245,"hex":"CA7AF5","h":279.0,"s":50.2,"v":96.1,"row":8,"col":11,"desc":"Medium balanced orchid; zoning overlays"},{"i":96,"name":"Medium Fuchsia","r":245,"g":122,"b":182,"hex":"F57AB6","h":330.7,"s":50.2,"v":96.1,"row":8,"col":12,"desc":"Medium warm pink-magenta; notable boundaries"},{"i":97,"name":"Gray 80%","r":52,"g":52,"b":52,"hex":"343434","h":0.0,"s":0.0,"v":20.4,"row":9,"col":1,"desc":"Very dark neutral; major rail, arterials"},{"i":98,"name":"Tulip Pink","r":205,"g":102,"b":102,"hex":"CD6666","h":0.0,"s":50.2,"v":80.4,"row":9,"col":2,"desc":"Muted warm brick pink; old rooftops"},{"i":99,"name":"Nubuck Tan","r":205,"g":137,"b":102,"hex":"CD8966","h":20.4,"s":50.2,"v":80.4,"row":9,"col":3,"desc":"Muted warm tan; suede, leather earthtones"},{"i":100,"name":"Light Sienna","r":205,"g":170,"b":102,"hex":"CDAA66","h":39.6,"s":50.2,"v":80.4,"row":9,"col":4,"desc":"Muted warm ochre; clay pottery, pueblo"},{"i":101,"name":"Light Olivenite","r":205,"g":205,"b":102,"hex":"CDCD66","h":60.0,"s":50.2,"v":80.4,"row":9,"col":5,"desc":"Muted balanced yellow-olive; dried herbs"},{"i":102,"name":"Medium Olivenite","r":171,"g":205,"b":102,"hex":"ABCD66","h":79.8,"s":50.2,"v":80.4,"row":9,"col":6,"desc":"Muted cool olive-green; pasture, rangeland"},{"i":103,"name":"Fern Green","r":137,"g":205,"b":102,"hex":"89CD66","h":99.6,"s":50.2,"v":80.4,"row":9,"col":7,"desc":"Muted cool leaf green; shaded ferns, understory"},{"i":104,"name":"Jadeite","r":102,"g":205,"b":171,"hex":"66CDAB","h":160.2,"s":50.2,"v":80.4,"row":9,"col":8,"desc":"Muted cool jade; stream beds, wetlands"},{"i":105,"name":"Atlantic Blue","r":102,"g":153,"b":205,"hex":"6699CD","h":210.3,"s":50.2,"v":80.4,"row":9,"col":9,"desc":"Muted cool ocean blue; coastal waters"},{"i":106,"name":"Pacific Blue","r":102,"g":119,"b":205,"hex":"6677CD","h":230.1,"s":50.2,"v":80.4,"row":9,"col":10,"desc":"Muted cool slate; twilight sky, deep lakes"},{"i":107,"name":"Aster Purple","r":170,"g":102,"b":205,"hex":"AA66CD","h":279.6,"s":50.2,"v":80.4,"row":9,"col":11,"desc":"Muted cool violet; aster flower, overlays"},{"i":108,"name":"Protea Pink","r":205,"g":102,"b":153,"hex":"CD6699","h":330.3,"s":50.2,"v":80.4,"row":9,"col":12,"desc":"Muted balanced rose; flower gardens, accents"},{"i":109,"name":"Black","r":0,"g":0,"b":0,"hex":"000000","h":0.0,"s":0.0,"v":0.0,"row":10,"col":1,"desc":"Pure black; outlines, text, maximum contrast"},{"i":110,"name":"Cordovan Brown","r":137,"g":68,"b":68,"hex":"894444","h":0.0,"s":50.4,"v":53.7,"row":10,"col":2,"desc":"Very dark warm burgundy; old leather, railroads"},{"i":111,"name":"Cocoa Brown","r":137,"g":90,"b":68,"hex":"895A44","h":19.1,"s":50.4,"v":53.7,"row":10,"col":3,"desc":"Very dark warm chocolate; deep soil, tracks"},{"i":112,"name":"Leather Brown","r":137,"g":112,"b":68,"hex":"897044","h":38.3,"s":50.4,"v":53.7,"row":10,"col":4,"desc":"Very dark warm earth; aged saddle, bedrock"},{"i":113,"name":"Lichen Green","r":137,"g":137,"b":68,"hex":"898944","h":60.0,"s":50.4,"v":53.7,"row":10,"col":5,"desc":"Very dark earthy olive; lichen, weathered stone"},{"i":114,"name":"Moss Green","r":114,"g":137,"b":68,"hex":"728944","h":80.0,"s":50.4,"v":53.7,"row":10,"col":6,"desc":"Very dark earthy olive-green; forest moss"},{"i":115,"name":"Lotus Pond Green","r":92,"g":137,"b":68,"hex":"5C8944","h":99.1,"s":50.4,"v":53.7,"row":10,"col":7,"desc":"Very dark cool green; pond algae, bog"},{"i":116,"name":"Deep Forest","r":68,"g":137,"b":112,"hex":"448970","h":158.3,"s":50.4,"v":53.7,"row":10,"col":8,"desc":"Very dark cool teal-green; deep forest shade"},{"i":117,"name":"Larkspur Blue","r":68,"g":101,"b":137,"hex":"446589","h":211.3,"s":50.4,"v":53.7,"row":10,"col":9,"desc":"Very dark cool muted blue; denim at dusk"},{"i":118,"name":"Glacier Blue","r":68,"g":79,"b":137,"hex":"444F89","h":230.4,"s":50.4,"v":53.7,"row":10,"col":10,"desc":"Very dark cool navy; glacier ice, deep sea"},{"i":119,"name":"Blackberry","r":112,"g":68,"b":137,"hex":"704489","h":278.3,"s":50.4,"v":53.7,"row":10,"col":11,"desc":"Very dark cool purple; the berry itself"},{"i":120,"name":"Cabernet","r":137,"g":68,"b":101,"hex":"894465","h":331.3,"s":50.4,"v":53.7,"row":10,"col":12,"desc":"Very dark warm wine; wine in shadow"}];
+
+// Proposed corrections, keyed by 1-based palette index
+const corrections = {
+  3:   { rgb: [255, 212, 190], hex: 'FFD4BE' },  // Sahara Sand
+  4:   { rgb: [255, 233, 190], hex: 'FFE9BE' },  // Topaz Sand
+};
+
+const grid = document.getElementById('grid');
+const toast = document.getElementById('toast');
+const filter = document.getElementById('filter');
+let copyMode = 'hex';
+let displayMode = 'hsv';
+let selectedFamily = null;
+
+function luminance(r, g, b) { return (0.299*r + 0.587*g + 0.114*b) / 255; }
+function rgbToHsv(r, g, b) {
+  r /= 255; g /= 255; b /= 255;
+  const max = Math.max(r, g, b), min = Math.min(r, g, b);
+  const d = max - min;
+  let h = 0;
+  if (d !== 0) {
+    if (max === r) h = ((g - b) / d) % 6;
+    else if (max === g) h = (b - r) / d + 2;
+    else h = (r - g) / d + 4;
+    h *= 60;
+    if (h < 0) h += 360;
+  }
+  const s = max === 0 ? 0 : (d / max) * 100;
+  const v = max * 100;
+  return [Math.round(h), Math.round(s), Math.round(v)];
+}
+// AGP-style number formatter: shows up to 2 decimals, trims trailing zeros
+// (e.g. 100 -> "100", 25.49 -> "25.49", 50.20 -> "50.2", 84.32 -> "84.32")
+function fmt(n) {
+  const rounded = Math.round(n * 100) / 100;
+  if (rounded === Math.floor(rounded)) return String(Math.floor(rounded));
+  return String(rounded).replace(/0+$/, '').replace(/\.$/, '');
+}
+// HSL using standard formula (matches AGP's display at 2-decimal precision)
+function rgbToHsl(r, g, b) {
+  r /= 255; g /= 255; b /= 255;
+  const max = Math.max(r, g, b), min = Math.min(r, g, b);
+  const d = max - min;
+  const l = (max + min) / 2;
+  let h = 0, s = 0;
+  if (d !== 0) {
+    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+    if (max === r) h = ((g - b) / d) % 6;
+    else if (max === g) h = (b - r) / d + 2;
+    else h = (r - g) / d + 4;
+    h *= 60;
+    if (h < 0) h += 360;
+  }
+  return [h, s * 100, l * 100];
+}
+// CMYK using AGP-confirmed non-normalized formula:
+// K = 1 - max(R,G,B)/255; C = (1 - R/255) - K; etc.
+// This differs from print-industry CMYK whenever K > 0.
+function rgbToCmyk(r, g, b) {
+  const k = 1 - Math.max(r, g, b) / 255;
+  const c = (1 - r / 255) - k;
+  const m = (1 - g / 255) - k;
+  const y = (1 - b / 255) - k;
+  return [c * 100, m * 100, y * 100, k * 100];
+}
+function formatHsv(c) { return `${fmt(c.h)}°, ${fmt(c.s)}%, ${fmt(c.v)}%`; }
+function formatHsl(c) {
+  const [h, s, l] = rgbToHsl(c.r, c.g, c.b);
+  return `${fmt(h)}°, ${fmt(s)}%, ${fmt(l)}%`;
+}
+function formatCmyk(c) {
+  const [cy, m, y, k] = rgbToCmyk(c.r, c.g, c.b);
+  return `${fmt(cy)}, ${fmt(m)}, ${fmt(y)}, ${fmt(k)}`;
+}
+// Compact format with prefixes for split-swatch labels (where horizontal space is tight)
+function formatSplit(rgb, mode) {
+  if (mode === 'hsl') {
+    const [h, s, l] = rgbToHsl(rgb.r, rgb.g, rgb.b);
+    return `H${fmt(h)}° S${fmt(s)}% L${fmt(l)}%`;
+  }
+  if (mode === 'cmyk') {
+    const [cy, m, y, k] = rgbToCmyk(rgb.r, rgb.g, rgb.b);
+    return `C${fmt(cy)} M${fmt(m)} Y${fmt(y)} K${fmt(k)}`;
+  }
+  // default: hsv
+  const [h, s, v] = rgbToHsv(rgb.r, rgb.g, rgb.b);
+  return `H${fmt(h)}° S${fmt(s)}% V${fmt(v)}%`;
+}
+function formatValue(c, mode) {
+  if (mode === 'hex') return '#' + c.hex;
+  if (mode === 'rgb') return c.r + ', ' + c.g + ', ' + c.b;
+  if (mode === 'hsv') return formatHsv(c);
+  if (mode === 'hsl') return formatHsl(c);
+  if (mode === 'cmyk') return formatCmyk(c);
+  if (mode === 'name') return c.name;
+  return '';
+}
+function showToast(msg) {
+  toast.textContent = msg;
+  toast.classList.add('show');
+  clearTimeout(showToast._t);
+  showToast._t = setTimeout(() => toast.classList.remove('show'), 1400);
+}
+async function copyValue(text, label) {
+  try { await navigator.clipboard.writeText(text); showToast('Copied: ' + label); }
+  catch (e) {
+    const ta = document.createElement('textarea');
+    ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); showToast('Copied: ' + label); }
+    catch (err) { showToast('Copy failed'); }
+    document.body.removeChild(ta);
+  }
+}
+function buildGrid() {
+  grid.innerHTML = '';
+  colors.forEach((c) => {
+    const isDark = luminance(c.r, c.g, c.b) <= 0.55;
+    const textColor = isDark ? '#ffffff' : '#000000';
+    const sw = document.createElement('div');
+    sw.className = 'swatch' + (isDark ? ' dark' : '');
+    sw.style.background = '#' + c.hex;
+    sw.style.color = textColor;
+    sw.dataset.name = c.name.toLowerCase();
+    sw.dataset.hex = c.hex.toLowerCase();
+    sw.dataset.desc = c.desc.toLowerCase();
+    sw.dataset.hsv = `${c.h} ${c.s} ${c.v}`;
+    sw.dataset.col = String(c.col);
+    sw.dataset.i = String(c.i);
+    sw.title = c.name + ' — row ' + c.row + ', col ' + c.col + ' · HSV: ' + c.h + '°, ' + c.s + '%, ' + c.v + '%';
+
+    let splitContent = '';
+    if (corrections[c.i]) {
+      const cor = corrections[c.i];
+      const [cR, cG, cB] = cor.rgb;
+      const corDark = luminance(cR, cG, cB) <= 0.55;
+      const [corH, corS, corV] = rgbToHsv(cR, cG, cB);
+      sw.classList.add('has-correction');
+      sw.style.setProperty('--orig-color', '#' + c.hex);
+      sw.style.setProperty('--cor-color', '#' + cor.hex);
+      sw.style.setProperty('--orig-text', isDark ? '#ffffff' : '#000000');
+      sw.style.setProperty('--cor-text', corDark ? '#ffffff' : '#000000');
+      sw.dataset.corHex = cor.hex.toLowerCase();
+      sw.dataset.corRgb = `${cR}, ${cG}, ${cB}`;
+      sw.dataset.corHsv = `${corH},${corS},${corV}`;
+      // Store RGB on dataset so we can recompute when display mode changes
+      sw.dataset.origR = String(c.r);
+      sw.dataset.origG = String(c.g);
+      sw.dataset.origB = String(c.b);
+      sw.dataset.corR = String(cR);
+      sw.dataset.corG = String(cG);
+      sw.dataset.corB = String(cB);
+      splitContent = `
+        <div class="split-content">
+          <div class="orig-label">
+            <div class="swatch-name">${c.name}</div>
+            <div class="ltag" style="margin-top: 14px">ORIGINAL</div>
+            <div class="lval">${c.r},${c.g},${c.b}</div>
+            <div class="lval">#${c.hex}</div>
+            <div class="lhsv orig-extra">${formatSplit({r:c.r,g:c.g,b:c.b}, 'hsv')}</div>
+          </div>
+          <div class="cor-label">
+            <div class="ltag">CORRECTED</div>
+            <div class="lval">${cR},${cG},${cB}</div>
+            <div class="lval">#${cor.hex}</div>
+            <div class="lhsv cor-extra">${formatSplit({r:cR,g:cG,b:cB}, 'hsv')}</div>
+          </div>
+        </div>`;
+    }
+
+    sw.innerHTML = `
+      <div class="name">${c.name}</div>
+      <div class="mid">${c.r}, ${c.g}, ${c.b}<br>#${c.hex}<br><span class="extra">${formatHsv(c)}</span></div>
+      <div class="desc">${c.desc}</div>
+      ${splitContent}
+      <div class="actions">
+        <button type="button" data-copy="hex">hex</button>
+        <button type="button" data-copy="rgb">rgb</button>
+        <button type="button" data-copy="hsv">hsv</button>
+        <button type="button" data-copy="name">name</button>
+      </div>`;
+
+    sw.addEventListener('click', (e) => {
+      const btn = e.target.closest('button[data-copy]');
+      const requestedMode = btn ? btn.dataset.copy : copyMode;
+      const mode = (requestedMode === 'hsv' && !btn) ? displayMode : requestedMode;
+      // In corrections mode, copying from a corrected swatch uses the corrected values
+      const useCorrection = document.body.classList.contains('show-corrections') && corrections[c.i];
+      let value;
+      if (useCorrection) {
+        const cor = corrections[c.i];
+        const [cR, cG, cB] = cor.rgb;
+        const [corH, corS, corV] = sw.dataset.corHsv.split(',').map(Number);
+        if (mode === 'hex') value = '#' + cor.hex;
+        else if (mode === 'rgb') value = cR + ', ' + cG + ', ' + cB;
+        else if (mode === 'hsv') value = corH + '°, ' + corS + '%, ' + corV + '%';
+        else if (mode === 'hsl') value = formatHsl({ r: cR, g: cG, b: cB, h: corH, s: corS, v: corV });
+        else if (mode === 'cmyk') value = formatCmyk({ r: cR, g: cG, b: cB, h: corH, s: corS, v: corV });
+        else if (mode === 'name') value = c.name + ' (corrected)';
+        else value = '';
+      } else {
+        value = formatValue(c, mode);
+      }
+      copyValue(value, value);
+      e.stopPropagation();
+    });
+
+    grid.appendChild(sw);
+  });
+}
+function applyFilter() {
+  const q = filter.value.trim().toLowerCase();
+  let visible = 0;
+  document.querySelectorAll('.swatch').forEach(sw => {
+    const matchesFamily = !selectedFamily || sw.dataset.col === String(selectedFamily);
+    const matchesText = !q || (
+      sw.dataset.name.includes(q)
+      || sw.dataset.hex.includes(q.replace('#', ''))
+      || (sw.dataset.corHex && sw.dataset.corHex.includes(q.replace('#', '')))
+      || sw.dataset.desc.includes(q)
+    );
+    const match = matchesText && matchesFamily;
+    sw.classList.toggle('hidden', !match);
+    if (match) visible++;
+  });
+  const existing = grid.querySelector('.empty');
+  if (existing) existing.remove();
+  if (visible === 0) {
+    const e = document.createElement('div');
+    e.className = 'empty';
+    e.textContent = 'No colors match "' + q + '"';
+    grid.appendChild(e);
+  }
+}
+filter.addEventListener('input', applyFilter);
+document.querySelectorAll('input[name="mode"]').forEach(r => {
+  r.addEventListener('change', (e) => { copyMode = e.target.value; });
+});
+document.querySelectorAll('input[name="display"]').forEach(r => {
+  r.addEventListener('change', (e) => {
+    displayMode = e.target.value;
+    updateDisplay(displayMode);
+  });
+});
+function updateDisplay(mode) {
+  document.querySelectorAll('.swatch').forEach(sw => {
+    const extra = sw.querySelector('.mid .extra');
+    if (extra) {
+      const i = parseInt(sw.dataset.i, 10);
+      const c = colors[i - 1];
+      if (c) {
+        if (mode === 'hsv') extra.textContent = formatHsv(c);
+        else if (mode === 'hsl') extra.textContent = formatHsl(c);
+        else if (mode === 'cmyk') extra.textContent = formatCmyk(c);
+      }
+    }
+    // Also update split-swatch labels for corrected colors (Sahara Sand, Topaz Sand)
+    const origExtra = sw.querySelector('.split-content .orig-extra');
+    const corExtra = sw.querySelector('.split-content .cor-extra');
+    if (origExtra && sw.dataset.origR) {
+      const rgb = { r: +sw.dataset.origR, g: +sw.dataset.origG, b: +sw.dataset.origB };
+      origExtra.textContent = formatSplit(rgb, mode);
+    }
+    if (corExtra && sw.dataset.corR) {
+      const rgb = { r: +sw.dataset.corR, g: +sw.dataset.corG, b: +sw.dataset.corB };
+      corExtra.textContent = formatSplit(rgb, mode);
+    }
+  });
+}
+document.addEventListener('keydown', (e) => {
+  if ((e.key === 'f' || e.key === '/') && document.activeElement !== filter) {
+    e.preventDefault(); filter.focus(); filter.select();
+  }
+  if (e.key === 'Escape' && document.activeElement === filter) {
+    filter.value = ''; applyFilter(); filter.blur();
+  }
+});
+async function captureGridCanvas() {
+  return await html2canvas(document.getElementById('capture-area'), {
+    scale: 2, backgroundColor: '#ffffff', logging: false, useCORS: true
+  });
+}
+async function exportPNG() {
+  const btn = document.getElementById('btn-png');
+  btn.disabled = true; btn.textContent = 'Rendering…';
+  try {
+    const canvas = await captureGridCanvas();
+    canvas.toBlob((blob) => {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'ArcGIS_Pro_Color_Palette.png';
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      URL.revokeObjectURL(url); showToast('PNG downloaded');
+    }, 'image/png');
+  } catch (err) { showToast('PNG export failed'); console.error(err); }
+  finally { btn.disabled = false; btn.textContent = 'PNG'; }
+}
+document.getElementById('btn-png').addEventListener('click', exportPNG);
+document.getElementById('btn-print').addEventListener('click', () => window.print());
+document.getElementById('toggle-corrections').addEventListener('change', (e) => {
+  document.body.classList.toggle('show-corrections', e.target.checked);
+  if (e.target.checked) {
+    showToast('Corrections mode on — see callout below for details');
+  }
+});
+document.querySelectorAll('button.fam').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const col = parseInt(btn.dataset.col);
+    if (selectedFamily === col) {
+      selectedFamily = null;
+      btn.classList.remove('active');
+      document.getElementById('fam-all').classList.add('active');
+    } else {
+      selectedFamily = col;
+      document.querySelectorAll('button.fam').forEach(b => b.classList.remove('active'));
+      document.getElementById('fam-all').classList.remove('active');
+      btn.classList.add('active');
+    }
+    applyFilter();
+  });
+});
+document.getElementById('fam-all').addEventListener('click', () => {
+  selectedFamily = null;
+  document.querySelectorAll('button.fam').forEach(b => b.classList.remove('active'));
+  document.getElementById('fam-all').classList.add('active');
+  applyFilter();
+});
+buildGrid();
+</script>
+</body>
+</html>
