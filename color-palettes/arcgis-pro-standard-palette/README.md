@@ -15,6 +15,8 @@ The palette HTML page is also available online: [arcgis_pro_palette.html](https:
 | [`ArcGIS_Pro_Color_Palette_Corrections.png`](./ArcGIS_Pro_Color_Palette_Corrections.png) | 300 DPI grid with Sahara Sand and Topaz Sand rendered as diagonal split swatches showing original (top-left) and proposed corrected (bottom-right) values |
 | [`palette.csv`](./palette.csv) | CSV for programmatic use (`index, name, r, g, b, hex, h_deg, s_pct, v_pct, grid_row, grid_col, description`) |
 | [`arcgis-pro-color-conversion.md`](./arcgis-pro-color-conversion.md) | Technical reference for how ArcGIS Pro's Color Editor converts between RGB, HSV, HSL, and CMYK color spaces |
+| [`sahara-topaz-analysis.md`](./sahara-topaz-analysis.md) | Extended written analysis of the Sahara Sand / Topaz Sand anomaly: full-grid structural audit, perceptual (CIEDE2000) quantification, and a survey of near-duplicate pairs |
+| [`perceptual_distance.html`](./perceptual_distance.html) | Interactive perceptual-distance (ΔE2000) explorer: nearest-neighbor map, confusability heatmap, neighbor-boundary view, and closest-pairs ranking ([view online](https://camrex.github.io/esri-gis-resources/color-palettes/arcgis-pro-standard-palette/perceptual_distance.html)) |
 
 Verification scripts and generated verification reports are documented in [`../scripts/README.md`](../scripts/README.md).
 
@@ -103,6 +105,10 @@ Two swatches deviate from these rules in ways that look more like errors than de
 **On Sahara and Topaz Sand:** these two share identical R and G values (255, 235) and differ only by 15 points in the blue channel — they're effectively the same hue at slightly different saturations rather than two distinct hues, which is why they're hard to tell apart on screen. The corrected values shift Sahara to the 20° hue position (aligned with Fire Red's column) and Topaz to the 40° position (aligned with Electron Gold's column), giving each its own distinct hue identity in the column structure. The corrected RGB values converge from three independent methods: HSV row-saturation matching, CMYK row-M-progression matching, and ArcGIS Pro's own CMYK→RGB conversion when given pattern-derived CMYK inputs. All three approaches produce identical RGBs.
 
 **On Glacier Blue:** an earlier draft of this analysis treated Esri KB 000010027's `RGB(38, 79, 137) #264F89` entry as a palette anomaly — at S=72% it would have been the only color in row 10 above ~50% saturation. After checking the live ArcGIS Pro style file, Glacier Blue is actually `RGB(68, 79, 137) #444F89` (S=50%), which aligns cleanly with row 10's pattern. The inconsistency was in the Esri documentation, not in ArcGIS Pro.
+
+### Extended perceptual analysis
+
+A follow-up analysis quantifies the anomaly perceptually. Computing CIEDE2000 for all 7,140 color pairs shows the published Sahara/Topaz pair at ΔE 3.6 — at the threshold of distinguishability, versus a grid-wide median nearest-neighbor distance of 7.6 — while the corrected pair lands at 12.9, matching the ~10–12 spacing of their row-1 neighbors. Of all 218 adjacent swatch boundaries in the grid, the Sahara ↔ Topaz boundary is the single tightest. The same survey documents a systematic near-duplication between rows 2 and 8 (row 8 is very nearly row 2 dimmed ~4%), which is a whole-row design overlap rather than a structural break, and traces the grid-wide closest pair (Yogo Blue ↔ Oxide Blue, ΔE 1.70, cross-column) to the interaction of that row overlap with the cool-side hue re-banding. Full writeup: [`sahara-topaz-analysis.md`](./sahara-topaz-analysis.md); interactive companion: [`perceptual_distance.html`](./perceptual_distance.html).
 
 ### What this means
 

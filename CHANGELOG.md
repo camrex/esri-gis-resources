@@ -1,6 +1,6 @@
 # Changelog
 
-<!-- markdownlint-disable MD024 -->  # noqa: E999
+<!-- markdownlint-disable MD024 -->
 
 All notable changes to this repository will be documented in this file.
 
@@ -10,6 +10,9 @@ The format is based on Keep a Changelog.
 
 ### Added
 
+- Added `color-palettes/arcgis-pro-standard-palette/sahara-topaz-analysis.md`: extended Sahara Sand / Topaz Sand analysis with a full-grid structural audit, CIEDE2000 quantification, and a near-duplicate pair survey (rows 2/8 overlap, cross-column Yogo/Oxide pair).
+- Added `color-palettes/arcgis-pro-standard-palette/perceptual_distance.html`: interactive perceptual-distance (ΔE2000) explorer with nearest-neighbor map, confusability heatmap, neighbor-boundary view, and closest-pairs ranking.
+- Linked the new analysis and explorer from the palette page (corrections callout and footer) and the palette README (files table and analysis section).
 - Added `color-palettes/scripts/README.md` with usage and output documentation for `verify_palette.py`, plus maintenance workflow notes.
 - Added a root README verification workflow section with the one-command `verify_palette.py` run path and output report locations.
 - Added `color-palettes/scripts/make_palette_xlsx.py` to regenerate `ArcGIS_Pro_Color_Palette.xlsx` from `palette.csv`, and documented it in `color-palettes/scripts/README.md`.
