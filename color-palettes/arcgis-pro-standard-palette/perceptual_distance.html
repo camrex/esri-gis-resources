@@ -97,8 +97,8 @@
   <div class="lg"><span>distinct (ΔE ≥ 24)</span><span class="lgbar"><span style="background:#cde2fb"></span><span style="background:#b7d3f6"></span><span style="background:#9ec5f4"></span><span style="background:#86b6ef"></span><span style="background:#6da7ec"></span><span style="background:#5598e7"></span><span style="background:#3987e5"></span><span style="background:#2a78d6"></span><span style="background:#256abf"></span><span style="background:#1c5cab"></span><span style="background:#184f95"></span><span style="background:#104281"></span><span style="background:#0d366b"></span></span><span>confusable (ΔE ≈ 3)</span><i style="font-style:normal;margin-left:12px"><span style="display:inline-block;width:11px;height:11px;border-radius:3px;border:2px solid #d03b3b;vertical-align:-2px"></span> ΔE &lt; 5</i></div>
 </div>
 <div class="panel">
-  <h2>Ten closest pairs</h2>
-  <p class="d">Eight of the ten are row 2 ↔ row 8 pairings — a systematic overlap between two whole design treatments (row 8 is nearly row 2 dimmed ~4%). Sahara ↔ Topaz is the only pair that shares a row: two swatches meant to be different hue families landing on the same hue.</p>
+  <h2>Closest pairs — every pair below ΔE 5</h2>
+  <p class="d">Fourteen of the 7,140 pairs fall below ΔE 5, the band where colors are hard to tell apart unless adjacent. Eight of the first ten are row 2 ↔ row 8 pairings — a systematic overlap between two whole design treatments (row 8 is nearly row 2 dimmed ~4%). Sahara ↔ Topaz is the tightest pair that shares a row: two swatches meant to be different hue families landing on the same hue. The last four — three same-row neighbors and one grayscale step — sit just under the cutoff, a full ΔE point above the Sahara ↔ Topaz break.</p>
   <table><thead><tr><th>#</th><th>Color</th><th>Color</th><th>ΔE</th><th></th><th></th></tr></thead>
   <tbody><tr><td class="rk">1</td>
 <td class="c1">Yogo Blue <span class="pos">r2c10</span><span class="chip" style="background:#73B2FF"></span></td>
@@ -150,7 +150,27 @@
 <td><span class="chip" style="background:#7AF5CA"></span>Light Vert <span class="pos">r8c8</span></td>
 <td class="num">4.20</td>
 <td class="barcell"><span class="bar" style="width:30.0%"></span></td>
-<td><span class="tag">row 2 ↔ row 8</span></td></tr></tbody></table>
+<td><span class="tag">row 2 ↔ row 8</span></td></tr><tr><td class="rk">11</td>
+<td class="c1">Lime Dust <span class="pos">r7c5</span><span class="chip" style="background:#D7D79E"></span></td>
+<td><span class="chip" style="background:#C7D79E"></span>Apple Dust <span class="pos">r7c6</span></td>
+<td class="num">4.58</td>
+<td class="barcell"><span class="bar" style="width:32.714285714285715%"></span></td>
+<td><span class="tag">row 7 neighbors</span></td></tr><tr><td class="rk">12</td>
+<td class="c1">Apple Dust <span class="pos">r7c6</span><span class="chip" style="background:#C7D79E"></span></td>
+<td><span class="chip" style="background:#B4D79E"></span>Sage Dust <span class="pos">r7c7</span></td>
+<td class="num">4.59</td>
+<td class="barcell"><span class="bar" style="width:32.785714285714285%"></span></td>
+<td><span class="tag">row 7 neighbors</span></td></tr><tr><td class="rk">13</td>
+<td class="c1">Olivine Yellow <span class="pos">r1c6</span><span class="chip" style="background:#E9FFBE"></span></td>
+<td><span class="chip" style="background:#D3FFBE"></span>Tzavorite Green <span class="pos">r1c7</span></td>
+<td class="num">4.72</td>
+<td class="barcell"><span class="bar" style="width:33.714285714285715%"></span></td>
+<td><span class="tag">row 1 neighbors</span></td></tr><tr><td class="rk">14</td>
+<td class="c1">Gray 10% <span class="pos">r2c1</span><span class="chip" style="background:#E1E1E1"></span></td>
+<td><span class="chip" style="background:#CCCCCC"></span>Gray 20% <span class="pos">r3c1</span></td>
+<td class="num">4.88</td>
+<td class="barcell"><span class="bar" style="width:34.857142857142854%"></span></td>
+<td><span class="tag">grayscale step</span></td></tr></tbody></table>
 </div>
 
 <p class="foot"><b>Reading ΔE2000:</b> below ~1 imperceptible · 1–2 side-by-side only · 2–5 noticeable when adjacent, easy to miss otherwise · 10+ clearly different. Values computed from sRGB → Lab (D65, 2° observer). Source RGB: ArcGIS Pro 3.6.2 <span style="font-family:ui-monospace,monospace">Styles.stylx</span>. Companion to the <a href="arcgis_pro_palette.html" style="color:#2a78d6">interactive palette reference</a>.</p>

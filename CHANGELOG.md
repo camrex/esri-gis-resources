@@ -23,6 +23,7 @@ The format is based on Keep a Changelog.
 ### Changed
 
 - Reworked the closest-pairs table in `perceptual_distance.html`: first column now reads name-then-swatch (right-aligned) so the paired swatches sit adjacent for direct comparison, and swatches are enlarged.
+- Expanded the closest-pairs table from the top ten to all fourteen pairs below ΔE 5 (adding two row-7 Dust neighbors, the row-1 Olivine ↔ Tzavorite pair, and the tightest grayscale step); the grid overlay keeps its top-ten numbered dots.
 - Corrected `Cretan Blue` across palette sources to match ArcGIS Pro 3.6 live style values: `RGB(0, 112, 255) / #0070FF`.
 - Updated verification artifacts (`palette_verification.csv` and `palette_verification.json`) to reflect a fully matching 120/120 set.
 - Promoted `arcgis_pro_palette.html` as the canonical interactive palette page, turned `arcmap_palette.html` into a redirect for GitHub Pages compatibility, and aligned copy behavior so `Copy Display` follows the active HSV/HSL/CMYK display mode.
