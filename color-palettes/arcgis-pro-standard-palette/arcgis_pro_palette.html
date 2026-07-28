@@ -287,6 +287,7 @@
     .swatch .mid { font-size: 6.5px; line-height: 1.2; }
     .swatch .desc { font-size: 6px; line-height: 1.15; }
     .print-source { display: block !important; font-size: 8px; color: #666; text-align: center; margin-top: 6px; }
+    #corrections-callout { break-before: page; page-break-before: always; break-inside: avoid; }
   }
   .print-source { display: none; }
   #capture-area { background: white; padding: 16px; }
@@ -691,6 +692,12 @@ async function exportPNG() {
 }
 document.getElementById('btn-png').addEventListener('click', exportPNG);
 document.getElementById('btn-print').addEventListener('click', () => window.print());
+// On screen the callout sits above the palette; for print, move it after the
+// grid so the palette stays intact on page 1 and the callout gets its own page.
+window.addEventListener('beforeprint', () =>
+  document.getElementById('capture-area').after(document.getElementById('corrections-callout')));
+window.addEventListener('afterprint', () =>
+  document.getElementById('capture-area').before(document.getElementById('corrections-callout')));
 document.getElementById('toggle-corrections').addEventListener('change', (e) => {
   document.body.classList.toggle('show-corrections', e.target.checked);
   if (e.target.checked) {

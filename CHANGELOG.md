@@ -21,6 +21,10 @@ The format is based on Keep a Changelog.
 - Added `color-palettes/scripts/make_palette_pngs.py` as a canonical PNG generator for `ArcGIS_Pro_Color_Palette.png` and `ArcGIS_Pro_Color_Palette_Corrections.png`.
 - Consolidated script documentation into `color-palettes/scripts/README.md` and removed redundant `color-palettes/scripts/scripts_README.md`.
 
+### Fixed
+
+- Printing the palette page with "Show proposed corrections" enabled no longer splits the color grid across two pages: for print only, the corrections callout moves after the grid and onto its own page (palette on page 1, corrections on page 2); the on-screen layout is unchanged.
+
 ### Changed
 
 - Clarified analysis attribution across the palette README, both analysis documents, and the palette page credit: the follow-up structural/perceptual analysis series is directed by Cameron Rex and performed with Claude (Anthropic's AI model).
