@@ -4,7 +4,7 @@
 
 **Companion document to the [Esri (ArcMap/ArcGIS Pro) Standard Color Palette reference](https://camrex.github.io/esri-gis-resources/color-palettes/arcgis-pro-standard-palette/arcgis_pro_palette.html).** This document extends the analysis summarized in the [folder README](./README.md#hsv-analysis--proposed-corrections) and in the palette page's "Show proposed corrections" panel, adding a full-grid structural audit, perceptual (CIEDE2000) quantification, and a survey of near-duplicate pairs. An [interactive ΔE explorer](https://camrex.github.io/esri-gis-resources/color-palettes/arcgis-pro-standard-palette/perceptual_distance.html) accompanies it.
 
-Original Sahara Sand / Topaz Sand observation, initial HSV analysis, and proposed corrections: **Michael Ray Wilson, MS, CFM**. Follow-up structural analysis of all 120 colors, verification against the live ArcGIS Pro style file, and this perceptual extension: Cameron Rex. Last updated: July 2026.
+Original Sahara Sand / Topaz Sand observation, initial HSV analysis, and proposed corrections: **Michael Ray Wilson, MS, CFM**. Follow-up structural analysis of all 120 colors, verification against the live ArcGIS Pro style file, and this perceptual extension: directed by Cameron Rex and performed with Claude (Anthropic's AI model). Last updated: July 2026.
 
 ---
 

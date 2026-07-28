@@ -4,7 +4,7 @@
 
 **Companion document to the [Esri (ArcMap/ArcGIS Pro) Standard Color Palette reference](https://camrex.github.io/esri-gis-resources/color-palettes/arcgis-pro-standard-palette/arcgis_pro_palette.html).** This note grew out of the perceptual survey in [`sahara-topaz-analysis.md`](./sahara-topaz-analysis.md) (§4.1), which observed that eight of the palette's ten closest color pairs are row 2 ↔ row 8 pairings. Here that observation is taken apart: what exactly the relationship between the two rows is, where it comes from, and why some columns escape it. The [interactive ΔE explorer](https://camrex.github.io/esri-gis-resources/color-palettes/arcgis-pro-standard-palette/perceptual_distance.html) shows the resulting pairs side by side.
 
-Analysis: Cameron Rex. Last updated: July 2026.
+Analysis directed by Cameron Rex and performed with Claude (Anthropic's AI model). Last updated: July 2026.
 
 ---
 

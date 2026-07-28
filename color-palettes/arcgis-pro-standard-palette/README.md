@@ -121,6 +121,7 @@ The interactive HTML reference includes a **"Show proposed corrections"** toggle
 
 - **Michael Ray Wilson, MS, CFM** — original observation that Sahara Sand and Topaz Sand sit on essentially the same hue; HSV analysis demonstrating Sahara Sand's hue shift toward yellow; proposed corrections for Sahara and Topaz.
 - Glacier Blue documentation discrepancy in KB 000010027 identified during follow-up HSV analysis of all 120 colors and verification against the live ArcGIS Pro style file.
+- The follow-up structural and perceptual analysis series (full-grid HSV audit, CIEDE2000 survey, rows 2/8 overlap) was directed by **Cameron Rex** and performed with **Claude** (Anthropic's AI model).
 
 ## About the descriptions
 

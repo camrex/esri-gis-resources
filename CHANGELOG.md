@@ -23,6 +23,7 @@ The format is based on Keep a Changelog.
 
 ### Changed
 
+- Clarified analysis attribution across the palette README, both analysis documents, and the palette page credit: the follow-up structural/perceptual analysis series is directed by Cameron Rex and performed with Claude (Anthropic's AI model).
 - Reworked the closest-pairs table in `perceptual_distance.html`: first column now reads name-then-swatch (right-aligned) so the paired swatches sit adjacent for direct comparison, and swatches are enlarged.
 - Expanded the closest-pairs table from the top ten to all fourteen pairs below ΔE 5 (adding two row-7 Dust neighbors, the row-1 Olivine ↔ Tzavorite pair, and the tightest grayscale step); the grid overlay keeps its top-ten numbered dots.
 - Enlarged the closest-pairs swatches to annotated-grid scale (68×44, same 1.55 aspect) and fused each pair into a single field with a shared edge — the patch size the CIEDE2000 model assumes and the presentation where near-threshold differences are most visible.
