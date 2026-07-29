@@ -20,10 +20,13 @@ The format is based on Keep a Changelog.
 - Added `--check` mode to `make_palette_xlsx.py` for CI/local validation that workbook output is current without rewriting files.
 - Added `color-palettes/scripts/make_palette_pngs.py` as a canonical PNG generator for `ArcGIS_Pro_Color_Palette.png` and `ArcGIS_Pro_Color_Palette_Corrections.png`.
 - Consolidated script documentation into `color-palettes/scripts/README.md` and removed redundant `color-palettes/scripts/scripts_README.md`.
+- Added a "Descriptions" checkbox to the palette page controls (checked by default); unchecking hides the per-swatch descriptions on screen, in print, and in PNG export. With descriptions hidden, the printed grid fits on a single page.
 
 ### Fixed
 
 - Printing the palette page with "Show proposed corrections" enabled no longer splits the color grid across two pages: for print only, the corrections callout moves after the grid and onto its own page (palette on page 1, corrections on page 2); the on-screen layout is unchanged.
+- The two split correction swatches now print legibly: they keep enough height for the diagonal original/corrected labels, label fonts are scaled for print, and the italic HSV line (the widest, colliding line) is dropped in print since the callout carries the full HSV corrections.
+- PNG export no longer bakes wide-monitor white margins into the image: the capture area is constrained to the grid's own width during rendering, so the exported PNG is tight to the grid at any window size.
 
 ### Changed
 

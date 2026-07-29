@@ -76,6 +76,7 @@
   .swatch .mid { font-size: 9.5px; line-height: 1.35; font-family: "SF Mono", Consolas, Monaco, monospace; }
   .swatch .mid .hsv { opacity: 0.85; font-size: 9px; }
   .swatch .desc { font-size: 9px; font-style: italic; line-height: 1.2; opacity: 0.92; }
+  body.hide-desc .swatch .desc { display: none; }
   .swatch .actions {
     position: absolute; bottom: 4px; left: 4px; right: 4px;
     display: flex; gap: 3px; opacity: 0;
@@ -288,6 +289,16 @@
     .swatch .desc { font-size: 6px; line-height: 1.15; }
     .print-source { display: block !important; font-size: 8px; color: #666; text-align: center; margin-top: 6px; }
     #corrections-callout { break-before: page; page-break-before: always; break-inside: avoid; }
+    /* Split swatches keep only absolutely-positioned labels in corrections mode,
+       so the collapsed print height must be restored for them */
+    body.show-corrections .swatch.has-correction { min-height: 76px !important; }
+    .swatch.has-correction .split-content .swatch-name { font-size: 7.5px; white-space: nowrap; }
+    .swatch.has-correction .split-content .ltag { font-size: 6px; }
+    .swatch.has-correction .split-content .orig-label .ltag { margin-top: 11px !important; }
+    .swatch.has-correction .split-content .lval { font-size: 6.5px; }
+    /* The italic HSV line is the widest and collides diagonally at print sizes;
+       the full HSV corrections are printed in the callout, so drop it here */
+    .swatch.has-correction .split-content .lhsv { display: none; }
   }
   .print-source { display: none; }
   #capture-area { background: white; padding: 16px; }
@@ -316,6 +327,9 @@
     <span class="divider"></span>
     <label>
       <input type="checkbox" id="toggle-corrections"> Show proposed corrections
+    </label>
+    <label>
+      <input type="checkbox" id="toggle-desc" checked> Descriptions
     </label>
     <span class="divider"></span>
     <button type="button" class="export" id="btn-png" title="Export grid as PNG">PNG</button>
@@ -671,9 +685,19 @@ document.addEventListener('keydown', (e) => {
   }
 });
 async function captureGridCanvas() {
-  return await html2canvas(document.getElementById('capture-area'), {
-    scale: 2, backgroundColor: '#ffffff', logging: false, useCORS: true
-  });
+  // Shrink the capture area to the grid's own width during render, so wide
+  // windows don't bake white margins into the exported PNG.
+  const area = document.getElementById('capture-area');
+  const grid = document.getElementById('grid');
+  area.style.width = (grid.offsetWidth + 32) + 'px';
+  area.style.margin = '0 auto';
+  try {
+    return await html2canvas(area, {
+      scale: 2, backgroundColor: '#ffffff', logging: false, useCORS: true
+    });
+  } finally {
+    area.style.width = ''; area.style.margin = '';
+  }
 }
 async function exportPNG() {
   const btn = document.getElementById('btn-png');
@@ -698,6 +722,9 @@ window.addEventListener('beforeprint', () =>
   document.getElementById('capture-area').after(document.getElementById('corrections-callout')));
 window.addEventListener('afterprint', () =>
   document.getElementById('capture-area').before(document.getElementById('corrections-callout')));
+document.getElementById('toggle-desc').addEventListener('change', (e) => {
+  document.body.classList.toggle('hide-desc', !e.target.checked);
+});
 document.getElementById('toggle-corrections').addEventListener('change', (e) => {
   document.body.classList.toggle('show-corrections', e.target.checked);
   if (e.target.checked) {
