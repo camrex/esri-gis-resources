@@ -6,25 +6,27 @@ of a resource's verification toolchain — those live beside the resource they v
 and [`color-palettes/scripts`](../color-palettes/scripts), and every one of them backs a
 documented claim. These do not. They generate presentation assets.
 
-| Script | Needs | What it does |
-| --- | --- | --- |
-| `make_card_bg.py` | numpy, matplotlib, pyproj, Pillow | Render `card-bg.png`: the US map plate and the pinned conversion behind the social card |
-| `make_social_card.py` | Pillow | Composite the card's type over that plate into `arcade-stateplane-utm-to-latlong/social-card.png`, the link-preview image the landing page's Open Graph tags point at |
+| Script | What it does |
+| --- | --- |
+| `make_social_card.py` | Write `arcade-stateplane-utm-to-latlong/social-card.png`, the link-preview image the landing page's Open Graph tags point at |
+| `make_card_bg.py` | The map plate and pinned conversion behind it. `make_social_card.py` imports `render()` from here; running it directly writes a local preview |
 
 ```powershell
-python tools/make_card_bg.py                # the map plate, first
-python tools/make_social_card.py            # then the type over it
+python tools/make_social_card.py            # the card
+python tools/make_social_card.py --check    # non-zero exit if the committed PNG is stale
 
-python tools/make_card_bg.py --check        # non-zero exit if a committed PNG is stale
-python tools/make_social_card.py --check
+python tools/make_card_bg.py                # card-bg.png, a gitignored preview of the map alone
 ```
 
-Run them from the repository root or from this directory; paths resolve either way. The
-card generator falls back to plain ground if `card-bg.png` is missing, so it still works
-without the plotting stack.
+**Only the finished card is committed.** The plate is rendered on demand, so there is no
+intermediate PNG to fall out of step with its generator.
 
-None of this needs `arcpy` — the dependencies are all pip-installable, and the repository
-`.venv` carries them.
+Both need numpy, matplotlib, pyproj and Pillow. All four are pip-installable, none is
+`arcpy`, and the repository `.venv` carries them — so the card can be rebuilt without
+ArcGIS Pro. Missing them degrades rather than fails: the card still renders, on plain
+ground, with a warning on stderr.
+
+Run them from the repository root or from this directory; paths resolve either way.
 
 ## The conversion on the pin is real
 

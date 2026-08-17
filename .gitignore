@@ -11,8 +11,15 @@ Desktop.ini
 # Python virtual environment
 .venv/
 
+# Python bytecode
+__pycache__/
+*.py[cod]
+
 # VS Code workspace settings (machine-local)
 .vscode/
 
 # Cached source data for tools/make_card_bg.py -- refetched on demand
 tools/_cache/
+
+# Local preview from tools/make_card_bg.py -- the plate is rendered on demand
+tools/card-bg.png

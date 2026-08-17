@@ -4,12 +4,15 @@ Renders 1200x630: the card's own ground on the left, fading into a Lambert
 Conformal Conic map of the lower 48 on the right, with a pin over Miami
 carrying a real State Plane conversion -- EPSG:2236, Florida East (ftUS).
 
-Output is a BACKGROUND ONLY. make_social_card.py composites the card's text
-over it, so the two stay separable: this file owns the map, that one owns
-the type.
+Output is a BACKGROUND ONLY. make_social_card.py imports render() from here and
+composites the card's text over it, so the two stay separable: this file owns
+the map, that one owns the type. The plate is generated on demand rather than
+committed -- only the finished social-card.png is an artifact worth versioning.
 
-    python make_card_bg.py             -> ../tools/card-bg.png
-    python make_card_bg.py --check     -> non-zero exit if the committed PNG is stale
+Running this file directly writes card-bg.png beside it, which is a local
+preview for working on the map alone. That file is gitignored.
+
+    python make_card_bg.py             -> card-bg.png, a preview
 
 The numbers on the pin are not decoration. E 922,162.27 / N 519,888.66 in
 EPSG:2236 is the stored position of the point the callout reports, and
@@ -30,7 +33,6 @@ Needs numpy, matplotlib, pyproj and Pillow -- all pip-installable, none of them
 arcpy, so the card can be rebuilt without ArcGIS Pro. Run it from this directory.
 """
 import argparse
-import io
 import json
 import logging
 import pathlib
@@ -262,23 +264,11 @@ def render():
 
 
 def main():
-    ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--check", action="store_true",
-                    help="exit non-zero if the committed PNG differs from a fresh render")
-    args = ap.parse_args()
-
-    img = render()
-    if args.check:
-        buf = io.BytesIO()
-        img.save(buf, format="PNG", optimize=True)
-        if OUT.exists() and buf.getvalue() == OUT.read_bytes():
-            print(f"up to date: {OUT.name}")
-            return 0
-        print(f"OUT OF DATE: {OUT.name} -- rerun without --check")
-        return 1
-
-    img.save(OUT, optimize=True)
-    print(f"wrote {OUT} ({W}x{H})  pin at {PIN_TARGET}")
+    # No --check here: the plate is not a committed artifact, so there is nothing
+    # to be stale against. make_social_card.py --check covers the finished card.
+    argparse.ArgumentParser(description=__doc__).parse_args()
+    render().save(OUT, optimize=True)
+    print(f"wrote {OUT} ({W}x{H})  pin at {PIN_TARGET}  [preview, gitignored]")
     return 0
 
 

@@ -8,20 +8,30 @@ that is where the rest of this repository's tooling runs.
     python tools/make_social_card.py
     python tools/make_social_card.py --check    # verify the committed PNG is current
 
-Requires Pillow, and nothing else. This produces a presentation asset rather than a
-validated one, which is why it lives here instead of beside the verification scripts.
+The map plate underneath comes from make_card_bg.py, rendered on demand rather than
+kept as a committed intermediate: only social-card.png is an artifact worth versioning.
+That makes the plotting stack a requirement here too -- numpy, matplotlib, pyproj and
+Pillow, all pip-installable and none of them arcpy. Without them the card still renders,
+on plain ground and with a warning, so a missing dependency degrades rather than fails.
+
+This produces a presentation asset rather than a validated one, which is why it lives
+here instead of beside the verification scripts.
 """
 import argparse
 import io
 import pathlib
+import sys
 
 from PIL import Image, ImageDraw, ImageFont
 
+try:
+    from make_card_bg import render as render_bg
+except ImportError as exc:                      # plotting stack absent
+    render_bg = None
+    _BG_ERROR = exc
+
 REPO = pathlib.Path(__file__).resolve().parent.parent
 OUT = REPO / "arcade-stateplane-utm-to-latlong" / "social-card.png"
-# The map plate and its pinned conversion, from make_card_bg.py. Absent, the card
-# still renders -- it just falls back to plain ground.
-BG = pathlib.Path(__file__).resolve().parent / "card-bg.png"
 W, H = 1200, 630
 PAD = 76
 
@@ -41,8 +51,12 @@ def font(name, size):
 
 
 def render():
-    img = (Image.open(BG).convert("RGB") if BG.exists()
-           else Image.new("RGB", (W, H), SURFACE))
+    if render_bg is not None:
+        img = render_bg().convert("RGB")
+    else:
+        print(f"warning: no map plate ({_BG_ERROR}); rendering on plain ground",
+              file=sys.stderr)
+        img = Image.new("RGB", (W, H), SURFACE)
     d = ImageDraw.Draw(img)
 
     # Accent spine on the left edge. No ground band on the right any more -- the
@@ -53,7 +67,7 @@ def render():
 
     # Eyebrow, with manual letter-spacing.
     x, eyebrow = PAD, font("consola.ttf", 21)
-    for ch in "ESRI-GIS-RESOURCES":
+    for ch in "CAMREX/ESRI-GIS-RESOURCES":
         d.text((x, y), ch, font=eyebrow, fill=ACCENT)
         x += d.textlength(ch, font=eyebrow) + 3.2
 
