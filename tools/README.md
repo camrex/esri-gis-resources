@@ -10,13 +10,33 @@ documented claim. These do not. They generate presentation assets.
 | --- | --- |
 | `make_social_card.py` | Write `arcade-stateplane-utm-to-latlong/social-card.png`, the link-preview image the landing page's Open Graph tags point at |
 | `make_card_bg.py` | The map plate and pinned conversion behind it. `make_social_card.py` imports `render()` from here; running it directly writes a local preview |
+| `make_map_svg.py` | The inline SVG map behind the landing page's heading, spliced into `index.html` between its `map:start` / `map:end` markers |
 
 ```powershell
 python tools/make_social_card.py            # the card
 python tools/make_social_card.py --check    # non-zero exit if the committed PNG is stale
 
 python tools/make_card_bg.py                # card-bg.png, a gitignored preview of the map alone
+
+python tools/make_map_svg.py                # print the SVG fragment
+python tools/make_map_svg.py --write        # splice it into index.html
+python tools/make_map_svg.py --write --check
 ```
+
+The page map and the card share their source outlines, their Lambert Conformal Conic
+framing and the same pinned conversion — `make_map_svg.py` imports that point and its
+labels from `make_card_bg.py`, so the landing page and its link preview cannot drift apart.
+It goes into the page as markup rather than as an image because that page is a single
+self-contained file: no request, no resampling, and its colours come from the page's own
+custom properties, which is what lets it follow dark mode without a second asset.
+
+The map is inert to the pointer, clipped by the header so it cannot widen the page, and
+hidden altogether below 46rem, where the standfirst takes the full column back. It carries
+a `<title>` rather than `aria-hidden`, because the callout states a real conversion rather
+than decorating: the map is the frame, the numbers are the point.
+
+Outlines are simplified hard for that one (`TOLERANCE`, in projected metres): 50 rings and
+about 18 KB of markup. Raise the tolerance if that grows.
 
 **Only the finished card is committed.** The plate is rendered on demand, so there is no
 intermediate PNG to fall out of step with its generator.
