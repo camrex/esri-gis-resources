@@ -4,6 +4,13 @@ An ArcGIS Arcade expression that converts a feature's stored projected coordinat
 latitude and longitude — in Calculate Field, in a popup, or as an attribute rule that
 keeps the values current as features are edited.
 
+> **Not an Esri product.** This is a personal project, part of my own
+> [collection of Esri-related resources](https://github.com/camrex/esri-gis-resources).
+> It is not affiliated with, endorsed by, or supported by Esri, and Esri Technical Support
+> does not cover it. It was checked *against* ArcGIS, not by the people who make ArcGIS —
+> see [VALIDATION.md](VALIDATION.md) for exactly what was measured, and test it on your own
+> data before you trust it. Esri, ArcGIS and ArcGIS Pro are trademarks of Esri.
+
 **The problem it solves:** Arcade cannot reproject. A calculation against a feature
 class stored in a projected coordinate system returns *northing and easting*, not
 latitude and longitude. The numbers come back plausible and wrong, which is the
@@ -25,7 +32,7 @@ geoprocessing tool cannot go.
 **One build, 1,139 EPSG codes**, in two styles:
 
 | | Size | Use it when |
-|---|---|---|
+| --- | --- | --- |
 | [`arcade_latlong_documented.txt`](builds/arcade_latlong_documented.txt) | 30 KB | always, unless the dialog is cramped |
 | [`arcade_latlong_condensed.txt`](builds/arcade_latlong_condensed.txt) | 21 KB | pasting somewhere tight |
 
@@ -63,7 +70,7 @@ never rises above the noise floor of where the data lives.
 Headless, against `arcpy`'s own projection engine over 55,811 reference points:
 
 | | Worst difference |
-|---|---|
+| --- | --- |
 | Algorithm alone | 0.012 mm |
 | With the deliberate 9-decimal rounding of the output | 0.059 mm |
 | In a file geodatabase, real Arcade engine | 0.071 mm |
@@ -162,6 +169,7 @@ of the three implemented projection methods will build, on any ellipsoid, in any
 unit:
 
 ```powershell
+# with ArcGIS Pro's Python -- build_expression.py reads its parameters from arcpy
 python scripts/build_expression.py --codes 25832,25833 --out etrs89_utm.txt
 python scripts/build_expression.py --codes @my_codes.txt --style documented --out mine.txt
 ```
@@ -190,6 +198,11 @@ conversation worth having in the issues.
 Everything used to validate this is in [`scripts/`](scripts/), including the harness
 that executes the Arcade text under Node and the arcpy reference generator. See
 [scripts/README.md](scripts/README.md).
+
+**Most of those scripts require `arcpy`,** which ships with ArcGIS Pro and cannot be
+pip-installed — run them with ArcGIS Pro's Python rather than an ordinary virtual
+environment. `lint.py` is the exception worth knowing about: it is pure Python and runs
+anywhere, including in CI.
 
 ```powershell
 python scripts/validate.py builds/arcade_latlong_condensed.txt      # vs arcpy, headless

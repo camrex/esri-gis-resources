@@ -2,6 +2,15 @@
 
 All 120 named colors from Esri's ArcGIS Colors system style (the successor to the legacy ArcMap standard color set), organized in the published 12-column × 10-row grid with RGB values, hex codes, and brief narrative descriptions for each color.
 
+> **Not an Esri product.** This is a personal reference, part of my own
+> [collection of Esri-related resources](https://github.com/camrex/esri-gis-resources), and
+> it is not affiliated with, endorsed by, or supported by Esri. The colors and their names
+> are Esri's; the grid reproduction, narrative descriptions, conversion notes and analysis
+> in this folder are my own work, published because they have been useful to me and may be
+> useful to others. Esri, ArcGIS, ArcGIS Pro and ArcMap are trademarks of Esri. Values here
+> are verified against the live style file, but check them against your own ArcGIS Pro
+> install before relying on them.
+
 ## Files
 
 The palette HTML page is also available online: [arcgis_pro_palette.html](https://camrex.github.io/esri-gis-resources/color-palettes/arcgis-pro-standard-palette/arcgis_pro_palette.html)

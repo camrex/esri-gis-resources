@@ -1,8 +1,20 @@
 # Esri GIS Resources
 
-A personal collection of practical resources, references, and helper materials I find useful while working with Esri products.  # noqa: E999
+A personal collection of practical resources, references, and helper materials I find useful while working with Esri products.
 
 This repository is meant to be lightweight and utility-focused: small, reusable assets that are easy to browse and use.
+
+## Not an Esri product
+
+**This is my own personal collection, and it is not affiliated with, endorsed by, or
+supported by Esri.** Nothing here comes from Esri or has been reviewed by them. It is one
+person's working material, assembled while using their software day to day and published
+because it has been genuinely useful to me and looks likely to be useful to other people
+doing the same work.
+
+Esri, ArcGIS, ArcGIS Pro and ArcMap are trademarks of Esri, referenced here descriptively.
+Esri Technical Support does not cover anything in this repository. Where a resource touches
+your data — an expression, an attribute rule, a script — test it before you trust it.
 
 ## Current Resources
 
@@ -64,6 +76,10 @@ Current high-level structure:
 ```text
 esri-gis-resources/
  README.md
+ CONTRIBUTING.md
+ .github/
+  ISSUE_TEMPLATE/
+  PULL_REQUEST_TEMPLATE.md
  color-palettes/
   arcgis-pro-standard-palette/
    arcgis_pro_palette.html
@@ -79,6 +95,7 @@ esri-gis-resources/
    README.md
  arcade-stateplane-utm-to-latlong/
   index.html
+  social-card.png
   README.md
   VALIDATION.md
   builds/
@@ -91,6 +108,9 @@ esri-gis-resources/
    run_in_arcade.py
    apply_rule.py
    README.md
+ tools/
+  make_social_card.py
+  README.md
 ```
 
 ## Notes
@@ -98,3 +118,5 @@ esri-gis-resources/
 - This project is intentionally informal and iterative.
 - Additional Esri-related resources will be added over time.
 - Repository change history is tracked in [CHANGELOG.md](./CHANGELOG.md).
+- Corrections and contributions are welcome — see [CONTRIBUTING.md](./CONTRIBUTING.md),
+  or [open an issue](https://github.com/camrex/esri-gis-resources/issues/new/choose).
