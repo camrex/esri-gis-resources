@@ -1,0 +1,62 @@
+name: Palette value or description correction
+description: A color here disagrees with the ArcGIS Pro style file, or a name or description is wrong.
+labels: ["palette"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Values in this folder are checked against the live **ArcGIS Colors** system style, not
+        against Esri's published documentation — the two have disagreed before (Glacier Blue is
+        a typo in Esri KB 000010027, and `Cretan Blue` was corrected here in April 2026 from the
+        documented value to the style-file value).
+
+        So the useful question is always: **which source says what?**
+
+  - type: input
+    id: color
+    attributes:
+      label: Color name
+      placeholder: "Sahara Sand"
+    validations:
+      required: true
+
+  - type: input
+    id: values
+    attributes:
+      label: The value you have, and where it came from
+      description: RGB or hex, plus the source — the `.stylx` in your Pro install, the Color Editor, an Esri PDF, or a KB article.
+      placeholder: "RGB(255, 235, 175) #FFEBAF — ArcGIS Pro 3.7 Color Editor"
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: ArcGIS Pro version
+      description: Palette values change between releases, so this decides whether it is a correction or a version difference.
+      placeholder: "3.7"
+    validations:
+      required: false
+
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What kind of correction
+      options:
+        - An RGB / hex value disagrees with the style file
+        - A color name is wrong or uses the legacy ArcMap spelling
+        - A narrative description is inaccurate
+        - Grid position, CSV, XLSX or PNG is out of step with the rest
+        - Something on the interactive page or the ΔE explorer
+    validations:
+      required: true
+
+  - type: textarea
+    id: detail
+    attributes:
+      label: Detail
+      description: |
+        If you can run it, `python color-palettes/scripts/verify_palette.py` compares every value
+        against your installed style file — pasting the row it flags settles the question outright.
+    validations:
+      required: false

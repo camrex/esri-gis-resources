@@ -1,0 +1,90 @@
+name: Something returns the wrong value, or errors
+description: A resource here gives a wrong answer, refuses valid data, or fails to run.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Wrong numbers are the interesting kind of report — a lat/long that comes back
+        *plausible* and wrong is the failure mode this project exists to prevent. Please
+        include the coordinate you got and the one you expected, however rough.
+
+  - type: dropdown
+    id: resource
+    attributes:
+      label: Which resource
+      options:
+        - Arcade — State Plane / UTM to latitude & longitude
+        - Color palettes — ArcGIS Pro / ArcMap standard palette
+        - Repository docs, landing pages, or scripts
+        - Something else
+    validations:
+      required: true
+
+  - type: dropdown
+    id: surface
+    attributes:
+      label: Where it ran
+      description: Skip if this is not about the Arcade expression.
+      options:
+        - Calculate Field
+        - Popup or label
+        - Attribute rule
+        - The scripts in scripts/ (validate.py, lint.py, run_in_arcade.py, …)
+        - Not applicable
+    validations:
+      required: false
+
+  - type: input
+    id: wkid
+    attributes:
+      label: WKID / EPSG code of the data
+      description: The spatial reference the features are stored in — e.g. 6455, 26915, 32139.
+      placeholder: "6455"
+    validations:
+      required: false
+
+  - type: input
+    id: version
+    attributes:
+      label: ArcGIS Pro version
+      description: Also note ArcGIS Enterprise or Online if the expression ran there instead.
+      placeholder: "3.7"
+    validations:
+      required: false
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected, and what you got
+      description: |
+        For a wrong coordinate, the most useful thing is one feature: its stored X/Y, the
+        lat/long this returned, and the lat/long you believe is right (Calculate Geometry
+        Attributes against the source's own geographic system is the reference this project
+        is measured against).
+      placeholder: |
+        Stored X/Y:  1,159,283.44  1,915,442.10  (EPSG:6455)
+        Returned:    41.881832000, -87.623177000
+        Expected:    41.881832000, -87.623178000   (Calculate Geometry Attributes)
+    validations:
+      required: true
+
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+      description: Include the exact error text if there is one — Arcade and attribute-rule errors are usually specific enough to diagnose from.
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Worth ruling out first
+      description: Each of these produces a real, believable, wrong answer. None are required to file.
+      options:
+        - label: The target field is **Double**, not Float — Float is single precision and caps you near 0.2 m.
+        - label: The WKID is in the shipped list (`builds/arcade_latlong_documented_codes.json`). NAD27 and other grid-shift datums are deliberately rejected.
+        - label: For an attribute rule — the feature class has a **GlobalID** field, and the triggering fields are set explicitly.
+        - label: For an attribute rule — rows that already existed were seeded with Calculate Field; an immediate rule only fires on edits.
+        - label: The data is stored inside its own zone (a statewide layer forced into one county's projection degrades quietly, see VALIDATION.md).

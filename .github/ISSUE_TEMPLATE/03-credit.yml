@@ -1,0 +1,48 @@
+name: Credit and attribution
+description: You wrote something this builds on, or you know who did.
+title: "Credit: "
+labels: ["credit"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        The Arcade expression is a culmination, not an invention. The approach — inline the
+        inverse projection, because Arcade cannot reproject — was worked out on Esri Community
+        over many years by people posting zone-specific expressions and correcting each other's
+        constants. **Named credit is owed and will be added.**
+
+        This applies to any resource here, not just the Arcade one.
+
+  - type: input
+    id: who
+    attributes:
+      label: Who should be named
+      description: Your name as you want it written, and a link if you want one (Esri Community profile, GitHub, site).
+    validations:
+      required: true
+
+  - type: textarea
+    id: what
+    attributes:
+      label: What for
+      description: A link to the post, thread, or reply is ideal. A description works if the original is gone.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: relationship
+    attributes:
+      label: Is this you?
+      options:
+        - Yes, this is my work
+        - "No — I am pointing at someone else's work"
+    validations:
+      required: false
+
+  - type: textarea
+    id: correction
+    attributes:
+      label: Anything mis-stated
+      description: If the credits describe the history wrongly, say so here — that is worth fixing too.
+    validations:
+      required: false

@@ -1,0 +1,79 @@
+name: Add coverage to the Arcade expression
+description: Codes for another country, a projection method it does not implement, or an approach to grid-shift datums.
+labels: ["coverage", "enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        The US scope reflects where the author works and nothing more. The maths is not
+        US-specific — only the shipped code list is.
+
+        **A code list is genuinely the whole contribution**, because the build is generated
+        from it. A `codes.txt` plus the validator output is enough; a pull request is welcome
+        but not expected.
+
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What is missing
+      options:
+        - EPSG codes for a country or region (ETRS89, GDA2020/MGA, SIRGAS, JGD2011, …)
+        - A projection method that is not implemented (Krovák, Stereographic, Cassini, …)
+        - A datum that needs a grid shift (NAD27, OSGB36, Tokyo, …)
+        - Something else about coverage
+    validations:
+      required: true
+
+  - type: textarea
+    id: codes
+    attributes:
+      label: The codes
+      description: |
+        Paste the EPSG codes, or attach a `codes.txt` (one code per line, `#` for comments —
+        see `arcade-stateplane-utm-to-latlong/scripts/codes.txt` for the shipped list).
+      placeholder: |
+        25832
+        25833
+        # or: attach the file, or link a gist
+      render: text
+    validations:
+      required: false
+
+  - type: textarea
+    id: build
+    attributes:
+      label: Did it build?
+      description: |
+        If you have ArcGIS Pro to hand, the generator will tell you most of the answer:
+
+        ```powershell
+        python scripts/build_expression.py --codes @my_codes.txt --out mine.txt
+        python scripts/validate.py mine.txt
+        ```
+
+        Codes using an unimplemented method are reported and refused rather than silently
+        mishandled, so a refusal list is itself useful. Paste whatever the two commands say.
+      render: text
+    validations:
+      required: false
+
+  - type: textarea
+    id: method
+    attributes:
+      label: For a new projection method — the inverse
+      description: |
+        A method slots in beside `iTM` in `scripts/template_documented.py` under a new type
+        number. A reference for the inverse formulation (Snyder chapter, EPSG guidance note,
+        or a working implementation) is the part that is hard to guess.
+    validations:
+      required: false
+
+  - type: markdown
+    attributes:
+      value: |
+        **On grid-shift datums:** NAD27, OSGB36 and their relatives need a shift of up to
+        ~100 m *on top of* the inverse projection. Inverting alone returns coordinates that
+        look right and are 100 m wrong, so those codes are rejected rather than mishandled.
+        Carrying a grid shift was not attempted — that is a scope decision, not a claim about
+        what Arcade can be made to do. If you have a workable approach, this is the honest
+        open problem and worth a conversation.

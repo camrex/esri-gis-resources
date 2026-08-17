@@ -1,0 +1,30 @@
+name: Idea, question, or a new resource
+description: Anything that is not a bug, a coverage request, a credit, or a palette correction.
+labels: ["question"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This repository is a personal collection of Esri-related resources, kept deliberately
+        small and utility-focused. Suggestions for what belongs in it are welcome — as is
+        simply asking whether something here does what you need.
+
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What is this
+      options:
+        - A question about using one of these resources
+        - An idea for improving an existing resource
+        - A suggestion for a new resource
+        - Documentation is wrong, unclear, or a link is broken
+        - Something else
+    validations:
+      required: true
+
+  - type: textarea
+    id: body
+    attributes:
+      label: Details
+    validations:
+      required: true

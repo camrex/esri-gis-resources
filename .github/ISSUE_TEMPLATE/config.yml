@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Esri Community — ArcGIS Arcade questions
+    url: https://community.esri.com/t5/arcgis-arcade-questions/bd-p/arcgis-arcade-questions
+    about: General Arcade help that is not specific to a resource in this repository is answered faster by the Esri community.
+  - name: Vote for native reprojection in Arcade
+    url: https://community.esri.com/t5/arcgis-pro-ideas/arcade-projectas-geometry-function/idi-p/1171382
+    about: The ArcGIS Idea that would make the State Plane / UTM expression unnecessary. Vote for it.
