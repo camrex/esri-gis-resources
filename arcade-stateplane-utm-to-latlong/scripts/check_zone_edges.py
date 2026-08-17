@@ -14,7 +14,8 @@ import os
 import subprocess
 import sys
 
-import arcpy
+# Requires ArcGIS Pro's Python -- arcpy cannot be pip-installed.
+import arcpy  # pyright: ignore[reportMissingImports]
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 BUILDS = {"build": (sys.argv[1] if len(sys.argv) > 1
@@ -31,13 +32,16 @@ OFFSETS = [0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 5, 6, 8, 10]
 
 pts, meta = [], []
 for name, w, lat, cm in CASES:
-    sr = arcpy.SpatialReference(w); gcs = sr.GCS
+    sr = arcpy.SpatialReference(w)
+    gcs = sr.GCS
     for d in OFFSETS:
         for sgn in (1, -1):
-            if d == 0 and sgn < 0: continue
+            if d == 0 and sgn < 0:
+                continue
             lon = cm + sgn * d
             g = arcpy.PointGeometry(arcpy.Point(lon, lat), gcs).projectAs(sr).getPart(0)
-            pts.append([w, g.X, g.Y, lat, lon]); meta.append((name, w, d, lat, lon))
+            pts.append([w, g.X, g.Y, lat, lon])
+            meta.append((name, w, d, lat, lon))
 json.dump(pts, open(os.path.join(HERE, "_edge_pts.json"), "w"))
 
 A = 6378137.0
@@ -51,17 +55,24 @@ for label, path in BUILDS.items():
 print("Error (mm) vs |longitude - central meridian|, at the zone's mid-latitude\n")
 by = collections.defaultdict(dict)
 for i, (name, w, d, lat, lon) in enumerate(meta):
-    f = arcpy.SpatialReference(w).GCS.flattening; e2 = 2 * f - f * f
-    ph = math.radians(lat); s = math.sin(ph); wv = 1 - e2 * s * s
-    M = A * (1 - e2) / wv ** 1.5; N = A / math.sqrt(wv)
+    f = arcpy.SpatialReference(w).GCS.flattening
+    e2 = 2 * f - f * f
+    ph = math.radians(lat)
+    s = math.sin(ph)
+    wv = 1 - e2 * s * s
+    M = A * (1 - e2) / wv ** 1.5
+    N = A / math.sqrt(wv)
     for label in BUILDS:
         r = res[label][i]
         if not isinstance(r, dict) or "result" not in r:
-            by[name].setdefault(d, {})[label] = None; continue
+            by[name].setdefault(d, {})[label] = None
+            continue
         a = r["result"]["attributes"]
         dl = a["LON_CALCULATED"] - lon
-        if dl > 180: dl -= 360
-        if dl < -180: dl += 360
+        if dl > 180:
+            dl -= 360
+        if dl < -180:
+            dl += 360
         e = math.hypot(math.radians(dl) * N * math.cos(ph),
                        math.radians(a["LAT_CALCULATED"] - lat) * M) * 1000
         prev = by[name].setdefault(d, {}).get(label)

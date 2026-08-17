@@ -7,13 +7,20 @@ entry count drives run time and file size does not. Comments are free.
     python bench.py                       # the shipped builds
     python bench.py a.txt b.txt ...       # any builds
 """
-import os, random, re, sys, time
-import arcpy
+import os
+import random
+import re
+import sys
+import time
+# Requires ArcGIS Pro's Python -- arcpy cannot be pip-installed.
+import arcpy  # pyright: ignore[reportMissingImports]
 arcpy.env.overwriteOutput = True
 HERE = os.path.dirname(os.path.abspath(__file__))
-WS = os.path.join(HERE, "_scratch"); GDB = os.path.join(WS, "bench.gdb")
+WS = os.path.join(HERE, "_scratch")
+GDB = os.path.join(WS, "bench.gdb")
 os.makedirs(WS, exist_ok=True)
-if arcpy.Exists(GDB): arcpy.management.Delete(GDB)
+if arcpy.Exists(GDB):
+    arcpy.management.Delete(GDB)
 arcpy.management.CreateFileGDB(WS, "bench.gdb")
 sr = arcpy.SpatialReference(6455)
 
@@ -25,7 +32,8 @@ arcpy.management.CreateFeatureclass(GDB, "bench", "POINT", spatial_reference=sr)
 arcpy.management.AddField(fc, "LAT_CALCULATED", "DOUBLE")
 arcpy.management.AddField(fc, "LON_CALCULATED", "DOUBLE")
 with arcpy.da.InsertCursor(fc, ["SHAPE@XY"]) as ic:
-    for p in pts: ic.insertRow([p])
+    for p in pts:
+        ic.insertRow([p])
 
 BUILDS = ([(os.path.basename(p), p) for p in sys.argv[1:]] or
           [("condensed", os.path.join(HERE, "..", "builds", "arcade_latlong_condensed.txt")),
@@ -61,11 +69,14 @@ for label, path in BUILDS:
         triggering_events="INSERT;UPDATE", error_number=9001, error_message="x",
         exclude_from_client_evaluation="INCLUDE")
     ed = arcpy.da.Editor(GDB)
-    ed.startEditing(False, False); ed.startOperation()
+    ed.startEditing(False, False)
+    ed.startOperation()
     t = time.perf_counter()
     with arcpy.da.InsertCursor(rfc, ["SHAPE@XY"]) as ic:
-        for p in pts[:1500]: ic.insertRow([p])
+        for p in pts[:1500]:
+            ic.insertRow([p])
     el = time.perf_counter() - t
-    ed.stopOperation(); ed.stopEditing(True)
+    ed.stopOperation()
+    ed.stopEditing(True)
     got = sum(1 for r in arcpy.da.SearchCursor(rfc, ["LAT_CALCULATED"]) if r[0] is not None)
     print("%-24s %9.2fs %11.1f us   (%d/1500 populated)" % (label, el, el / 1500 * 1e6, got))

@@ -5,16 +5,23 @@ coordinates on the SOURCE datum, and anything consuming them as WGS 84 inherits
 whatever offset ArcGIS would have applied. This measures that offset both ways --
 under ArcGIS's default (a null transformation) and under an explicit one.
 """
-import math, arcpy
+import math
+# Requires ArcGIS Pro's Python -- arcpy cannot be pip-installed.
+import arcpy  # pyright: ignore[reportMissingImports]
 WGS84 = arcpy.SpatialReference(4326)
 PTS = [("Chicago", 41.8781, -87.6298), ("Springfield IL", 39.7817, -89.6501),
        ("Denver", 39.7392, -104.9903), ("Los Angeles", 34.0522, -118.2437),
        ("Miami", 25.7617, -80.1918), ("Honolulu", 21.3069, -157.8583)]
 GCS = [("NAD83", 4269), ("NAD83(HARN)", 4152), ("NAD83(2011)", 6318)]
-A = 6378137.0; f = 1/298.257222101; e2 = 2*f - f*f
+A = 6378137.0
+f = 1/298.257222101
+e2 = 2*f - f*f
 def m(la1, lo1, la2, lo2):
-    ph = math.radians(la1); s = math.sin(ph); w = 1-e2*s*s
-    M = A*(1-e2)/w**1.5; N = A/math.sqrt(w)
+    ph = math.radians(la1)
+    s = math.sin(ph)
+    w = 1-e2*s*s
+    M = A*(1-e2)/w**1.5
+    N = A/math.sqrt(w)
     return math.hypot(math.radians(lo2-lo1)*N*math.cos(ph), math.radians(la2-la1)*M)
 print("%-16s %-14s %14s   %s" % ("point", "source GCS", "shift to 4326", "transformation ArcGIS offers"))
 for gname, gw in GCS:

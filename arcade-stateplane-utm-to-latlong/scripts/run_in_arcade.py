@@ -14,13 +14,13 @@ code, so the full 1,139-code list takes around twenty minutes.
 """
 import argparse
 import collections
-import math
 import os
 import re
 import sys
 import time
 
-import arcpy
+# Requires ArcGIS Pro's Python -- arcpy cannot be pip-installed.
+import arcpy  # pyright: ignore[reportMissingImports]
 
 from validate import codes_for, extent_for, ground_mm, linspace  # noqa: F401
 

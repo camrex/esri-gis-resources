@@ -1,5 +1,8 @@
 """Arcade-specific static checks that a JavaScript harness cannot catch."""
-import os, re, sys, collections
+import os
+import re
+import sys
+import collections
 
 ARCADE_BUILTINS = """Abs Acos Angle Area AreaGeodetic Asin Atan Atan2 Attachments Average
 Bearing Boolean Buffer BufferGeodetic Ceil Centroid Clip Concatenate Console Constrain
@@ -31,10 +34,12 @@ def strip(src):
         while i < len(ln):
             c = ln[i]
             if q:
-                if c == q: q = None
+                if c == q:
+                    q = None
                 res.append(" ")
             elif c in "\"'":
-                q = c; res.append(" ")
+                q = c
+                res.append(" ")
             elif c == "/" and i + 1 < len(ln) and ln[i + 1] == "/":
                 break
             else:
@@ -67,7 +72,8 @@ def check(path):
         decls[m.group(1).lower()].append(m.group(1))
         for a in m.group(2).split(","):
             a = a.strip()
-            if a: decls[a.lower()].append(a)
+            if a:
+                decls[a.lower()].append(a)
     coll = {k: sorted(set(v)) for k, v in decls.items() if len(set(v)) > 1}
     print("  case-insensitive identifier collisions: %d" % len(coll))
     for k, v in list(coll.items())[:8]:
@@ -90,10 +96,13 @@ def check(path):
         i, d = m.end(), 0
         while i < len(code) and code[i] not in ";\n":
             c = code[i]
-            if c in "([{": d += 1
-            elif c in ")]}": d -= 1
+            if c in "([{":
+                d += 1
+            elif c in ")]}":
+                d -= 1
             elif c == "," and d == 0:
-                multi.append(code[m.start():i + 10].replace("\n", " ")); break
+                multi.append(code[m.start():i + 10].replace("\n", " "))
+                break
             i += 1
     print("  multi-declarator var statements: %d %s" % (len(multi), multi[:3]))
     problems += len(multi)

@@ -25,7 +25,8 @@ import re
 import subprocess
 import sys
 
-import arcpy
+# Requires ArcGIS Pro's Python -- arcpy cannot be pip-installed.
+import arcpy  # pyright: ignore[reportMissingImports]
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 A_DEFAULT = 6378137.0

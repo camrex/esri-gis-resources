@@ -10,8 +10,15 @@ Steps once running: add LAT/LON fields and GlobalIDs if missing, attach the calc
 rule, backfill the existing rows with Calculate Field, then verify a random sample
 against arcpy's own projectAs and confirm the rule fires on a real edit.
 """
-import argparse, math, os, random, re, sys, time
-import arcpy
+import argparse
+import math
+import os
+import random
+import re
+import sys
+import time
+# Requires ArcGIS Pro's Python -- arcpy cannot be pip-installed.
+import arcpy  # pyright: ignore[reportMissingImports]
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 DEFAULT_SCRIPT = os.path.normpath(
@@ -60,7 +67,10 @@ if m:                                   # run-compressed build
         for i in range(int(cnt)):
             codes.add(int(w0) + i * int(dw))
 else:                                   # dictionary build
-    codes = {int(x) for x in re.findall(r'"(\d+)":', re.search(r"var WK=\{(.*?)\n\};", src, re.S).group(1))}
+    wk = re.search(r"var WK=\{(.*?)\n\};", src, re.S)
+    if not wk:
+        sys.exit("cannot determine the code list for %s" % a.script)
+    codes = {int(x) for x in re.findall(r'"(\d+)":', wk.group(1))}
 
 print("=" * 72)
 print("PREFLIGHT  %s" % a.fc)
@@ -171,11 +181,16 @@ f = gcs.flattening
 e2 = 2 * f - f * f
 A = 6378137.0
 def dist_mm(la1, lo1, la2, lo2):
-    ph = math.radians(la1); s = math.sin(ph); w = 1 - e2 * s * s
-    M = A * (1 - e2) / w ** 1.5; N = A / math.sqrt(w)
+    ph = math.radians(la1)
+    s = math.sin(ph)
+    w = 1 - e2 * s * s
+    M = A * (1 - e2) / w ** 1.5
+    N = A / math.sqrt(w)
     dl = lo2 - lo1
-    if dl > 180: dl -= 360
-    if dl < -180: dl += 360
+    if dl > 180:
+        dl -= 360
+    if dl < -180:
+        dl += 360
     return math.hypot(math.radians(dl) * N * math.cos(ph), math.radians(la2 - la1) * M) * 1000.0
 
 oids = [r[0] for r in arcpy.da.SearchCursor(target, ["OID@"])]
@@ -185,15 +200,19 @@ worst, nulls, checked, worst_oid = 0.0, 0, 0, None
 oid_fld = arcpy.Describe(target).OIDFieldName
 with arcpy.da.SearchCursor(target, ["OID@", "SHAPE@", a.lat_field, a.lon_field]) as sc:
     for oid, geom, la, lo in sc:
-        if oid not in pick: continue
+        if oid not in pick:
+            continue
         if la is None or lo is None:
-            nulls += 1; continue
-        if geom is None: continue
+            nulls += 1
+            continue
+        if geom is None:
+            continue
         c = geom.centroid
         g = arcpy.PointGeometry(arcpy.Point(c.X, c.Y), sr).projectAs(gcs).getPart(0)
         dd = dist_mm(g.Y, g.X, la, lo)
         checked += 1
-        if dd > worst: worst, worst_oid = dd, oid
+        if dd > worst:
+            worst, worst_oid = dd, oid
 
 print("\nverification against arcpy projectAs, %d sampled features:" % len(pick))
 print("  checked %d, null lat/long %d, worst error %.4f mm (OID %s)" % (checked, nulls, worst, worst_oid))
@@ -225,20 +244,26 @@ def shift(geom, dx):
     return arcpy.Polygon(parts, sr) if geom.type == "polygon" else arcpy.Polyline(parts, sr)
 
 ed = arcpy.da.Editor(gdbws)
-ed.startEditing(False, False); ed.startOperation()
+ed.startEditing(False, False)
+ed.startOperation()
 with arcpy.da.UpdateCursor(target, ["SHAPE@"], where) as uc:
     for row in uc:
-        uc.updateRow([shift(original, 30.0)]); break
-ed.stopOperation(); ed.stopEditing(True)
+        uc.updateRow([shift(original, 30.0)])
+        break
+ed.stopOperation()
+ed.stopEditing(True)
 with arcpy.da.SearchCursor(target, [a.lat_field, a.lon_field], where) as sc:
     after = next(iter(sc))
 
 # put the geometry back; the rule recalculates the original values with it
-ed.startEditing(False, False); ed.startOperation()
+ed.startEditing(False, False)
+ed.startOperation()
 with arcpy.da.UpdateCursor(target, ["SHAPE@"], where) as uc:
     for row in uc:
-        uc.updateRow([original]); break
-ed.stopOperation(); ed.stopEditing(True)
+        uc.updateRow([original])
+        break
+ed.stopOperation()
+ed.stopEditing(True)
 with arcpy.da.SearchCursor(target, [a.lat_field, a.lon_field], where) as sc:
     restored = next(iter(sc))
 

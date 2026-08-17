@@ -5,17 +5,42 @@ build — the files in [`../builds`](../builds) are self-contained — but all o
 here so the numbers in [VALIDATION.md](../VALIDATION.md) can be reproduced or
 disagreed with.
 
-**Requirements:** ArcGIS Pro's Python (for `arcpy`) and Node.js 18+ (for the harness).
+## Requirements
+
+**Most of these scripts require `arcpy`, which means running them with ArcGIS Pro's
+Python.** `arcpy` ships with ArcGIS Pro and cannot be installed with `pip`, so an ordinary
+virtual environment will not do — use Pro's interpreter, typically
+`C:\Program Files\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\python.exe`, or a cloned Pro
+environment. The **Needs** column in each table below says which scripts those are.
+
+Beyond `arcpy`, **Node.js 18+**: `harness.js` and `compare_builds.js` are Node programs,
+and `validate.py` and `check_zone_edges.py` shell out to `harness.js`.
+
+Four of them need no ArcGIS at all: `lint.py` is pure Python, `template_documented.py` and
+`template_condensed.py` are template modules holding Arcade source and nothing else, and
+`rule_from_csv.py` writes its CSV without ArcGIS and imports `arcpy` only if you pass
+`--apply-to`.
+
+Both templates are the same program in two styles, and a change to the maths belongs in
+both — `build_expression.py` asserts that every `@@PLACEHOLDER@@` was substituted, so a
+template that drifts out of step fails the build rather than shipping.
+
+Every `arcpy` import carries a `# pyright: ignore[reportMissingImports]`, because an editor
+resolving against anything other than Pro's Python cannot see a module that only exists
+inside ArcGIS Pro. The comment is a note about where the dependency comes from, not a
+suppressed mistake.
+
 Run them from this directory.
 
 ## Building
 
-| Script | What it does |
-|---|---|
-| `build_expression.py` | Generate an expression for any set of EPSG codes, reading every parameter from `arcpy.SpatialReference` |
-| `template_documented.py` | The documented Arcade template `build_expression.py` fills in |
-| `codes.txt` | The validated code list behind the published builds |
-| `us_codes.txt` | A worked example of trimming to a subset — measured, and not worth it |
+| Script | Needs | What it does |
+| --- | --- | --- |
+| `build_expression.py` | **arcpy** | Generate an expression for any set of EPSG codes, reading every parameter from `arcpy.SpatialReference` |
+| `template_documented.py` | — | The documented Arcade template, filled in for `--style documented`. The one to read, and to edit first |
+| `template_condensed.py` | — | The same program stripped of commentary, filled in for `--style condensed` |
+| `codes.txt` | — | The validated code list behind the published builds |
+| `us_codes.txt` | — | A worked example of trimming to a subset — measured, and not worth it |
 
 ```powershell
 # --label only sets the header comment, but it is what makes these two commands
@@ -34,20 +59,20 @@ Tokyo Datum.
 
 ## Verifying
 
-| Script | What it checks |
-|---|---|
-| `validate.py` | Every code in a build against `arcpy`, headless via Node. The bulk check. |
-| `compare_calc_geometry.py` | The build against ArcGIS Pro's own Calculate Geometry Attributes, and what asking it for WGS 84 costs |
-| `lint.py` | Arcade-specific static analysis. **Run this after any edit.** |
-| `run_in_arcade.py` | The real ArcGIS Arcade engine, one scratch feature class per code |
-| `probe_arcade.py` | What the engine actually supports — run it when a function's behaviour is in doubt |
-| `harness.js` | Executes the Arcade text under Node with the built-ins mapped to JavaScript |
-| `compare_builds.js` | Two builds against each other in all four output modes, plus the edge cases |
-| `check_zone_edges.py` | How error grows with distance from the central meridian |
-| `probe_geometry.py` | Geometry-type behaviour, and where a polygon centroid actually lands |
-| `probe_datum.py` | What ArcGIS does to NAD83 coordinates asked for as WGS 84 |
-| `probe_attribute_rules.py` | Triggering fields, insert behaviour, batch-rule constraints |
-| `bench.py` | What actually costs time per feature |
+| Script | Needs | What it checks |
+| --- | --- | --- |
+| `validate.py` | **arcpy** + Node | Every code in a build against `arcpy`, headless via Node. The bulk check. |
+| `compare_calc_geometry.py` | **arcpy** | The build against ArcGIS Pro's own Calculate Geometry Attributes, and what asking it for WGS 84 costs |
+| `lint.py` | — | Arcade-specific static analysis. **Run this after any edit.** |
+| `run_in_arcade.py` | **arcpy** | The real ArcGIS Arcade engine, one scratch feature class per code |
+| `probe_arcade.py` | **arcpy** | What the engine actually supports — run it when a function's behaviour is in doubt |
+| `harness.js` | Node | Executes the Arcade text under Node with the built-ins mapped to JavaScript |
+| `compare_builds.js` | Node | Two builds against each other in all four output modes, plus the edge cases |
+| `check_zone_edges.py` | **arcpy** + Node | How error grows with distance from the central meridian |
+| `probe_geometry.py` | **arcpy** | Geometry-type behaviour, and where a polygon centroid actually lands |
+| `probe_datum.py` | **arcpy** | What ArcGIS does to NAD83 coordinates asked for as WGS 84 |
+| `probe_attribute_rules.py` | **arcpy** | Triggering fields, insert behaviour, batch-rule constraints |
+| `bench.py` | **arcpy** | What actually costs time per feature |
 
 ```powershell
 python compare_calc_geometry.py                                      # vs Pro's own tool
@@ -79,10 +104,10 @@ Hotine routine here that the harness passed cleanly.
 
 ## Applying
 
-| Script | What it does |
-|---|---|
-| `apply_rule.py` | Add the expression to a feature class as an attribute rule, and verify it |
-| `rule_from_csv.py` | Package it as an Export-Attribute-Rules CSV for `ImportAttributeRules` |
+| Script | Needs | What it does |
+| --- | --- | --- |
+| `apply_rule.py` | **arcpy** | Add the expression to a feature class as an attribute rule, and verify it |
+| `rule_from_csv.py` | **arcpy** only for `--apply-to` | Package it as an Export-Attribute-Rules CSV for `ImportAttributeRules` |
 
 ```powershell
 python apply_rule.py --fc path/to.gdb/parcels                       # preflight, changes nothing

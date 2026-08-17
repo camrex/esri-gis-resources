@@ -82,7 +82,9 @@ def main(argv=None):
              a.shape_field or "any edit"))
 
     if a.apply_to:
-        import arcpy
+        # Imported here rather than at module level on purpose: writing the CSV needs no
+        # ArcGIS at all, and only --apply-to requires ArcGIS Pro's Python.
+        import arcpy  # pyright: ignore[reportMissingImports]
         arcpy.management.ImportAttributeRules(a.apply_to, a.out)
         for r in arcpy.Describe(a.apply_to).attributeRules:
             print("   applied: %s enabled=%s triggeringFields=%s"

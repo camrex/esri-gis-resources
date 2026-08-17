@@ -1,6 +1,7 @@
 """Probe what the REAL Arcade engine accepts, via arcpy CalculateField (ARCADE)."""
 import os
-import arcpy
+# Requires ArcGIS Pro's Python -- arcpy cannot be pip-installed.
+import arcpy  # pyright: ignore[reportMissingImports]
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 WS = os.path.join(HERE, "_scratch")

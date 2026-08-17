@@ -17,7 +17,7 @@ and the two registries disagree.
 ## Coverage
 
 | | |
-|---|---|
+| --- | --- |
 | EPSG codes | 1,139 |
 | State Plane | 908 |
 | UTM / BLM | 231 |
@@ -65,7 +65,7 @@ Run over the same 1,139 codes the two paths agree to within that quantisation �
 **55,811 headless points across 1,139 codes; 28,475 points in the real engine.**
 
 | Statistic | Headless | Real Arcade engine |
-|---|---|---|
+| --- | --- | --- |
 | Median | 0.037 mm | 0.038 mm |
 | 95th percentile | 0.049 mm | 0.059 mm |
 | 99th percentile | 0.058 mm | 0.064 mm |
@@ -82,7 +82,7 @@ everything layered on top of it. Only the last row is a mistake; the rest is the
 storing and printing a number:
 
 | | Worst difference from ArcGIS |
-|---|---|
+| --- | --- |
 | Algorithm alone | 0.012 mm |
 | \+ the deliberate `Round(…, 9)` on output | 0.059 mm |
 | \+ file geodatabase coordinate storage | 0.071 mm |
@@ -98,7 +98,7 @@ Building from EPSG's tables rather than `arcpy` leaves 191 of 1,139 codes disagr
 with ArcGIS, each traceable to one constant:
 
 | Cause | Codes | Worst |
-|---|---|---|
+| --- | --- | --- |
 | False-easting overrides derived from PROJ | 28 | 1.002 mm |
 | Scale factor truncated to 9 decimals (`0.999941177` vs ArcGIS's exact `0.9999411764705882`) | 134 | 0.367 mm |
 | False origin in the zone row | 26 | 0.798 mm |
@@ -123,7 +123,7 @@ last digit Calculate Geometry reports. That tool writes 8 decimal places of a de
 this expression writes 9.
 
 | Stored in | Median | Worst | Identical at 8 decimals |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | Illinois East ftUS (6455, TM) | 0.42 mm | 0.71 mm | 177 / 200 |
 | Texas Central (32139, LCC) | 0.44 mm | 0.73 mm | 173 / 200 |
 | UTM 15N (26915, TM) | 0.46 mm | 0.78 mm | 174 / 200 |
@@ -140,7 +140,7 @@ ArcGIS may insert an explicit transformation. Whether it does is decided by the 
 extent, not only by its datum — the same tool, on the same datum, chooses differently:
 
 | Source | Transformation ArcGIS chose | Shift |
-|---|---|---|
+| --- | --- | --- |
 | NAD83 / UTM 15N (Minnesota) | none — null transformation | 0.00 m |
 | NAD83 / Texas Central | `WGS_1984_(ITRF00)_To_NAD_1983` | 1.00 m |
 | NAD83(2011) / Illinois East ftUS | `WGS_1984_(ITRF08)_To_NAD_1983_2011` | 0.96 m |
@@ -155,7 +155,7 @@ The Transverse Mercator series is flat well past any real zone width, then degra
 Lambert Conformal Conic has no longitude series and stays flat everywhere.
 
 | Δλ from central meridian | Illinois East (TM) | UTM 15N (TM) | Texas Central (LCC) |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | ≤ 3.5° | 0.03 mm | 0.00 mm | 0.03 mm |
 | 4° | 0.11 mm | 0.11 mm | 0.03 mm |
 | 6° | 1.44 mm | 1.56 mm | 0.03 mm |
@@ -168,7 +168,7 @@ county's projection. The expression does not warn; it just gets quietly worse.
 ## Edge cases
 
 | Input | Result |
-|---|---|
+| --- | --- |
 | Null or absent geometry | `null`, or an `errorMessage` in RULE mode |
 | NAD27, Web Mercator, WKID 0, any unsupported code | rejected with a message |
 | Geographic feature class (4326, 4269, 6318, …) | centroid passed straight through |
@@ -211,7 +211,7 @@ Arcade rebuilds literal data tables on **every feature**, so lookup-table *entry
 drives run time and file size does not.
 
 | Build | Codes | Size | Calculate Field |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | Flat 1,139-entry dictionary | 1,139 | 31.9 KB | 1,646 µs/feature |
 | Re-encoded, same entry count | 1,139 | 24.4 KB | 1,698 µs — no gain |
 | **Run-compressed (published)** | 1,139 | 21.3 KB | **978 µs** |
@@ -248,7 +248,7 @@ This is worth stating precisely, because two ArcGIS pathways to the same destina
 disagree. On a single NAD83 / Texas Central point, asked for WGS 84:
 
 | Pathway | Transformation applied | Result |
-|---|---|---|
+| --- | --- | --- |
 | `projectAs(4326)`, none named | null | coordinate unchanged |
 | **Calculate Geometry Attributes → WGS 84** | `WGS_1984_(ITRF00)_To_NAD_1983` | **0.935 m away** |
 

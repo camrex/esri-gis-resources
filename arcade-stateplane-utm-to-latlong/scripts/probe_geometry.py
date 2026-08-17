@@ -10,12 +10,17 @@ concave or donut polygon it can fall outside the polygon. arcpy's .centroid sile
 substitutes the label point in that case, which makes a naive comparison of the two
 look like a huge error when it is nothing of the sort.
 """
-import os, re, arcpy
+import os
+import re
+# Requires ArcGIS Pro's Python -- arcpy cannot be pip-installed.
+import arcpy  # pyright: ignore[reportMissingImports]
 arcpy.env.overwriteOutput = True
 HERE = os.path.dirname(os.path.abspath(__file__))
-WS = os.path.join(HERE, "_scratch"); GDB = os.path.join(WS, "geom.gdb")
+WS = os.path.join(HERE, "_scratch")
+GDB = os.path.join(WS, "geom.gdb")
 os.makedirs(WS, exist_ok=True)
-if arcpy.Exists(GDB): arcpy.management.Delete(GDB)
+if arcpy.Exists(GDB):
+    arcpy.management.Delete(GDB)
 arcpy.management.CreateFileGDB(WS, "geom.gdb")
 sr = arcpy.SpatialReference(6455)
 

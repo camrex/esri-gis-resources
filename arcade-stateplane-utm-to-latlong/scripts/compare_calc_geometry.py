@@ -26,7 +26,8 @@ import random
 import re
 import sys
 
-import arcpy
+# Requires ArcGIS Pro's Python -- arcpy cannot be pip-installed.
+import arcpy  # pyright: ignore[reportMissingImports]
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 DEFAULT_BUILD = os.path.normpath(
