@@ -13,3 +13,6 @@ Desktop.ini
 
 # VS Code workspace settings (machine-local)
 .vscode/
+
+# Cached source data for tools/make_card_bg.py -- refetched on demand
+tools/_cache/

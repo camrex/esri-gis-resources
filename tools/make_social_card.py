@@ -19,6 +19,9 @@ from PIL import Image, ImageDraw, ImageFont
 
 REPO = pathlib.Path(__file__).resolve().parent.parent
 OUT = REPO / "arcade-stateplane-utm-to-latlong" / "social-card.png"
+# The map plate and its pinned conversion, from make_card_bg.py. Absent, the card
+# still renders -- it just falls back to plain ground.
+BG = pathlib.Path(__file__).resolve().parent / "card-bg.png"
 W, H = 1200, 630
 PAD = 76
 
@@ -38,12 +41,13 @@ def font(name, size):
 
 
 def render():
-    img = Image.new("RGB", (W, H), SURFACE)
+    img = (Image.open(BG).convert("RGB") if BG.exists()
+           else Image.new("RGB", (W, H), SURFACE))
     d = ImageDraw.Draw(img)
 
-    # Accent spine on the left edge, soft ground band down the right.
+    # Accent spine on the left edge. No ground band on the right any more -- the
+    # map plate occupies that side.
     d.rectangle([0, 0, 9, H], fill=ACCENT)
-    d.rectangle([W - 150, 0, W, H], fill=GROUND)
 
     y = PAD
 
@@ -79,7 +83,9 @@ def render():
 
     y += 30
     x = PAD
-    facts = [("1,139", "EPSG codes"), ("0.07 mm", "worst disagreement"), ("MIT", "licensed")]
+    # Two facts, not three: the pinned conversion occupies the right of the card
+    # now, so MIT moves to the footer line rather than crowding it.
+    facts = [("1,139", "EPSG codes"), ("0.07 mm", "worst disagreement")]
     for i, (num, cap) in enumerate(facts):
         if i:
             d.line([(x - 34, y + 6), (x - 34, y + 62)], fill=RULE, width=1)
@@ -88,7 +94,7 @@ def render():
         d.text((x, y + 50), cap.upper(), font=cf, fill=INK3)
         x += max(d.textlength(num, font=nf), d.textlength(cap.upper(), font=cf)) + 78
 
-    d.text((PAD, H - PAD - 6), "github.com/camrex/esri-gis-resources",
+    d.text((PAD, H - PAD - 6), "github.com/camrex/esri-gis-resources  ·  MIT",
            font=font("consola.ttf", 20), fill=INK3)
 
     return img
