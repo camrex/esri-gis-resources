@@ -7,3 +7,6 @@
 # Scoped to this resource deliberately: it does not disturb anything already committed
 # elsewhere in the repository.
 * text=auto
+
+# Generated image assets are binary; state it rather than rely on auto-detection.
+*.png binary

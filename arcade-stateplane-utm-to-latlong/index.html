@@ -5,6 +5,24 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>State Plane / UTM → Lat-Long in Arcade</title>
 <meta name="description" content="One ArcGIS Arcade expression that converts stored projected coordinates to latitude and longitude across 1,139 EPSG codes — every US State Plane and UTM zone in a single script, returning what ArcGIS itself returns.">
+<link rel="canonical" href="https://camrex.github.io/esri-gis-resources/arcade-stateplane-utm-to-latlong/">
+<meta name="theme-color" content="#0B6E75">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%230B6E75'/><path d='M8 16h13m-5-5 5 5-5 5' fill='none' stroke='%23fff' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="esri-gis-resources">
+<meta property="og:url" content="https://camrex.github.io/esri-gis-resources/arcade-stateplane-utm-to-latlong/">
+<meta property="og:title" content="State Plane / UTM → Latitude &amp; Longitude, in Arcade">
+<meta property="og:description" content="One Arcade expression across every US State Plane and UTM zone — 1,139 EPSG codes, returning what ArcGIS itself returns, where a geoprocessing tool cannot go.">
+<meta property="og:image" content="https://camrex.github.io/esri-gis-resources/arcade-stateplane-utm-to-latlong/social-card.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="State Plane / UTM to Latitude &amp; Longitude, in Arcade — 1,139 EPSG codes, 0.07 mm worst disagreement, MIT licensed.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="State Plane / UTM → Latitude &amp; Longitude, in Arcade">
+<meta name="twitter:description" content="One Arcade expression across every US State Plane and UTM zone — 1,139 EPSG codes, returning what ArcGIS itself returns, where a geoprocessing tool cannot go.">
+<meta name="twitter:image" content="https://camrex.github.io/esri-gis-resources/arcade-stateplane-utm-to-latlong/social-card.png">
 <style>
   :root{
     --ground:#EDF0F3; --surface:#FFFFFF; --surface-2:#F4F7F9;
@@ -117,6 +135,7 @@
 
   footer{border-top:1px solid var(--rule);padding-top:1.25rem;font-size:.86rem;color:var(--ink-3);
          display:flex;flex-direction:column;gap:.5rem}
+  footer strong{color:var(--ink-2)}
 </style>
 </head>
 <body>
@@ -170,6 +189,11 @@
       <span class="n">arcade_latlong_condensed.txt →</span>
       <span class="m">21 KB · 1,139 codes</span>
       <span class="d">Same program, no commentary. For when the dialog is cramped.</span>
+    </a>
+    <a href="https://github.com/camrex/esri-gis-resources/tree/main/arcade-stateplane-utm-to-latlong">
+      <span class="n">View it on GitHub →</span>
+      <span class="m">MIT · issues open</span>
+      <span class="d">The README, the validation report, and the build toolchain.</span>
     </a>
   </div>
   <p>Coverage is every US State Plane zone across seven NAD83 realizations, every UTM
@@ -370,6 +394,11 @@ python scripts/build_expression.py --codes 25832,25833 --out etrs89_utm.txt</pre
 </section>
 
 <footer>
+  <div><strong>Not an Esri product.</strong> This is a personal project, part of my own
+  collection of Esri-related resources. It is not affiliated with, endorsed by, or
+  supported by Esri, and Esri Technical Support does not cover it. It was checked
+  <em>against</em> ArcGIS, not by the people who make ArcGIS — test it on your own data
+  before you trust it. Esri, ArcGIS and ArcGIS Pro are trademarks of Esri.</div>
   <div>Assembled and validated by <strong>Cameron Rex</strong>
   (<a href="https://rmivaluation.com">RMI Valuation LLC</a>), with <strong>Claude</strong>
   (Anthropic's AI model). Inverse-projection formulations follow Snyder,
