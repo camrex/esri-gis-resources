@@ -6,7 +6,7 @@ All notable changes to this repository will be documented in this file.
 
 The format is based on Keep a Changelog.
 
-## [Unreleased]
+## [2026-08-17]
 
 ### Added
 
