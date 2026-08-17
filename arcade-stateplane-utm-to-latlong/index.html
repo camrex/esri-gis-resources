@@ -115,12 +115,15 @@
 
   .scroll{overflow-x:auto;border:1px solid var(--rule);border-radius:3px;background:var(--surface)}
   table{border-collapse:collapse;width:100%;font-size:.85rem}
-  th,td{padding:.5rem .8rem;text-align:left;border-bottom:1px solid var(--rule-2);white-space:nowrap}
+  th,td{padding:.5rem .8rem;text-align:left;border-bottom:1px solid var(--rule-2);white-space:nowrap;
+        vertical-align:middle}
   thead th{font-size:.71rem;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3);
            font-weight:600;background:var(--surface-2);border-bottom:1px solid var(--rule)}
   tbody tr:last-child td{border-bottom:none}
   td.num,th.num{text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums}
-  td.wrap{white-space:normal;min-width:15rem}
+  /* Not ".wrap" -- that is the page container above, and a cell sharing the name
+     inherits its flex layout and 5rem bottom padding. */
+  th.wrapcell,td.wrapcell{white-space:normal;min-width:15rem}
 
   .note{background:var(--surface);border:1px solid var(--rule);border-left:4px solid var(--warn);
         border-radius:3px;padding:1.2rem 1.5rem;box-shadow:var(--shadow);
@@ -322,12 +325,12 @@ var MD = "RULE";  <span class="cmt">// attribute-rule dictionary writing both fi
   table into 380 arithmetic runs is what buys both.</p>
   <div class="scroll">
     <table>
-      <thead><tr><th>Approach</th><th class="num">Size</th><th class="num">Per feature</th><th class="wrap">Effect</th></tr></thead>
+      <thead><tr><th>Approach</th><th class="num">Size</th><th class="num">Per feature</th><th class="wrapcell">Effect</th></tr></thead>
       <tbody>
-        <tr><td>Flat 1,139-entry dictionary</td><td class="num">31.9 KB</td><td class="num">1,646 µs</td><td class="wrap">baseline</td></tr>
-        <tr><td>Re-encoded, same entry count</td><td class="num">24.4 KB</td><td class="num">1,698 µs</td><td class="wrap">23% smaller, no faster</td></tr>
-        <tr><td><strong>Run-compressed (shipped)</strong></td><td class="num">21.3 KB</td><td class="num">978 µs</td><td class="wrap">1.7× faster</td></tr>
-        <tr><td>Shipped, documented vs condensed</td><td class="num">30 / 21 KB</td><td class="num">963 / 966 µs</td><td class="wrap">comments are free</td></tr>
+        <tr><td>Flat 1,139-entry dictionary</td><td class="num">31.9 KB</td><td class="num">1,646 µs</td><td class="wrapcell">baseline</td></tr>
+        <tr><td>Re-encoded, same entry count</td><td class="num">24.4 KB</td><td class="num">1,698 µs</td><td class="wrapcell">23% smaller, no faster</td></tr>
+        <tr><td><strong>Run-compressed (shipped)</strong></td><td class="num">21.3 KB</td><td class="num">978 µs</td><td class="wrapcell">1.7× faster</td></tr>
+        <tr><td>Shipped, documented vs condensed</td><td class="num">30 / 21 KB</td><td class="num">963 / 966 µs</td><td class="wrapcell">comments are free</td></tr>
       </tbody>
     </table>
   </div>
