@@ -1,0 +1,7 @@
+# scratch geodatabases and reference data created by the verification scripts
+scripts/_scratch/
+scripts/_t/
+scripts/__pycache__/
+# Reference points and intermediate results written by the verification scripts.
+# The leading underscore marks them as scratch; nothing tracked here starts with one.
+scripts/_*.json

@@ -1,0 +1,9 @@
+# Line endings are normalised to LF inside the repository, so that an expression
+# rebuilt by build_expression.py matches the committed one on any platform. Without
+# this, a contributor on Linux or macOS regenerating the build sees every line of a
+# 500-line file as changed -- which would make "it reproduces byte for byte" a claim
+# that only held on the machine it was built on.
+#
+# Scoped to this resource deliberately: it does not disturb anything already committed
+# elsewhere in the repository.
+* text=auto
