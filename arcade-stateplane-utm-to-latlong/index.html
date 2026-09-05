@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>State Plane / UTM → Lat-Long in Arcade</title>
-<meta name="description" content="One ArcGIS Arcade expression that converts stored projected coordinates to latitude and longitude across 1,139 EPSG codes — every US State Plane and UTM zone in a single script, returning what ArcGIS itself returns.">
+<meta name="description" content="One ArcGIS Arcade expression that converts stored projected coordinates to latitude and longitude across 1,232 coordinate system codes — every US State Plane and UTM zone in a single script, returning what ArcGIS itself returns.">
 <link rel="canonical" href="https://camrex.github.io/esri-gis-resources/arcade-stateplane-utm-to-latlong/">
 <meta name="theme-color" content="#0B6E75">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%230B6E75'/><path d='M8 16h13m-5-5 5 5-5 5' fill='none' stroke='%23fff' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/></svg>">
@@ -16,15 +16,17 @@
 <meta property="article:published_time" content="2026-08-16">
 <meta property="og:url" content="https://camrex.github.io/esri-gis-resources/arcade-stateplane-utm-to-latlong/">
 <meta property="og:title" content="State Plane / UTM → Latitude &amp; Longitude, in Arcade">
-<meta property="og:description" content="One Arcade expression across every US State Plane and UTM zone — 1,139 EPSG codes, returning what ArcGIS itself returns, where a geoprocessing tool cannot go.">
+<meta property="og:description" content="One Arcade expression across every US State Plane and UTM zone — 1,232 coordinate system codes, returning what ArcGIS itself returns, where a geoprocessing tool cannot go.">
 <meta property="og:image" content="https://camrex.github.io/esri-gis-resources/arcade-stateplane-utm-to-latlong/social-card.png">
 <meta property="og:image:type" content="image/png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
+<!-- social-card.png still shows the 1,139-code figure; the alt text matches the image
+     deliberately rather than the current build. Re-render the card to update both. -->
 <meta property="og:image:alt" content="State Plane / UTM to Latitude &amp; Longitude, in Arcade — 1,139 EPSG codes, 0.07 mm worst disagreement, MIT licensed.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="State Plane / UTM → Latitude &amp; Longitude, in Arcade">
-<meta name="twitter:description" content="One Arcade expression across every US State Plane and UTM zone — 1,139 EPSG codes, returning what ArcGIS itself returns, where a geoprocessing tool cannot go.">
+<meta name="twitter:description" content="One Arcade expression across every US State Plane and UTM zone — 1,232 coordinate system codes, returning what ArcGIS itself returns, where a geoprocessing tool cannot go.">
 <meta name="twitter:image" content="https://camrex.github.io/esri-gis-resources/arcade-stateplane-utm-to-latlong/social-card.png">
 
 <script type="application/ld+json">
@@ -32,7 +34,7 @@
   "@context": "https://schema.org",
   "@type": "TechArticle",
   "headline": "State Plane / UTM to Latitude & Longitude, in Arcade",
-  "description": "One ArcGIS Arcade expression that converts stored projected coordinates to latitude and longitude across 1,139 EPSG codes.",
+  "description": "One ArcGIS Arcade expression that converts stored projected coordinates to latitude and longitude across 1,232 coordinate system codes.",
   "url": "https://camrex.github.io/esri-gis-resources/arcade-stateplane-utm-to-latlong/",
   "image": "https://camrex.github.io/esri-gis-resources/arcade-stateplane-utm-to-latlong/social-card.png",
   "datePublished": "2026-08-16",
@@ -236,7 +238,7 @@
   <p class="byline">By <a href="https://rmivaluation.com">Cameron Rex</a>, RMI Valuation LLC
   · Published <time datetime="2026-08-16">16 August 2026</time></p>
   <div class="facts">
-    <div>EPSG codes <b>1,139</b></div>
+    <div>Coordinate codes <b>1,232</b></div>
     <div>Agrees with Pro to <b>0.07 mm</b></div>
     <div>Verified against <b>arcpy 3.7</b></div>
     <div>License <b>MIT</b></div>
@@ -270,12 +272,12 @@
   <div class="grab">
     <a href="builds/arcade_latlong_documented.txt">
       <span class="n">arcade_latlong_documented.txt →</span>
-      <span class="m">30 KB · 1,139 codes</span>
+      <span class="m">31 KB · 1,232 codes</span>
       <span class="d">Start here. Fully commented, and it runs at exactly the same speed.</span>
     </a>
     <a href="builds/arcade_latlong_condensed.txt">
       <span class="n">arcade_latlong_condensed.txt →</span>
-      <span class="m">21 KB · 1,139 codes</span>
+      <span class="m">22 KB · 1,232 codes</span>
       <span class="d">Same program, no commentary. For when the dialog is cramped.</span>
     </a>
     <a href="https://github.com/camrex/esri-gis-resources/tree/main/arcade-stateplane-utm-to-latlong">
@@ -340,19 +342,19 @@ var MD = "RULE";  <span class="cmt">// attribute-rule dictionary writing both fi
   Geometry's final digit.</p>
   <div class="tiles">
     <div class="tile"><span class="k">Worst disagreement</span>
-      <span class="n good">0.071<small> mm</small></span>
-      <span class="s">real engine, all 1,139 codes</span></div>
+      <span class="n good">0.074<small> mm</small></span>
+      <span class="s">real engine, all 1,232 codes</span></div>
     <div class="tile"><span class="k">Runtime errors</span>
       <span class="n good">0</span>
       <span class="s">every code, every output mode</span></div>
     <div class="tile"><span class="k">Test points</span>
-      <span class="n">55,811</span>
-      <span class="s">headless, plus 28,475 in-engine</span></div>
+      <span class="n">60,368</span>
+      <span class="s">headless, plus 30,800 in-engine</span></div>
     <div class="tile"><span class="k">Live parcels checked</span>
       <span class="n">47,630</span>
       <span class="s">every one, within 0.068 mm</span></div>
   </div>
-  <p>0.071 mm <em>is</em> the floor: a file geodatabase quantises coordinates at
+  <p>0.074 mm <em>is</em> the floor: a file geodatabase quantises coordinates at
   0.0001 m, which displaces a point by up to 0.07 mm before the expression ever sees
   it. The disagreement never rises above the noise floor of where the data lives.</p>
   <p>Parity is also why zone parameters are read from
@@ -407,7 +409,7 @@ var MD = "RULE";  <span class="cmt">// attribute-rule dictionary writing both fi
   <h2>What actually costs time</h2>
   <p>Arcade rebuilds the literal data tables on <strong>every feature</strong>, so
   lookup-table entry count drives run time and file size does not. Collapsing the WKID
-  table into 380 arithmetic runs is what buys both.</p>
+  table into 407 arithmetic runs is what buys both.</p>
   <div class="scroll">
     <table>
       <thead><tr><th>Approach</th><th class="num">Size</th><th class="num">Per feature</th><th class="wrapcell">Effect</th></tr></thead>
@@ -415,7 +417,7 @@ var MD = "RULE";  <span class="cmt">// attribute-rule dictionary writing both fi
         <tr><td>Flat 1,139-entry dictionary</td><td class="num">31.9 KB</td><td class="num">1,646 µs</td><td class="wrapcell">baseline</td></tr>
         <tr><td>Re-encoded, same entry count</td><td class="num">24.4 KB</td><td class="num">1,698 µs</td><td class="wrapcell">23% smaller, no faster</td></tr>
         <tr><td><strong>Run-compressed (shipped)</strong></td><td class="num">21.3 KB</td><td class="num">978 µs</td><td class="wrapcell">1.7× faster</td></tr>
-        <tr><td>Shipped, documented vs condensed</td><td class="num">30 / 21 KB</td><td class="num">963 / 966 µs</td><td class="wrapcell">comments are free</td></tr>
+        <tr><td>Shipped, documented vs condensed</td><td class="num">31 / 22 KB</td><td class="num">953 / 961 µs</td><td class="wrapcell">comments are free</td></tr>
       </tbody>
     </table>
   </div>
