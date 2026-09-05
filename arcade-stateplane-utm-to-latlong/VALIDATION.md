@@ -18,17 +18,20 @@ and the two registries disagree.
 
 | | |
 | --- | --- |
-| EPSG codes | 1,139 |
-| State Plane | 908 |
-| UTM / BLM | 231 |
-| Distinct parameter sets | 254 |
-| WKID lookup runs | 380 |
+| Coordinate system codes | 1,232 |
+| — EPSG | 1,139 |
+| — Esri factory codes | 93 |
+| State Plane | 968 |
+| UTM / BLM | 264 |
+| Distinct parameter sets | 257 |
+| WKID lookup runs | 407 |
 
 A US-only variant (1,081 codes, dropping the 58 UTM codes outside US territory) was
-built and measured. It saved 1.4 KB and 1.9% of run time — the WKID run table is the
-same 380 entries either way, so only the zone table shrinks — while silently rejecting
-any UTM data from outside the US. It was dropped rather than published as a second
-artifact; `scripts/us_codes.txt` keeps the list as a worked example.
+built and measured against the 1,139-code build. It saved 1.4 KB and 1.9% of run time —
+the WKID run table was the same size either way, so only the zone table shrinks — while
+silently rejecting any UTM data from outside the US. It was dropped rather than
+published as a second artifact; `scripts/us_codes.txt` keeps the list as a worked
+example.
 
 Realizations: NAD83, NAD83(HARN), NAD83(CORS96), NAD83(NSRS2007), NAD83(2011),
 NAD83(PA11), NAD83(MA11), and WGS 84 for the 326xx/327xx UTM zones. Linear units:
@@ -37,7 +40,39 @@ Lambert Conformal Conic (2SP), Hotine Oblique Mercator (Alaska zone 1).
 
 Every code the build claims resolves in `arcpy`, and every code it excludes is
 **rejected** rather than mapped to a neighbouring zone — checked explicitly for all
-1,139 codes in both directions.
+1,232 codes in both directions.
+
+### Esri factory codes
+
+A feature class reaches the expression as its stored WKID and nothing else. Arcade's
+`geometry.spatialReference` is a **Dictionary whose only key is `wkid`** — measured in
+both the Calculate Field and the attribute-rule profiles: `Text(sr)` returns
+`{"wkid":6455}`, `HasKey(sr, "latestWkid")` returns `no`, and reading `.latestWkid`
+directly is a hard `Field not found` error rather than a null. So an Esri code cannot be
+translated to its EPSG equivalent at run time; it has to be in the table.
+
+Most never arrive, because `arcpy` normalizes first:
+
+| Of the 999 Esri codes `arcpy` accepts | |
+| --- | --- |
+| Rewritten to an EPSG code before anything is stored | 522 |
+| — of those, onto a code this build already carried | 278 |
+| Keep their own Esri code | 477 |
+| — of those, NAD 1983 family State Plane or UTM | **93, now included** |
+
+`arcpy.SpatialReference(102606)` reports `factoryCode` 3072, and a feature class created
+from it stores 3072, so those were never at risk. `102600` keeps its code precisely
+because it has no EPSG equivalent.
+
+The other 384 are deliberately excluded. Old Hawaiian, NGO 1948, Hong Kong 1980 and the
+rest need a datum grid shift Arcade cannot evaluate — the same reason NAD 27 is refused —
+and Guam (`102766`) is Polyconic, a fourth projection family this build does not
+implement. Excluding them means they are **rejected with a message**, which is the
+intended behaviour: a wrong answer that looks right is the failure this expression exists
+to avoid.
+
+Adding the 93 cost **251 bytes** and no measurable run time: the codes fall in 23
+contiguous runs, which is what the run-length table is for.
 
 ## Method
 
@@ -56,23 +91,32 @@ millimetres — not a coordinate-component difference.
 own inverse of the **stored** coordinates so that geodatabase quantisation is never
 mistaken for script error.
 
-Run over the same 1,139 codes the two paths agree to within that quantisation — median
-0.037 mm headless against 0.038 mm in the engine, worst case 0.059 mm against 0.071 mm
+Run over the same 1,232 codes the two paths agree to within that quantisation — median
+0.037 mm headless against 0.037 mm in the engine, worst case 0.059 mm against 0.074 mm
 — which is what makes the fast headless path trustworthy for bulk work.
 
 ## Results
 
-**55,811 headless points across 1,139 codes; 28,475 points in the real engine.**
+**60,368 headless points across 1,232 codes (7x7 per zone); 30,800 points in the real
+engine (5x5).**
 
 | Statistic | Headless | Real Arcade engine |
 | --- | --- | --- |
-| Median | 0.037 mm | 0.038 mm |
-| 95th percentile | 0.049 mm | 0.059 mm |
-| 99th percentile | 0.058 mm | 0.064 mm |
-| **Worst case** | **0.059 mm** | **0.071 mm** |
+| Median | 0.037 mm | 0.037 mm |
+| 95th percentile | 0.049 mm | 0.058 mm |
+| 99th percentile | 0.057 mm | 0.064 mm |
+| **Worst case** | **0.059 mm** | **0.074 mm** |
+
+The worst case moved from 0.071 mm to 0.074 mm when the Esri codes were added, and the
+code responsible is one of them — `102761`, Puerto Rico / Virgin Islands in feet. It is
+in the build precisely because it has no EPSG equivalent: the metre variant of that zone
+is EPSG `32161`, which measures 0.060 mm over the same points. Both sit inside the
+storage-grid row of the table below, so this is quantisation rather than a difference in
+the maths — but note that foot and metre variants of a zone do *not* differ predictably
+across the build, so the gap here is not a general rule about units.
 
 Both styles — condensed and documented — return **bit-identical** values over the full
-point set in all four output modes, 446,488 values compared, and match the reference
+point set in all four output modes, 482,944 values compared, and match the reference
 implementation they were derived from. Zero runtime errors in any pass.
 
 ### Where the difference comes from
@@ -210,21 +254,31 @@ rather than `"6455.0"` so dictionary keys match, and `++`, `break`, `Push`, `Inc
 Arcade rebuilds literal data tables on **every feature**, so lookup-table *entry count*
 drives run time and file size does not.
 
+The encoding comparison below was run at a fixed 1,139 codes, so that the strategies are
+what differ and not the scope:
+
 | Build | Codes | Size | Calculate Field |
 | --- | --- | --- | --- |
 | Flat 1,139-entry dictionary | 1,139 | 31.9 KB | 1,646 µs/feature |
 | Re-encoded, same entry count | 1,139 | 24.4 KB | 1,698 µs — no gain |
-| **Run-compressed (published)** | 1,139 | 21.3 KB | **978 µs** |
+| Run-compressed | 1,139 | 21.3 KB | 978 µs |
 | Run-compressed, US-only scope | 1,081 | 19.9 KB | 960 µs |
 | Single zone, generated per dataset | 1 | 6.1 KB | 498 µs |
+| **Run-compressed, published today** | **1,232** | **21.6 KB** | **961 µs** |
 
 The pattern is roughly 480 µs fixed plus 1 µs per table entry, per feature. Collapsing
-the WKID table into 380 arithmetic runs is what buys both the size and the speed.
+the WKID table into arithmetic runs is what buys both the size and the speed — and it is
+why the last row costs nothing against the third despite carrying 93 more codes: those
+codes are consecutive, so they add 27 runs rather than 93 entries.
 
 Comments and long identifiers cost nothing. The two published builds differ by 30% in
-size and by 0.3% in speed: **963 µs/feature documented against 966 µs condensed**, over
-8,000 features in Illinois East ftUS. The same held on an earlier pair of the same
+size and by under 1% in speed: **953 µs/feature documented against 961 µs condensed**,
+over 8,000 features in Illinois East ftUS. The same held on an earlier pair of the same
 program at 32 KB and 57.5 KB — 1,686 µs against 1,688 µs.
+
+As an attribute rule the picture is different and the expression is not the cost:
+**5,807 µs per inserted feature** condensed against 5,783 µs documented, over 1,500
+inserts. Rule evaluation overhead dominates the maths by roughly six to one.
 
 `bench.py` reproduces the last row pair, which is the one that matters. The four
 exploratory encodings above it were measured on the way to the published build and are
