@@ -99,7 +99,7 @@ def render():
     x = PAD
     # Two facts, not three: the pinned conversion occupies the right of the card
     # now, so MIT moves to the footer line rather than crowding it.
-    facts = [("1,139", "EPSG codes"), ("0.07 mm", "worst disagreement")]
+    facts = [("1,232", "coordinate codes"), ("0.07 mm", "worst disagreement")]
     for i, (num, cap) in enumerate(facts):
         if i:
             d.line([(x - 34, y + 6), (x - 34, y + 62)], fill=RULE, width=1)
