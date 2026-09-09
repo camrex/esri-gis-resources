@@ -71,7 +71,7 @@ implement. Excluding them means they are **rejected with a message**, which is t
 intended behaviour: a wrong answer that looks right is the failure this expression exists
 to avoid.
 
-Adding the 93 cost **251 bytes** and no measurable run time: the codes fall in 23
+Adding the 93 cost **251 bytes** and no measurable run time: the codes fall in 22
 contiguous runs, which is what the run-length table is for.
 
 ## Method
@@ -215,7 +215,7 @@ county's projection. The expression does not warn; it just gets quietly worse.
 | --- | --- |
 | Null or absent geometry | `null`, or an `errorMessage` in RULE mode |
 | NAD27, Web Mercator, WKID 0, any unsupported code | rejected with a message |
-| Geographic feature class (4326, 4269, 6318, …) | centroid passed straight through |
+| Geographic feature class (4326, 4269, 6318, …, and 4267, 4979) | centroid passed straight through |
 | UTM zones 1N and 60S | correct across the antimeridian |
 | NaN or absurd coordinates | rejected, not returned |
 | Feature at x=0, y=0 | returns a real-looking coordinate — see below |
