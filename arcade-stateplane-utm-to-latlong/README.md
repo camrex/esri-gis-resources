@@ -29,7 +29,7 @@ geoprocessing tool cannot go.
 
 **[Browse the landing page →](https://camrex.github.io/esri-gis-resources/arcade-stateplane-utm-to-latlong/)**
 
-**One build, 1,139 EPSG codes**, in two styles:
+**One build, 1,232 coordinate system codes** — 1,139 EPSG and 93 Esri — in two styles:
 
 | | Size | Use it when |
 | --- | --- | --- |
@@ -37,7 +37,7 @@ geoprocessing tool cannot go.
 | [`arcade_latlong_condensed.txt`](builds/arcade_latlong_condensed.txt) | 21 KB | pasting somewhere tight |
 
 They are the **same program** and run at identical speed — measured over 8,000 features
-at 963 µs/feature for the documented build against 966 µs for the condensed one, a
+at 953 µs/feature for the documented build against 961 µs for the condensed one, a
 build 30% smaller. Comments and long identifiers cost nothing, because Arcade's
 per-feature cost comes from rebuilding the literal data tables, not from parsing.
 
@@ -46,6 +46,14 @@ zone worldwide on WGS 84 and the NAD83 realizations, plus the BLM foot zones. A
 US-only variant was measured and dropped: it saved 1.4 KB and about 2% of run time, and
 in exchange it silently rejected any UTM data from outside the US. `scripts/us_codes.txt`
 is kept as a worked example if you want to trim anyway.
+
+**Esri factory codes are covered too.** A feature class reaches the expression as its
+stored WKID and nothing else — Arcade's `geometry.spatialReference` is a Dictionary
+whose only key is `wkid`, so there is no `latestWkid` to fall back to. Most Esri codes
+never arrive, because arcpy rewrites them to their EPSG equivalent before anything is
+stored (102606 becomes 3072). The 477 that keep their own code cannot be translated at
+run time, so the 93 of them that are NAD 1983 family State Plane or UTM are in the
+table by code. See [VALIDATION.md](VALIDATION.md#esri-factory-codes).
 
 ## Parity
 

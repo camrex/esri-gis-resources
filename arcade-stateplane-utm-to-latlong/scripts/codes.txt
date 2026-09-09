@@ -1,4 +1,4 @@
-# 1139 EPSG codes.
+# 1232 coordinate system codes: 1139 EPSG, then 93 Esri.
 # US State Plane, plus every UTM zone worldwide on the NAD83 realizations and on
 # WGS 84, plus the BLM foot zones.
 # Validated set -- see VALIDATION.md. To build a different set, pass your
@@ -1142,3 +1142,115 @@
 32758
 32759
 32760
+
+# --- Esri factory codes, for feature classes that store one -------------------
+# A spatial reference reaches the expression as its stored WKID, and Arcade
+# offers nothing else: geometry.spatialReference is a Dictionary whose only key
+# is "wkid" -- measured in both the Calculate Field and the attribute-rule
+# profiles, where reading .latestWkid is a hard "Field not found" error rather
+# than a null. So an Esri code cannot be translated at run time; it has to be
+# in the table.
+#
+# Most never arrive. arcpy rewrites 522 of the 999 Esri codes it accepts to
+# their EPSG equivalent before anything is stored -- 102606 becomes 3072 -- so
+# those were already covered by the EPSG list above. The 477 that keep their
+# own code are the gap, and these are the 93 of them that are NAD 1983 family
+# State Plane or UTM.
+#
+# Deliberately not here: the other 384. Old Hawaiian, NGO 1948, Hong Kong 1980
+# and the rest need a datum grid shift Arcade cannot evaluate, which is the same
+# reason NAD 27 is refused; and Guam (102766) is Polyconic, a fourth projection
+# family this build does not implement.
+102043
+102044
+102045
+102213
+102364
+102365
+102366
+102367
+102368
+102369
+102370
+102371
+102372
+102373
+102374
+102375
+102392
+102393
+102394
+102395
+102396
+102397
+102398
+102401
+102402
+102403
+102404
+102405
+102406
+102407
+102408
+102409
+102410
+102411
+102412
+102413
+102414
+102415
+102416
+102417
+102418
+102419
+102445
+102446
+102447
+102461
+102462
+102464
+102465
+102525
+102526
+102528
+102529
+102629
+102630
+102631
+102632
+102633
+102634
+102635
+102636
+102637
+102638
+102639
+102640
+102648
+102649
+102650
+102661
+102662
+102664
+102665
+102688
+102689
+102690
+102696
+102697
+102698
+102700
+102701
+102702
+102703
+102720
+102721
+102726
+102727
+102733
+102761
+102956
+102957
+102958
+102959
+102960
