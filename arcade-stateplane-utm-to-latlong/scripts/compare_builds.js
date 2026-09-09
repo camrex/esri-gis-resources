@@ -94,10 +94,14 @@ for (const [label, f, want] of cases) {
   }
   if (!want) continue;
   for (const b of ['C', 'O']) {
-    const lat = fn[b + 'LAT'](...VALUES, f), lon = fn[b + 'LON'](...VALUES, f);
-    const d = (fn[b + 'RULE'](...VALUES, f).result || {}).attributes || {};
-    const got = [lat, lon, d.LAT_CALCULATED, d.LON_CALCULATED];
-    const ok = got.every((v, i) => v === want[i % 2]);
+    // A throw is a failed assertion too, not a reason to stop before the summary.
+    let got;
+    try {
+      const lat = fn[b + 'LAT'](...VALUES, f), lon = fn[b + 'LON'](...VALUES, f);
+      const d = (fn[b + 'RULE'](...VALUES, f).result || {}).attributes || {};
+      got = [lat, lon, d.LAT_CALCULATED, d.LON_CALCULATED];
+    } catch (e) { got = 'THREW: ' + e.message; }
+    const ok = Array.isArray(got) && got.every((v, i) => v === want[i % 2]);
     if (!ok) { diffEdge++; console.log('  EXPECTED', want, 'got', b, got, 'for', label); }
   }
 }
