@@ -65,15 +65,18 @@ console.log('build A vs build B     :', diffBuild, 'differing values, worst nume
 console.log('RULE vs LAT/LON        :', diffMode, 'mismatches');
 console.log('BOTH text vs numbers   :', diffBoth, 'mismatches');
 
-console.log('\n--- edge cases (build A) ---');
+console.log('\n--- edge cases (both builds) ---');
+// A third element is an expected [lat, lon]. Geographic inputs must come back untouched
+// in every mode from both builds; the rest are printed for reading, since their right
+// answer is a refusal whose exact wording is not the point.
 const cases = [
   ['null geometry',        { geometry: null }],
   ['missing geometry',     {}],
   ['NAD27 UTM 15N (26715)', feat(26715, 500000, 3300000)],
   ['Web Mercator (3857)',  feat(3857, -9000000, 4000000)],
-  ['GCS WGS84 (4326)',     feat(4326, -89.09, 37.49)],
-  ['GCS NAD27 (4267)',     feat(4267, -89.09, 37.49)],
-  ['GCS WGS84 3D (4979)',  feat(4979, -89.09, 37.49)],
+  ['GCS WGS84 (4326)',     feat(4326, -89.09, 37.49), [37.49, -89.09]],
+  ['GCS NAD27 (4267)',     feat(4267, -89.09, 37.49), [37.49, -89.09]],
+  ['GCS WGS84 3D (4979)',  feat(4979, -89.09, 37.49), [37.49, -89.09]],
   ['wkid 0 (unknown SR)',  feat(0, 100, 100)],
   ['x/y = 0,0 in 6455',    feat(6455, 0, 0)],
   ['absurd x/y in 6455',   feat(6455, 1e12, 1e12)],
@@ -81,11 +84,23 @@ const cases = [
   ['UTM 1N west edge',     feat(32601, 221412.8427, 743513.2686)],
   ['UTM 60S',              feat(32760, 420604.3221, 1830911.2305)],
 ];
-for (const [label, f] of cases) {
+let diffEdge = 0;
+for (const [label, f, want] of cases) {
   for (const m of ['LAT', 'RULE']) {
     let out;
     try { out = JSON.stringify(fn['C' + m](...VALUES, f)); }
     catch (e) { out = 'THREW: ' + e.message; }
     console.log(('  ' + label).padEnd(26), m.padEnd(5), out);
   }
+  if (!want) continue;
+  for (const b of ['C', 'O']) {
+    const lat = fn[b + 'LAT'](...VALUES, f), lon = fn[b + 'LON'](...VALUES, f);
+    const d = (fn[b + 'RULE'](...VALUES, f).result || {}).attributes || {};
+    const got = [lat, lon, d.LAT_CALCULATED, d.LON_CALCULATED];
+    const ok = got.every((v, i) => v === want[i % 2]);
+    if (!ok) { diffEdge++; console.log('  EXPECTED', want, 'got', b, got, 'for', label); }
+  }
 }
+console.log('pass-through asserted  :', diffEdge, 'mismatches');
+
+if (diffBuild || diffMode || diffBoth || diffEdge) process.exit(1);
